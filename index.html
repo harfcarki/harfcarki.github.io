@@ -1269,16 +1269,37 @@ function queuePhrase(text){ pend.push(text); clearTimeout(pendT); pendT = setTim
 function bumpPhrase(){ if (pend.length){ clearTimeout(pendT); pendT = setTimeout(flushPhrase, SETTLE); } }
 function flushPhrase(){ clearTimeout(pendT); pendT = null; const t = pend.join(' '); pend = []; if (t.trim()) addPhrase(t); }
 
+/* Birden çok kelime duyulduysa ("Nereye gitti Ahmet", "Amit Oyunit Adəm…") içinden asıl ismi seç:
+   önce beklenen harfle başlayan bilinen isim (ikili isimler dahil), sonra herhangi bir bilinen isim. En son söyleneni tercih et. */
+function pickName(words){
+  if (words.length < 2) return null;
+  const ks = words.map(w => correct(keyOf(w))), exp = expectedLetter();
+  const ok = k => k && isKnown(k), starts = k => !exp || firstChar(k) === exp;
+  if (ks.length <= 3 && ks.every(ok) && starts(ks[0])) return words;   // 2-3 parçalı isim: Mustafa Kemal, Ali Rıza Can
+  // Uzun cümlenin içinde arka arkaya gelen 3 bilinen isim (en fazla 3 kelime)
+  for (let i = ks.length - 3; i >= 0; i--){
+    if (ok(ks[i]) && ok(ks[i+1]) && ok(ks[i+2]) && starts(ks[i]) && new Set(ks.slice(i, i+3)).size === 3) return words.slice(i, i+3);
+  }
+  const cands = [];
+  for (let i = 0; i < ks.length; i++){
+    if (i + 1 < ks.length){
+      const j = correct(keyOf(words[i] + words[i+1])), sp = ks[i] + ' ' + ks[i+1];
+      if (NAMESET[lang] && NAMESET[lang].has(j)) cands.push({ w:[words[i] + words[i+1]], k:j, i, two:1 });
+      else if (NAMESET[lang] && NAMESET[lang].has(sp)) cands.push({ w:[words[i], words[i+1]], k:sp, i, two:1 });
+    }
+    if (ok(ks[i])) cands.push({ w:[words[i]], k:ks[i], i });
+  }
+  const best = cands.filter(c => starts(c.k)).pop() || cands.pop();
+  return best ? best.w : null;
+}
 function addPhrase(text){
   const words = text.replace(/['’`][a-zçğıöşüə]+/gi,'').replace(/[.,!?"“”…:;()\-]/g,' ').split(/\s+/).filter(Boolean)
     .filter(w => !isFiller(keyOf(w)));
   if (!words.length) return;
-  // Uzun ve içinde hiç bilinen isim olmayan cümle = yanlış dilde duyulmuş gürültü, yazma
-  if (words.length >= 3 && !words.some(w => isKnown(correct(keyOf(w))))){
-    $('interim').textContent = t('unclear') + words.join(' ');
-    return;
-  }
-  addName(words);
+  const chosen = (pickName(words) || (words.length <= 2 ? words : null) || []).slice(0, 3);
+  if (!chosen.length) chosen.length = 0;
+  if (!chosen.length){ $('interim').textContent = t('unclear') + words.slice(0, 6).join(' '); return; }
+  addName(chosen);
 }
 function addName(words){
   if (roundOver && !ONL) return;
@@ -1442,6 +1463,12 @@ function startWebSpeech(){
       finals.forEach(f => queuePhrase(f));
     }
     $('interim').textContent = interim;
+    if (interim && interim.trim().split(/\s+/).length >= 4 && !webIgnore){
+      clearTimeout(webIdleT); webIgnore = true; webLast = ''; $('interim').textContent = '';
+      pend.push(bestAlt(lastAlts && e.results.length - e.resultIndex === 1 ? lastAlts : [interim])); flushPhrase();
+      try { rec.abort(); } catch(_){}
+      return;
+    }
     if (interim){
       bumpPhrase();
       if (interim !== webLast){
