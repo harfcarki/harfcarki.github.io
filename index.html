@@ -489,6 +489,46 @@
   .og-me{background:var(--grad)}
   .rm-code b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
   .mrow.danger .mt{color:var(--red)}
+  .n-badge.in{position:static;transform:none;display:inline-grid;margin-left:6px;vertical-align:1px}
+  .n-badge.in:empty{display:none}
+  #msgSeg{margin-bottom:12px}
+  .arow.cv{width:100%;border:none;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer;border-bottom:1px solid var(--line)}
+  .arow.cv.un b{color:var(--accent)} .arow.cv .tm{font-size:12px;color:var(--muted);display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+  .arow.cv .tm i{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .fchips{display:flex;flex-wrap:wrap;gap:8px}
+  .fchip{display:flex;align-items:center;gap:7px;padding:5px 12px 5px 5px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:600;font-size:14px;cursor:pointer}
+  .fchip .av{width:28px;height:28px;font-size:12px}
+  .emo{display:flex;gap:2px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+  .emo button{flex:none;border:none;background:none;font-size:22px;width:36px;height:36px;border-radius:10px;cursor:pointer}
+  .emo button:active{background:var(--accent-2)}
+  .composer{display:flex;gap:8px;align-items:flex-end}
+  .composer input,.composer textarea{flex:1;min-width:0;font:inherit;font-size:15.5px;padding:11px 13px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);outline:none;resize:none}
+  .composer input:focus,.composer textarea:focus{border-color:var(--accent)}
+  .composer .abtn{padding:11px 14px;font-size:14px}
+  .post{padding:12px 0;border-bottom:1px solid var(--line)} .post:last-child{border:none}
+  .post .hd{display:flex;align-items:center;gap:10px;margin-bottom:6px} .post .hd .av{width:34px;height:34px;font-size:14px}
+  .post .hd small{display:block;font-size:12px;color:var(--muted)} .post p{font-size:15px;line-height:1.5;word-break:break-word}
+  .bubbles{display:flex;flex-direction:column;gap:6px;padding:4px 0}
+  .bub{max-width:82%;align-self:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:8px 12px;font-size:15px;line-height:1.4;word-break:break-word}
+  .bub.me{align-self:flex-end;background:var(--accent);color:#fff;border-color:transparent;border-radius:16px 16px 4px 16px}
+  .bub b{display:block;font-size:12px;color:var(--accent);margin-bottom:1px} .bub small{display:block;font-size:10.5px;opacity:.65;margin-top:2px;text-align:right}
+  #chatPage .s-headin .av{width:34px;height:34px;font-size:14px}
+  #chatPage .panel{display:flex;flex-direction:column} .chat-body{flex:1;overflow-y:auto}
+  .chat-foot{border-top:1px solid var(--line);padding:8px 16px max(10px, env(safe-area-inset-bottom));background:var(--bg)}
+  .rc{padding:0;overflow:hidden} .rc-head{width:100%;display:flex;align-items:center;gap:8px;border:none;background:none;color:var(--ink);font:inherit;font-size:15px;padding:14px 16px;cursor:pointer}
+  .rc-head .chev{margin-left:auto} .rc-in{display:none;padding:0 14px 14px} .rc.open .rc-in{display:block}
+  #rcList{max-height:34dvh;overflow-y:auto;margin-bottom:6px}
+  .all-list{max-height:56dvh;overflow-y:auto;margin-bottom:8px}
+  .bub .who-l{display:flex;align-items:center;gap:6px;cursor:pointer} .bub .who-l .av{width:20px;height:20px;font-size:10px}
+  .bub .del{color:inherit;text-decoration:underline;cursor:pointer}
+  .micfix{font-size:13px;margin:-2px auto 0;display:block}
+  #ogActs .btn.ghost.sm{font-size:13.5px;padding:9px}
+  .ptt{padding:22px;font-size:17px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
+  .btn.mic.ptt.live{background:var(--red) !important;box-shadow:0 0 0 6px var(--red-bg) !important;transform:scale(.98);transition:none}
+  .og-type{display:flex;gap:8px}
+  .og-type input{flex:1;min-width:0;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);outline:none}
+  .og-type input:focus{border-color:var(--accent)}
+  .og-type .abtn{padding:0 16px;font-size:14px}
   .arow .busy{display:block;font-size:12px;color:var(--unk);font-weight:600;margin-top:2px}
   .og-p{position:relative}
   .og-kick{border:none;background:var(--red-bg);color:var(--red);width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;margin-left:2px}
@@ -558,6 +598,7 @@
       <button class="btn spin" id="spinBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg><span id="spinLabel">Çarkı Çevir</span></button>
       <button class="btn mic" id="micBtn" disabled><span class="dot"></span><span id="micLabel">Başlat</span></button>
     </div>
+    <button class="linkbtn micfix" id="micFix">🔧 <span data-i18n="micFix">Mikrofonu kontrol et</span></button>
     <div class="timer" id="timer"><i id="timerBar"></i></div>
     <div class="msg" id="msg"></div>
   </section>
@@ -598,6 +639,7 @@
       <button class="btn ghost big" id="goLocal"><span class="ico">📱</span><span><b data-i18n="playLocal">Aynı telefonda oyna</b><small data-i18n="playLocalS">İnternetsiz, tek telefonda sırayla</small></span></button>
     </div>
     <div class="menu">
+      <button class="mrow" id="homeMsgs"><span class="mi" style="--mc:#7c5ea8">💬</span><span class="mt"><span data-i18n="msgTitle">Mesajlar</span><small data-i18n="msgMenuS">Özel, arkadaşlar ve herkese açık sohbet</small></span><span class="n-badge" id="homeMsgN"></span><span class="chev">›</span></button>
       <button class="mrow" id="homeFriends"><span class="mi">👥</span><span class="mt"><span data-i18n="frTitle">Arkadaşlar</span><small data-i18n="frMenuS">Ekle, kabul et, yönet</small></span><span class="n-badge" id="homeFrN"></span><span class="chev">›</span></button>
       <button class="mrow" id="homeShare"><span class="mi" style="--mc:#1f6fd1">📤</span><span class="mt"><span data-i18n="shareApp">Arkadaşlarını davet et</span><small data-i18n="shareMenuS">Uygulama linkini paylaş</small></span><span class="chev">›</span></button>
     </div>
@@ -760,6 +802,22 @@
     </div></div>
   </aside>
 </div>
+<div class="sheet page" id="msgPage" aria-hidden="true">
+  <aside class="panel">
+    <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" data-close="msgPage" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2 data-i18n="msgTitle">Mesajlar</h2></div></div>
+    <div class="s-body"><div class="s-wrap narrow">
+      <div class="seg" id="msgSeg"><button data-v="dm" class="on"><span data-i18n="msgDm">Özel</span> <span class="n-badge in" id="msgSegDm"></span></button><button data-v="wall"><span data-i18n="msgWall">Arkadaşlar</span> <span class="n-badge in" id="msgSegWall"></span></button><button data-v="all"><span data-i18n="msgAll">Tümü</span> <span class="n-badge in" id="msgSegAll"></span></button></div>
+      <div id="msgBody"></div>
+    </div></div>
+  </aside>
+</div>
+<div class="sheet page" id="chatPage" aria-hidden="true">
+  <aside class="panel">
+    <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" data-close="chatPage" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span id="chatAv"></span><h2 id="chatName"></h2></div></div>
+    <div class="s-body chat-body"><div class="s-wrap narrow"><div class="bubbles" id="chatList"></div></div></div>
+    <div class="chat-foot"><div class="s-wrap narrow" id="chatFoot"></div></div>
+  </aside>
+</div>
 <div class="sheet page" id="createPage" aria-hidden="true">
   <aside class="panel">
     <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" data-close="createPage" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2 data-i18n="crTitle">Oda kur</h2></div></div>
@@ -780,7 +838,7 @@
 <div class="sheet page" id="roomPage" aria-hidden="true">
   <aside class="panel">
     <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" id="rmBack" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2 id="rmH" data-i18n="rmTitle">Bekleme odası</h2></div></div>
-    <div class="s-body"><div class="s-wrap narrow" id="rmBody"></div></div>
+    <div class="s-body"><div class="s-wrap narrow" id="rmBody"></div><div class="s-wrap narrow" id="rmChat" style="margin-top:14px"></div></div>
   </aside>
 </div>
 <div class="sheet page" id="adminPage" aria-hidden="true">
@@ -1008,7 +1066,7 @@ const I18N = {
       score:['🏆','Puanlar','Her geçerli isim <b>1 puan</b>, turu kazanan <b>+2 puan</b> alır. Tur sonunda özet çıkar, istersen resim olarak paylaşırsın. İyi eğlenceler!']
     },
     sugBtn:'Öner', sugSent:'Önerildi ✓', sugNeedLogin:'İsim önermek için giriş yap', sugDone:x=>`"${x}" yöneticiye önerildi`, bannedMsg:d=>d?`Hesabın ${d} tarihine kadar engellendi`:'Hesabın kalıcı olarak engellendi', bannedS:'Engelli hesap',
-    wpTitle:'Duvar kağıdı', wpNames:{none:'Yok', paris:'Paris', newyork:'New York', istanbul:'İstanbul', baku:'Bakü', forest:'Orman', waterfall:'Şelale', rainbow:'Gökkuşağı', cappadocia:'Kapadokya', aurora:'Kuzey ışıkları', lake:'Dağ gölü'}, wpCred:'Fotoğraflar: Unsplash · İlk açılışta internet gerekir, sonra telefona kaydedilir.',
+    micFix:'Mikrofonu kontrol et', micChecking:'Mikrofon kontrol ediliyor…', micOk:'🎤 Mikrofon hazır', wpTitle:'Duvar kağıdı', wpNames:{none:'Yok', paris:'Paris', newyork:'New York', istanbul:'İstanbul', baku:'Bakü', forest:'Orman', waterfall:'Şelale', rainbow:'Gökkuşağı', cappadocia:'Kapadokya', aurora:'Kuzey ışıkları', lake:'Dağ gölü'}, wpCred:'Fotoğraflar: Unsplash · İlk açılışta internet gerekir, sonra telefona kaydedilir.',
     adminBadge:'YÖNETİCİ', bulkHint:'Toplu ekle: her satıra bir isim yaz (virgülle de ayırabilirsin).', bulkAdd:'Toplu ekle', bulkDone:(a,b)=>`${a} isim eklendi${b?` · ${b} tanesi zaten vardı`:''}`, syncing:'Kaydediliyor…', synced:'✓ Herkes için kaydedildi', syncErr:'⚠ Kaydedilemedi, interneti kontrol et',
     playOnline:'Online oyna', playOnlineS:'Arkadaşlarınla, herkes kendi telefonundan', playLocal:'Aynı telefonda oyna', playLocalS:'İnternetsiz, tek telefonda sırayla',
     signIn:'Giriş yap', signUp:'Hesap oluştur', signOut:'Çıkış yap', withGoogle:'Google ile devam et', or:'veya e-posta ile', email:'E-posta', password:'Şifre', password2:'Şifre (tekrar)',
@@ -1061,7 +1119,7 @@ const I18N = {
       score:['🏆','Xallar','Hər düzgün ad <b>1 xal</b>, raundu qazanan <b>+2 xal</b> alır. Raund sonunda xülasə çıxır, istəsən şəkil kimi paylaşırsan. Uğurlar!']
     },
     sugBtn:'Təklif et', sugSent:'Təklif olundu ✓', sugNeedLogin:'Ad təklif etmək üçün daxil ol', sugDone:x=>`"${x}" adminə təklif olundu`, bannedMsg:d=>d?`Hesabın ${d} tarixinədək bloklanıb`:'Hesabın həmişəlik bloklanıb', bannedS:'Bloklanmış hesab',
-    wpTitle:'Divar kağızı', wpNames:{none:'Yoxdur', paris:'Paris', newyork:'Nyu-York', istanbul:'İstanbul', baku:'Bakı', forest:'Meşə', waterfall:'Şəlalə', rainbow:'Göy qurşağı', cappadocia:'Kapadokya', aurora:'Qütb parıltısı', lake:'Dağ gölü'}, wpCred:'Fotoşəkillər: Unsplash · İlk açılışda internet lazımdır, sonra telefonda saxlanılır.',
+    micFix:'Mikrofonu yoxla', micChecking:'Mikrofon yoxlanılır…', micOk:'🎤 Mikrofon hazırdır', wpTitle:'Divar kağızı', wpNames:{none:'Yoxdur', paris:'Paris', newyork:'Nyu-York', istanbul:'İstanbul', baku:'Bakı', forest:'Meşə', waterfall:'Şəlalə', rainbow:'Göy qurşağı', cappadocia:'Kapadokya', aurora:'Qütb parıltısı', lake:'Dağ gölü'}, wpCred:'Fotoşəkillər: Unsplash · İlk açılışda internet lazımdır, sonra telefonda saxlanılır.',
     adminBadge:'ADMİN', bulkHint:'Toplu əlavə: hər sətirə bir ad yaz (vergüllə də ayıra bilərsən).', bulkAdd:'Toplu əlavə et', bulkDone:(a,b)=>`${a} ad əlavə olundu${b?` · ${b} ad artıq var idi`:''}`, syncing:'Yadda saxlanılır…', synced:'✓ Hamı üçün yadda saxlanıldı', syncErr:'⚠ Yadda saxlanılmadı, interneti yoxla',
     playOnline:'Onlayn oyna', playOnlineS:'Dostlarınla, hər kəs öz telefonundan', playLocal:'Eyni telefonda oyna', playLocalS:'İnternetsiz, bir telefonda növbə ilə',
     signIn:'Daxil ol', signUp:'Hesab yarat', signOut:'Çıxış', withGoogle:'Google ilə davam et', or:'və ya e-poçt ilə', email:'E-poçt', password:'Şifrə', password2:'Şifrə (təkrar)',
@@ -1301,6 +1359,22 @@ function addPhrase(text){
   if (!chosen.length){ $('interim').textContent = t('unclear') + words.slice(0, 6).join(' '); return; }
   addName(chosen);
 }
+/* Yanlış duyulan ismi düzelt: SADECE listede olmayan kelimelerde, SADECE beklenen harfle başlayan isimler arasında.
+   Sesçe yakın harfler eşitlenir (d/t, b/p, g/k, o/u, ə/a/e, ı/i…), sonra en fazla 1-2 harf farkına bakılır.
+   "Muraddin" (N bekleniyor) → Nurəddin, "Davot" (D) → Davud. Listede olan gerçek isimlere hiç dokunulmaz. */
+const SKEL_MAP = { d:'t', b:'p', g:'k', 'ğ':'', c:'ç', j:'ç', q:'k', x:'h', o:'u', 'ö':'ü', 'ı':'i', e:'a', 'ə':'a', v:'f', z:'s', w:'f', y:'i' };
+const skel = k => [...fold(k)].map(ch => SKEL_MAP[ch] ?? ch).join('').replace(/(.)\1+/g, '$1');
+function lev(a, b){ const m = a.length, n = b.length; if (Math.abs(m - n) > 2) return 9; let pr = Array.from({ length:n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++){ const cu = [i]; for (let j = 1; j <= n; j++) cu[j] = Math.min(pr[j] + 1, cu[j-1] + 1, pr[j-1] + (a[i-1] === b[j-1] ? 0 : 1)); pr = cu; } return pr[n]; }
+const NF_CACHE = {};
+function nearFix(k, exp){
+  if (!exp || !NAMESET[lang] || k.length < 3) return null;
+  const ck = lang + exp + NAMESET[lang].size, L = NF_CACHE[ck] || (NF_CACHE[ck] = [...NAMESET[lang]].filter(n => firstChar(n) === exp).map(n => [n, skel(n)]));
+  const sk = skel(k), max = sk.length <= 4 ? 0 : sk.length <= 7 ? 1 : 2;
+  let best = null, bd = 99, tie = false;
+  for (const [n, s2] of L){ const d = lev(sk, s2); if (d < bd){ bd = d; best = n; tie = false; } else if (d === bd) tie = true; }
+  return best && bd <= max && !(tie && bd > 0) ? best : null;
+}
 function addName(words){
   if (roundOver && !ONL) return;
   const loc = LANGS[lang].locale;
@@ -1309,6 +1383,7 @@ function addName(words){
   const joined = correct(keyOf(words.join('')));             // "Adı gözel" → adıgözəl, "Abdul lah" → abdullah
   if (words.length > 1 && NAMESET[lang] && NAMESET[lang].has(joined)) k = joined;
   else k = words.map(w => correct(keyOf(w))).join(' ');      // çift isim: "Mustafa Kemal"
+  if (!k.includes(' ') && !isKnown(k)){ const nf = nearFix(k, expectedLetter()); if (nf) k = nf; }
   const pretty = k.split(' ').map(p => p.charAt(0).toLocaleUpperCase(loc) + p.slice(1)).join(' ');
   const heard = keyOf(heardText) !== k ? heardText : null;
   if (ONL){ onlineSay(k, pretty); return; }
@@ -1531,6 +1606,22 @@ function stopListening(){
 
 /* ---------- Events ---------- */
 $('spinBtn').onclick = spin;
+/* Mikrofon takılırsa: tanımayı tamamen kapatıp izni ve donanımı yokla, sonra yeniden aç */
+async function micFix(){
+  const was = listening;
+  try { if (rec){ rec.onend = null; rec.abort(); } } catch(_){}
+  stopListening(); rec = null; webIgnore = false; clearTimeout(webIdleT); pend = []; $('interim').textContent = '';
+  toast(t('micChecking'));
+  try {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+      const st = await navigator.mediaDevices.getUserMedia({ audio:true });
+      st.getTracks().forEach(tr => tr.stop());
+    }
+  } catch(e){ $('msg').textContent = t('micDenied'); toast(t('micDenied')); return; }
+  if (!SR && !(inClaude && dict)){ toast(t('noSR')); return; }
+  setTimeout(() => { toast(t('micOk')); if (was) { try { startListening(); } catch(_){} } }, 350);
+}
+$('micFix').onclick = () => micFix();
 $('micBtn').onclick = () => { ensureAudio(); listening ? stopListening() : startListening(); };
 $('resetBtn').onclick = resetSession;
 $('mYes').onclick = () => { $('modal').classList.remove('show'); resetSession(); };
@@ -1983,9 +2074,9 @@ function admRooms(){
 }
 
 const OTX = {
-  tr:{ reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
+  tr:{msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
     kickQ:x=>`@${x} oyundan atılsın mı? Tekrar bas.`, outKick:x=>`⛔ @${x} oda kurucusu tarafından atıldı`, fbMine:'Mesajların ve cevaplar', fbReply:'Yönetici cevabı', fbNoReply:'Henüz cevap yok', frMenuS:'Ekle, kabul et, yönet', shareMenuS:'Uygulama linkini WhatsApp vb. ile paylaş', outQ:'Çıkış yapmak için tekrar bas', shareApp:'Arkadaşlarını davet et', shareAppText:'Harf Çarkı\'nı dene! Çarkı çevir, son harften isim söyle, arkadaşlarınla online yarış 🎡', frLogin:'Arkadaşlarını görmek için giriş yap', pushT:'Bildirimleri aç', pushS:'Davetler ve arkadaşlık istekleri telefon kilitliyken bile gelsin', pushBtn:'Aç', pushOn:'🔔 Bildirimler açıldı', pushDenied:'Bildirim izni kapalı. Tarayıcı ayarlarından bu site için bildirimlere izin ver.', pushNo:'Bu tarayıcı bildirimleri desteklemiyor', ogTitle:'Oyun', micErr:'Mikrofon açılamadı. Tarayıcı ayarlarından mikrofon izni ver ve "Mikrofonu aç"a bas.', ogRound:(a,b)=>`Tur ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlıyor', ogFirst:x=>`İlk isim ${x} harfiyle başlamalı`, ogWon:x=>`🏆 Turu <b>@${x}</b> kazandı (+2)`, ogYouSpin:'Sıra sende: çarkı çevir! (20 sn içinde çevirmezsen kendiliğinden döner)', ogSpinBtn:'Çarkı çevir', ogWaitSpin:x=>`<b>@${x}</b> çarkı çevirecek…`, ogSpinning:'Çark dönüyor…',
-    ogYourTurn:x=>`🎤 Sıra sende! <b>${x}</b> harfiyle bir isim söyle`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogMic:'Mikrofonu aç',
+    ogYourTurn:x=>`🎤 Sıra sende! <b>${x}</b> harfiyle bir isim söyle ya da yaz`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, pttHold:'Basılı tut ve konuş', pttLive:'Dinliyorum… bırakınca gönderilir', typeName:'ya da ismi yaz…', sendName:'Gönder', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu kapat',
     outTime:x=>`⏱ @${x} süresi doldu, elendi`, outLeft:x=>`🚫 @${x} uygulamadan çıktı, elendi`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitti', pts:'puan', ogAgain:'Tekrar oyna', ogWaitAgain:x=>`@${x} yeni oyun başlatabilir`, ogShare:'Sonucu paylaş',
     leftT1:'Bu turdan elendin', leftP1:n=>`Oyun sırasında uygulamadan çıktığın için bu turdan elendin (${n}/3). 3. kez çıkarsan odadan atılırsın.`,
     fbTitle:'Bize bildir', fbNote:'Bir hata mı buldun, bir önerin mi var? Yaz, istersen ekran görüntüsü ekle.', fbPh:'Mesajını yaz…', fbImg:'Fotoğraf ekle', fbSend:'Gönder', fbMax:'En fazla 2 fotoğraf eklenebilir', fbImgErr:'Fotoğraf açılamadı', fbEmpty:'Bir mesaj yaz ya da fotoğraf ekle', fbLogin:'Göndermek için giriş yap', fbWait:'Biraz bekle, az önce gönderdin', fbThanks:'Teşekkürler! Mesajın bize ulaştı 🙏',
@@ -2002,9 +2093,9 @@ const OTX = {
     rmTitle:'Bekleme odası', rmCode:'ODA KODU', rmShare:'Linki paylaş', rmCopy:'Kopyala', rmPlayers:'Oyuncular', kick:'Çıkar', you:'sen', rmInvite:'Arkadaşlarını davet et', invite:'Davet et', invSent:'Gönderildi ✓', invSentT:x=>`@${x} davet edildi`,
     rmStart:'Oyunu başlat', rmNeed2:'Başlatmak için en az 2 kişi gerekli', rmWaitHost:x=>`@${x} oyunu başlatınca oyun başlayacak`, rmClose:'Odayı kapat', rmLeave:'Odadan çık',
     shareText:c=>`Harf Çarkı'nda benimle oyna! Oda kodu: ${c}`, copied:'Link kopyalandı', linkLogin:'Odaya katılmak için önce giriş yap' },
-  az:{ reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
+  az:{msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
     kickQ:x=>`@${x} oyundan çıxarılsın? Yenidən bas.`, outKick:x=>`⛔ @${x} otağı quran tərəfindən çıxarıldı`, fbMine:'Mesajların və cavablar', fbReply:'Admin cavabı', fbNoReply:'Hələ cavab yoxdur', frMenuS:'Əlavə et, qəbul et, idarə et', shareMenuS:'Tətbiq linkini WhatsApp və s. ilə paylaş', outQ:'Çıxış etmək üçün yenidən bas', shareApp:'Dostlarını dəvət et', shareAppText:'Harf Çarkı-nı yoxla! Çarxı fırlat, son hərfdən ad de, dostlarınla onlayn yarış 🎡', frLogin:'Dostlarını görmək üçün daxil ol', pushT:'Bildirişləri aç', pushS:'Dəvətlər və dostluq istəkləri telefon kilidli olanda belə gəlsin', pushBtn:'Aç', pushOn:'🔔 Bildirişlər açıldı', pushDenied:'Bildiriş icazəsi bağlıdır. Brauzer ayarlarından bu sayt üçün bildirişlərə icazə ver.', pushNo:'Bu brauzer bildirişləri dəstəkləmir', ogTitle:'Oyun', micErr:'Mikrofon açılmadı. Brauzer ayarlarından mikrofon icazəsi ver və "Mikrofonu aç" düyməsinə bas.', ogRound:(a,b)=>`Raund ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlayır', ogFirst:x=>`İlk ad ${x} hərfi ilə başlamalıdır`, ogWon:x=>`🏆 Raundu <b>@${x}</b> qazandı (+2)`, ogYouSpin:'Növbə səndədir: çarxı fırlat! (20 san ərzində fırlatmasan özü dönəcək)', ogSpinBtn:'Çarxı fırlat', ogWaitSpin:x=>`<b>@${x}</b> çarxı fırladacaq…`, ogSpinning:'Çarx fırlanır…',
-    ogYourTurn:x=>`🎤 Növbə səndədir! <b>${x}</b> hərfi ilə ad de`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogMic:'Mikrofonu aç',
+    ogYourTurn:x=>`🎤 Növbə səndədir! <b>${x}</b> hərfi ilə ad de və ya yaz`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, pttHold:'Basılı saxla və danış', pttLive:'Dinləyirəm… buraxanda göndərilir', typeName:'və ya adı yaz…', sendName:'Göndər', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu bağla',
     outTime:x=>`⏱ @${x} vaxtı bitdi, çıxdı`, outLeft:x=>`🚫 @${x} tətbiqdən çıxdı, raunddan çıxarıldı`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitdi', pts:'xal', ogAgain:'Yenidən oyna', ogWaitAgain:x=>`@${x} yeni oyun başlada bilər`, ogShare:'Nəticəni paylaş',
     leftT1:'Bu raunddan çıxdın', leftP1:n=>`Oyun zamanı tətbiqdən çıxdığın üçün bu raunddan çıxarıldın (${n}/3). 3-cü dəfə çıxsan otaqdan çıxarılacaqsan.`,
     fbTitle:'Bizə yaz', fbNote:'Xəta tapdın, təklifin var? Yaz, istəsən ekran şəkli əlavə et.', fbPh:'Mesajını yaz…', fbImg:'Şəkil əlavə et', fbSend:'Göndər', fbMax:'Ən çox 2 şəkil əlavə etmək olar', fbImgErr:'Şəkil açılmadı', fbEmpty:'Mesaj yaz və ya şəkil əlavə et', fbLogin:'Göndərmək üçün daxil ol', fbWait:'Bir az gözlə, az öncə göndərdin', fbThanks:'Təşəkkürlər! Mesajın bizə çatdı 🙏',
@@ -2034,6 +2125,7 @@ function stopLobby(){ OL.subs.forEach(u => u()); OL.subs = []; OL.roomSubs.forEa
 function startLobby(){
   stopLobby();
   if (!FB || !me || !profile || !profile.username) return;
+  setTimeout(startMsgs, 0);
   const { F, db } = FB, col = c => F.collection(db, c);
   const err = e => console.warn('online', e);
   OL.subs.push(F.onSnapshot(F.collection(db, 'users', me.uid, 'friends'), s => {
@@ -2176,6 +2268,7 @@ function enterRoom(code){
   const { F, db } = FB;
   if (OL.roomUnsub) OL.roomUnsub();
   OL.code = code; OL.room = null; OL.off = undefined; clearInterval(GR.ticker); GR.ticker = setInterval(gameTick, 200);
+  startRoomChat(code);
   OL.roomUnsub = F.onSnapshot(F.doc(db, 'rooms', code), s => {
     if (!s.exists()){ if (OL.code === code){ toast(ot('roomClosed')); exitRoom(); } return; }
     const r = s.data(); OL.room = r;
@@ -2190,7 +2283,7 @@ function enterRoom(code){
   $('rmBody').innerHTML = `<p class="s-note" style="text-align:center;padding:30px">…</p>`;
   openPage('roomPage');
 }
-function exitRoom(){ setPresence(''); clearInterval(GR.ticker); if (ONL){ ONL = false; stopListening(); } GR.gid = null; if (OL.roomUnsub) OL.roomUnsub(); OL.roomUnsub = null; clearInterval(OL.beat); OL.code = null; OL.room = null; if (isOpen('roomPage')) closePage('roomPage'); renderLobby(); }
+function exitRoom(){ stopRoomChat(); setPresence(''); clearInterval(GR.ticker); if (ONL){ ONL = false; stopListening(); } GR.gid = null; if (OL.roomUnsub) OL.roomUnsub(); OL.roomUnsub = null; clearInterval(OL.beat); OL.code = null; OL.room = null; if (isOpen('roomPage')) closePage('roomPage'); renderLobby(); }
 async function leaveRoom(silent){
   const code = OL.code, r = OL.room; if (!code) return;
   const { F, db } = FB, ref = F.doc(db, 'rooms', code);
@@ -2486,7 +2579,7 @@ function renderGame(){
     else if (r.turn === me.uid) st = `<span class="og-me">${ot('ogYourTurn', r.need)}</span>`;
     else if (!alive.has(me.uid)) st = ot('ogOutWatch', pname2(r, r.turn), r.need);
     else st = ot('ogTheirTurn', pname2(r, r.turn), r.need);
-    if (r.turn === me.uid && now >= r.turnAt && !listening) acts = `<button class="btn mic" id="ogMic">🎤 ${ot('ogMic')}</button>`;
+    if (r.turn === me.uid && now >= r.turnAt) acts = `<button class="btn mic ptt" id="ogMic" type="button"></button><form class="og-type" id="ogType" autocomplete="off"><input id="ogIn" placeholder="${escH(ot('typeName'))}" autocomplete="off" dir="auto"><button class="abtn ok" type="submit">${ot('sendName')}</button></form><button class="btn ghost sm" id="ogMicFix" type="button">🔧 ${t('micFix')}</button>`;
   } else if (r.phase === 'end'){
     const rank = order.concat(Object.keys(r.scores || {}).filter(u => !order.includes(u))).filter((u, i, a) => a.indexOf(u) === i)
       .sort((a, b) => ((r.scores || {})[b] || 0) - ((r.scores || {})[a] || 0));
@@ -2497,10 +2590,13 @@ function renderGame(){
   if ($('ogStatus').innerHTML !== st) $('ogStatus').innerHTML = st;
   if (GR.acts !== acts){ GR.acts = acts; $('ogActs').innerHTML = acts;
     if ($('ogSpin')) $('ogSpin').onclick = () => { $('ogSpin').disabled = true; ensureAudio(); doSpin(); };
-    if ($('ogMic')) $('ogMic').onclick = () => { ensureAudio(); startListening(); };
+    if ($('ogMic')) pttBind($('ogMic'));
+    if ($('ogType')) $('ogType').onsubmit = e => { e.preventDefault(); const v = $('ogIn').value.trim(); if (!v) return; $('ogIn').value = ''; addPhrase(v); };
+    if ($('ogMicFix')) $('ogMicFix').onclick = () => micFix();
     if ($('ogAgain')) $('ogAgain').onclick = playAgain;
     if ($('ogShare')) $('ogShare').onclick = () => shareResult(r);
   }
+  const mb = $('ogMic'); if (mb){ mb.classList.toggle('live', listening); const lb = listening ? '🔴 ' + ot('pttLive') : '🎤 ' + ot('pttHold'); if (mb.textContent !== lb) mb.textContent = lb; }
   syncMic(r);
 }
 async function playAgain(){
@@ -2514,9 +2610,26 @@ async function shareResult(r){
 /* Mikrofon: sıra bende ve süre başladıysa açık, değilse kapalı */
 function syncMic(r){
   const mine = r.status === 'play' && r.phase === 'turn' && r.turn === me.uid && srvNow() >= r.turnAt;
-  if (mine && !listening && GR.autoTried !== r.turnAt){ GR.autoTried = r.turnAt; try { startListening(); } catch(_){} if (navigator.vibrate) navigator.vibrate(150); }
+  if (mine && GR.buzz !== r.turnAt){ GR.buzz = r.turnAt; if (navigator.vibrate) navigator.vibrate(150); }
   if (!mine && listening && ONL){ stopListening(); }
 }
+/* Bas-konuş: basılı tuttukça dinler, bırakınca son duyulanı gönderip kapanır */
+function pttBind(btn){
+  const down = e => { e.preventDefault(); if (GR.ptt) return; GR.ptt = true; clearTimeout(GR.pttT); ensureAudio(); if (!listening) startListening(); if (navigator.vibrate) navigator.vibrate(30); };
+  btn.addEventListener('pointerdown', down);
+  btn.addEventListener('contextmenu', e => e.preventDefault());
+}
+function pttUp(){
+  if (!GR.ptt) return; GR.ptt = false;
+  clearTimeout(GR.pttT);
+  GR.pttT = setTimeout(() => {           // son kelimenin yazıya dönmesi için kısa bekleme
+    const it = $('interim').textContent.trim();
+    if (it && !webIgnore) pend.push(it);
+    if (listening) stopListening();
+  }, 650);
+}
+['pointerup', 'pointercancel'].forEach(ev => document.addEventListener(ev, pttUp));
+document.addEventListener('visibilitychange', () => { if (document.hidden) pttUp(); });
 /* Saniye saniye: geri sayım, süre çubuğu, otomatik çark ve hakemlik */
 function gameTick(){
   const r = OL.room; if (!r || r.status !== 'play' || !$('ogWheel')) return;
@@ -2672,6 +2785,186 @@ function renderMyFb(){
   const unseen = rows.filter(r => r.reply && !r.replySeen);
   if (unseen.length && isOpen('sheet')) unseen.forEach(r => FB.F.updateDoc(FB.F.doc(FB.db, 'feedback', r.id), { replySeen:true }).catch(() => {}));
 }
+/* ===================== MESAJLAŞMA ===================== */
+const EMOJI = ['😀','😂','🤣','😍','😎','🤔','😮','😢','😡','👍','👏','🙏','❤️','🔥','🎉','💯','👋','✅'];
+const MSG = { all:[], dm:[], wall:[], tab:'dm', peer:null, thUnsub:null, th:[], rc:[], rcUnsub:null, rcSeen:0, rcOpen:false };
+const pairId = (a, b) => [a, b].sort().join('_');
+const fmtT = ms => { if (!ms) return ''; const d = new Date(ms), n = new Date(); const same = d.toDateString() === n.toDateString();
+  return same ? d.toLocaleTimeString(settings.ui === 'az' ? 'az' : 'tr', { hour:'2-digit', minute:'2-digit' }) : d.toLocaleDateString(settings.ui === 'az' ? 'az' : 'tr', { day:'numeric', month:'short' }); };
+const msgTxt = x => escH(x).replace(/\n/g, '<br>');
+function composer(id, ph, btnTxt, multi){
+  return `<div class="emo" data-for="${id}">${EMOJI.map(e => `<button type="button" data-emo="${e}">${e}</button>`).join('')}</div>
+  <form class="composer" data-c="${id}" autocomplete="off">${multi ? `<textarea id="${id}" rows="2" maxlength="500" placeholder="${escH(ph)}"></textarea>` : `<input id="${id}" maxlength="500" placeholder="${escH(ph)}" autocomplete="off" dir="auto">`}<button class="abtn ok" type="submit">${btnTxt}</button></form>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-emo]'); if (!b) return;
+  const inp = $(b.closest('.emo').dataset.for); if (!inp) return;
+  const p = inp.selectionStart ?? inp.value.length; inp.value = inp.value.slice(0, p) + b.dataset.emo + inp.value.slice(inp.selectionEnd ?? p);
+  inp.focus(); try { inp.setSelectionRange(p + b.dataset.emo.length, p + b.dataset.emo.length); } catch(_){}
+});
+document.addEventListener('submit', e => {
+  const f = e.target.closest('.composer'); if (!f) return; e.preventDefault();
+  const inp = $(f.dataset.c), v = (inp.value || '').trim(); if (!v) return;
+  if (isBanned()){ toast(t('bannedMsg', banText(banEnd(profile)))); return; }
+  inp.value = '';
+  ({ dmIn:sendDm, wallIn:sendWall, rcIn:sendRoomChat, allIn:sendAll })[f.dataset.c](v.slice(0, 500));
+});
+
+/* --- dinleyiciler (girişten sonra) --- */
+function startMsgs(){
+  const { F, db } = FB;
+  OL.subs.push(F.onSnapshot(F.query(F.collection(db, 'dms'), F.where('members', 'array-contains', me.uid)), s => {
+    MSG.dm = s.docs.map(d => ({ id:d.id, ...d.data() })).filter(x => x.last).sort((a, b) => (b.last.at || 0) - (a.last.at || 0)); msgBadges();
+    if (isOpen('msgPage') && MSG.tab === 'dm') renderMsg();
+  }, e => console.warn('dms', e)));
+  OL.subs.push(F.onSnapshot(F.query(F.collection(db, 'users', me.uid, 'wall'), F.orderBy('at', 'desc'), F.limit(60)), s => {
+    MSG.wall = s.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => b.at - a.at); msgBadges();
+    if (isOpen('msgPage') && MSG.tab === 'wall'){ renderMsg(); markWallRead(); }
+  }, e => console.warn('wall', e)));
+  OL.subs.push(F.onSnapshot(F.query(F.collection(db, 'global'), F.orderBy('at', 'desc'), F.limit(80)), s => {
+    MSG.all = s.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => a.at - b.at); msgBadges();
+    if (isOpen('msgPage') && MSG.tab === 'all'){ renderAll(); markAllRead(); }
+  }, e => console.warn('global', e)));
+}
+const dmUnread = () => MSG.dm.filter(c => c.last.from !== me.uid && (c.last.at || 0) > ((c.read || {})[me.uid] || 0)).length;
+const wallSeen = () => { try { return +localStorage.getItem('iz-wall-' + me.uid) || 0; } catch(_){ return 0; } };
+const wallUnread = () => MSG.wall.filter(w => w.from !== me.uid && w.at > wallSeen()).length;
+const allSeen = () => { try { return +localStorage.getItem('iz-all-' + me.uid) || 0; } catch(_){ return 0; } };
+const allUnread = () => MSG.all.filter(m => m.from !== me.uid && m.at > allSeen()).length;
+function markAllRead(){ const l = MSG.all[MSG.all.length - 1]; if (l){ try { localStorage.setItem('iz-all-' + me.uid, l.at); } catch(_){} } msgBadges(); }
+function renderAll(){
+  const L = $('allList'); if (!L) return;
+  const near = L.scrollHeight - L.scrollTop - L.clientHeight < 80;
+  L.innerHTML = MSG.all.length ? MSG.all.map(m => `<div class="bub${m.from === me.uid ? ' me' : ''}">${m.from === me.uid ? '' : `<b class="who-l" data-peer2="${escH(m.from)}">${avOf(m.fromName, m.fromPhoto)}@${escH(m.fromName)}</b>`}<span>${msgTxt(m.text)}</span><small>${fmtT(m.at)}${isAdminUser || m.from === me.uid ? ` · <a class="del" data-adel="${escH(m.id)}">${ot('del')}</a>` : ''}</small></div>`).join('') : `<p class="s-note" style="text-align:center">${ot('allEmpty')}</p>`;
+  if (near || !renderAll.done){ L.scrollTop = L.scrollHeight; renderAll.done = true; }
+}
+async function sendAll(text){
+  const now = Date.now(); if (now - (sendAll.t || 0) < 5000){ toast(ot('allSlow')); $('allIn').value = text; return; } sendAll.t = now;
+  const mine = myCard();
+  try { await FB.F.addDoc(FB.F.collection(FB.db, 'global'), { from:me.uid, fromName:mine.name, fromPhoto:mine.photo || '', text:text.slice(0, 300), at:now }); }
+  catch(e){ console.warn(e); toast(t('netErr')); }
+}
+function markWallRead(){ const top = MSG.wall[0]; if (top){ try { localStorage.setItem('iz-wall-' + me.uid, top.at); } catch(_){} } msgBadges(); }
+function msgBadges(){
+  const a = me ? dmUnread() : 0, b = me ? wallUnread() : 0, c = me ? allUnread() : 0;
+  ['homeMsgN', 'setMsgN'].forEach(id => { if ($(id)) $(id).textContent = (a + b) || (c ? '•' : ''); });
+  if ($('msgSegAll')) $('msgSegAll').textContent = c ? (c > 99 ? '99+' : c) : '';
+  if ($('msgSegDm')) $('msgSegDm').textContent = a || ''; if ($('msgSegWall')) $('msgSegWall').textContent = b || '';
+}
+
+/* --- Mesajlar sayfası --- */
+function openMsgs(tab){
+  if (!fbReady){ toast(navigator.onLine ? t('working') : t('netErr')); return; }
+  if (!me){ toast(ot('msgLogin')); openAuth(); return; }
+  if (!profile || !profile.username){ openPage('unamePage'); return; }
+  if (!OL.subs.length) startLobby();
+  MSG.tab = tab || MSG.tab; segSet('msgSeg', MSG.tab); renderMsg(); openPage('msgPage');
+  if (MSG.tab === 'wall') markWallRead();
+  if (MSG.tab === 'all') markAllRead();
+}
+$('msgSeg').onclick = e => { const b = e.target.closest('button'); if (!b) return; MSG.tab = b.dataset.v; segSet('msgSeg', MSG.tab); renderMsg(); if (MSG.tab === 'wall') markWallRead(); if (MSG.tab === 'all') markAllRead(); };
+function renderMsg(){
+  const body = $('msgBody'); if (!body) return;
+  const keep = $('wallIn') ? $('wallIn').value : '';
+  if (MSG.tab === 'all'){
+    const k2 = $('allIn') ? $('allIn').value : '';
+    body.innerHTML = `<section class="s-sec"><h3>🌍 ${ot('allTitle')}</h3><p class="s-note" style="margin-top:0">${ot('allNote')}</p><div class="bubbles all-list" id="allList"></div>${composer('allIn', ot('msgPh'), ot('sendName'))}</section>`;
+    renderAll.done = false; renderAll(); if (k2) $('allIn').value = k2; return;
+  }
+  if (MSG.tab === 'dm'){
+    const peers = new Set(MSG.dm.map(c => c.members.find(u => u !== me.uid)));
+    body.innerHTML = `<section class="s-sec"><h3>${ot('msgChats')}</h3>${MSG.dm.length ? MSG.dm.map(c => { const o = c.members.find(u => u !== me.uid), nm = (c.names || {})[o] || (OL.friends.find(f => f.id === o) || {}).name || '?';
+        const ph = (c.photos || {})[o] || (OL.friends.find(f => f.id === o) || {}).photo, un = c.last.from !== me.uid && (c.last.at || 0) > ((c.read || {})[me.uid] || 0);
+        return `<button class="arow cv${un ? ' un' : ''}" data-peer="${escH(o)}">${avOf(nm, ph)}<span class="grow"><b>@${escH(nm)}</b><small>${c.last.from === me.uid ? ot('you') + ': ' : ''}${escH(c.last.t)}</small></span><span class="tm">${fmtT(c.last.at)}${un ? '<i></i>' : ''}</span></button>`; }).join('') : `<p class="s-note">${ot('msgNoChats')}</p>`}</section>
+      <section class="s-sec"><h3>${ot('msgNew')}</h3>${OL.friends.length ? `<div class="fchips">${OL.friends.map(f => `<button class="fchip" data-peer="${escH(f.id)}">${avOf(f.name, f.photo)}<span>@${escH(f.name)}</span></button>`).join('')}</div>` : `<p class="s-note">${ot('frEmpty')}</p>`}</section>`;
+  } else {
+    body.innerHTML = `<section class="s-sec"><h3>${ot('wallPost')}</h3><p class="s-note" style="margin-top:0">${ot('wallNote', OL.friends.length)}</p>${composer('wallIn', ot('wallPh'), ot('sendName'), true)}</section>
+      <section class="s-sec"><h3>${ot('wallFeed')}</h3>${MSG.wall.length ? MSG.wall.map(w => `<div class="post${w.from === me.uid ? ' mine' : ''}"><div class="hd">${avOf(w.fromName, w.fromPhoto)}<span class="grow"><b>@${escH(w.fromName)}</b><small>${fmtT(w.at)}</small></span>${w.from === me.uid ? '' : `<button class="abtn" data-peer="${escH(w.from)}">💬 ${ot('reply')}</button>`}<button class="abtn no" data-wdel="${escH(w.id)}">✕</button></div><p>${msgTxt(w.text)}</p></div>`).join('') : `<p class="s-note">${ot('wallEmpty')}</p>`}</section>`;
+    if (keep) $('wallIn').value = keep;
+  }
+}
+$('msgBody').addEventListener('click', e => {
+  const p = e.target.closest('[data-peer]'); if (p){ openChat(p.dataset.peer); return; }
+  const d = e.target.closest('[data-wdel]'); if (d) FB.F.deleteDoc(FB.F.doc(FB.db, 'users', me.uid, 'wall', d.dataset.wdel)).catch(() => {});
+  const ad = e.target.closest('[data-adel]'); if (ad) FB.F.deleteDoc(FB.F.doc(FB.db, 'global', ad.dataset.adel)).catch(() => toast(t('netErr')));
+  const pp = e.target.closest('[data-peer2]'); if (pp && pp.dataset.peer2 !== me.uid){ if (OL.friends.find(f => f.id === pp.dataset.peer2)) openChat(pp.dataset.peer2); else { const m = MSG.all.find(x => x.from === pp.dataset.peer2); sendReq(pp.dataset.peer2, m && m.fromName, m && m.fromPhoto); } }
+});
+async function sendWall(text){
+  const { F, db } = FB, mine = myCard(), at = Date.now(), id = me.uid.slice(0, 6) + at.toString(36);
+  const data = { from:me.uid, fromName:mine.name, fromPhoto:mine.photo || '', text, at };
+  const targets = [me.uid, ...OL.friends.map(f => f.id)];
+  try { for (let i = 0; i < targets.length; i += 400){ const b = F.writeBatch(db); targets.slice(i, i + 400).forEach(u => b.set(F.doc(db, 'users', u, 'wall', id), data)); await b.commit(); }
+    toast(ot('wallSent', OL.friends.length)); } catch(e){ console.warn(e); toast(t('netErr')); }
+}
+
+/* --- Özel sohbet --- */
+function openChat(uid){
+  const f = OL.friends.find(x => x.id === uid) || (() => { const c = MSG.dm.find(c => c.members.includes(uid)); return c ? { id:uid, name:(c.names || {})[uid], photo:(c.photos || {})[uid] } : null; })();
+  if (!f){ toast(ot('msgNotFriend')); return; }
+  MSG.peer = f; MSG.th = [];
+  $('chatName').textContent = '@' + f.name; $('chatAv').innerHTML = avOf(f.name, f.photo);
+  $('chatFoot').innerHTML = OL.friends.find(x => x.id === uid) ? composer('dmIn', ot('msgPh'), ot('sendName')) : `<p class="s-note" style="text-align:center">${ot('msgNotFriend')}</p>`;
+  $('chatList').innerHTML = `<p class="s-note" style="text-align:center">…</p>`;
+  if (MSG.thUnsub) MSG.thUnsub();
+  const { F, db } = FB, pid = pairId(me.uid, uid);
+  MSG.thUnsub = F.onSnapshot(F.query(F.collection(db, 'dms', pid, 'msgs'), F.orderBy('at', 'desc'), F.limit(80)), s => {
+    MSG.th = s.docs.map(d => d.data()).sort((a, b) => a.at - b.at); renderThread();
+    if (isOpen('chatPage')) F.setDoc(F.doc(db, 'dms', pid), { members:[me.uid, uid].sort(), read:{ [me.uid]:Date.now() } }, { merge:true }).catch(() => {});
+  }, e => { console.warn('thread', e); renderThread(); });
+  openPage('chatPage');
+}
+function renderThread(){
+  const L = $('chatList'); if (!L) return;
+  L.innerHTML = MSG.th.length ? MSG.th.map(m => `<div class="bub${m.from === me.uid ? ' me' : ''}"><span>${msgTxt(m.text)}</span><small>${fmtT(m.at)}</small></div>`).join('') : `<p class="s-note" style="text-align:center">${ot('msgEmpty')}</p>`;
+  const sc = L.closest('.s-body'); if (sc) sc.scrollTop = sc.scrollHeight;
+}
+async function sendDm(text){
+  const f = MSG.peer; if (!f) return;
+  const { F, db } = FB, mine = myCard(), at = Date.now(), pid = pairId(me.uid, f.id);
+  try {
+    const b = F.writeBatch(db);
+    b.set(F.doc(F.collection(db, 'dms', pid, 'msgs')), { from:me.uid, text, at });
+    b.set(F.doc(db, 'dms', pid), { members:[me.uid, f.id].sort(), names:{ [me.uid]:mine.name, [f.id]:f.name }, photos:{ [me.uid]:mine.photo || '', [f.id]:f.photo || '' },
+      last:{ t:text.slice(0, 80), from:me.uid, at }, read:{ [me.uid]:at } }, { merge:true });
+    await b.commit();
+  } catch(e){ console.warn(e); toast(t('netErr')); }
+}
+$('chatPage').querySelector('[data-close]').addEventListener('click', () => { if (MSG.thUnsub){ MSG.thUnsub(); MSG.thUnsub = null; } MSG.peer = null; });
+
+/* --- Oda sohbeti --- */
+function startRoomChat(code){
+  stopRoomChat(); MSG.rc = []; MSG.rcSeen = Date.now();
+  const { F, db } = FB;
+  MSG.rcUnsub = F.onSnapshot(F.query(F.collection(db, 'rooms', code, 'chat'), F.orderBy('at', 'desc'), F.limit(60)), s => {
+    MSG.rc = s.docs.map(d => d.data()).sort((a, b) => a.at - b.at); renderRoomChat();
+  }, e => console.warn('roomchat', e));
+  renderRoomChat();
+}
+function stopRoomChat(){ if (MSG.rcUnsub){ MSG.rcUnsub(); MSG.rcUnsub = null; } MSG.rc = []; MSG.rcOpen = false; if ($('rmChat')) $('rmChat').innerHTML = ''; }
+function renderRoomChat(){
+  const box = $('rmChat'); if (!box || !OL.code) return;
+  if (MSG.rcOpen) MSG.rcSeen = Date.now();
+  const un = MSG.rc.filter(m => m.from !== me.uid && m.at > MSG.rcSeen).length;
+  if (!box.querySelector('.rc')){
+    box.innerHTML = `<section class="s-sec rc"><button class="rc-head" id="rcHead" type="button">💬 <b>${ot('rcTitle')}</b><span class="n-badge in" id="rcN"></span><span class="chev" id="rcChev"></span></button>
+      <div class="rc-in"><div class="bubbles" id="rcList"></div>${composer('rcIn', ot('msgPh'), ot('sendName'))}</div></section>`;
+    $('rcHead').onclick = () => { MSG.rcOpen = !MSG.rcOpen; renderRoomChat(); if (MSG.rcOpen) setTimeout(() => { const l = $('rcList'); if (l) l.scrollTop = l.scrollHeight; }, 30); };
+  }
+  box.querySelector('.rc').classList.toggle('open', MSG.rcOpen);
+  $('rcN').textContent = MSG.rcOpen ? '' : (un || '');
+  $('rcChev').textContent = MSG.rcOpen ? '▾' : '▸';
+  const r = OL.room || {};
+  $('rcList').innerHTML = MSG.rc.length ? MSG.rc.map(m => `<div class="bub${m.from === me.uid ? ' me' : ''}">${m.from === me.uid ? '' : `<b>@${escH(m.fromName || pname2(r, m.from))}</b>`}<span>${msgTxt(m.text)}</span><small>${fmtT(m.at)}</small></div>`).join('') : `<p class="s-note" style="text-align:center">${ot('rcEmpty')}</p>`;
+  const l = $('rcList'); l.scrollTop = l.scrollHeight;
+}
+async function sendRoomChat(text){
+  if (!OL.code) return;
+  const { F, db } = FB;
+  try { await F.addDoc(F.collection(db, 'rooms', OL.code, 'chat'), { from:me.uid, fromName:myCard().name, text:text.slice(0, 300), at:Date.now() }); }
+  catch(e){ console.warn(e); toast(t('netErr')); }
+}
+$('homeMsgs').onclick = () => openMsgs();
+
 /* ---------- Bize bildir (geri bildirim) ---------- */
 const FBK = { imgs:[] };
 function fbRender(){ $('fbImgs').innerHTML = FBK.imgs.map((d, i) => `<div class="fb-th" style="background-image:url('${d}')"><button data-rm="${i}">×</button></div>`).join(''); }
@@ -2784,7 +3077,7 @@ function closePage(id){ $(id).classList.remove('open'); $(id).setAttribute('aria
 function showHome(){ statFlush(); stopListening(); timerStop(); $('home').classList.remove('hide'); renderAcct(); }
 function hideHome(){ $('home').classList.add('hide'); }
 function navTop(){
-  for (const id of ['adminPage','roomPage','createPage','friendsPage','unamePage','authPage','sheet','onlinePage']) if (isOpen(id)) return id;
+  for (const id of ['chatPage','msgPage','adminPage','roomPage','createPage','friendsPage','unamePage','authPage','sheet','onlinePage']) if (isOpen(id)) return id;
   return $('home').classList.contains('hide') ? 'game' : null;
 }
 let backArmed = false;
@@ -2814,6 +3107,7 @@ function renderAcct(){
     home = who;
     set = `<div class="acct-pro">${avHtml()}<div class="who2"><div class="nm-line"><b>@${esc(profile.username)}</b><button class="pen" id="setUname" title="${t('changeUname')}" aria-label="${t('changeUname')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></div><small>${bn ? `<span style="color:var(--red)">${esc(t('bannedMsg', banText(bn)))}</span>` : esc(me.email)}</small></div><button class="icon-btn out-btn" id="setOut" title="${t('signOut')}" aria-label="${t('signOut')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button></div>` + `<div class="menu">${isAdminUser ? `<button class="mrow" id="setAdmin"><span class="mi" style="--mc:#e8b630">🛠</span><span class="mt">Yönetici paneli<small>İstatistik, öneriler, kullanıcılar, duyuru</small></span><span class="chev">›</span></button>` : ''}`
       + `<button class="mrow" id="setFriends"><span class="mi">👥</span><span class="mt">${t('frTitle')}<small>${t('frMenuS')}</small></span><span class="n-badge" id="setFrN">${(typeof OL !== 'undefined' && OL.inReqs.length) || ''}</span><span class="chev">›</span></button>`
+      + `<button class="mrow" id="setMsgs"><span class="mi" style="--mc:#7c5ea8">💬</span><span class="mt">${t('msgTitle')}<small>${t('msgMenuS')}</small></span><span class="n-badge" id="setMsgN"></span><span class="chev">›</span></button>`
       + `<button class="mrow" id="setShare"><span class="mi" style="--mc:#1f6fd1">📤</span><span class="mt">${t('shareApp')}<small>${t('shareMenuS')}</small></span><span class="chev">›</span></button>`
       + `<button class="mrow danger" id="setDel"><span class="mi" style="--mc:#d64541">🗑</span><span class="mt">${t('delAcc')}<small>${t('delAccS')}</small></span><span class="chev">›</span></button></div>`;
   } else if (me){
@@ -2827,7 +3121,7 @@ function renderAcct(){
   }
   $('acctCard').innerHTML = home; $('setAcct').innerHTML = set;
   const on = (id, fn) => { const el = $(id); if (el) el.onclick = fn; };
-  on('setAdmin', () => openAdmin()); on('setDel', () => openDel()); on('setFriends', () => openFriends()); on('setShare', () => shareApp()); on('homeSign', () => openAuth()); on('setSign', () => openAuth());
+  on('setAdmin', () => openAdmin()); on('setMsgs', () => openMsgs()); if (typeof msgBadges === 'function' && me) setTimeout(msgBadges, 0); on('setDel', () => openDel()); on('setFriends', () => openFriends()); on('setShare', () => shareApp()); on('homeSign', () => openAuth()); on('setSign', () => openAuth());
   on('homeUname', () => openPage('unamePage')); on('setUname', () => { $('uName').value = profile && profile.username || ''; openPage('unamePage'); });
   on('setOut', async () => { const b = $('setOut'); if (!b.dataset.sure){ b.dataset.sure = 1; b.classList.add('warn'); toast(t('outQ')); setTimeout(() => { delete b.dataset.sure; b.classList.remove('warn'); }, 3000); return; } try { await FB.U.signOut(FB.auth); toast(t('signOut')); } catch(_){} });
   if (isOpen('onlinePage')) $('onlineMe').innerHTML = `${avHtml()}<span><b>@${esc(profile && profile.username)}</b><small>${esc(me && me.email)}</small></span>`;
