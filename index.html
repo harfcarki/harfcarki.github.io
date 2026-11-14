@@ -262,6 +262,7 @@
   .icon-btn svg{width:19px;height:19px}
 
   /* Ayarlar */
+  .sheet.page{z-index:24}
   .sheet{position:fixed;inset:0;z-index:20;display:flex;justify-content:flex-end;pointer-events:none}
   .sheet .scrim{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .25s}
   .sheet .panel{position:relative;width:100%;height:100%;background:var(--bg);transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);
@@ -488,6 +489,7 @@
   .og-me{background:var(--grad)}
   .rm-code b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
   .mrow.danger .mt{color:var(--red)}
+  .arow .busy{display:block;font-size:12px;color:var(--unk);font-weight:600;margin-top:2px}
   .og-p{position:relative}
   .og-kick{border:none;background:var(--red-bg);color:var(--red);width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;margin-left:2px}
   .og-kick.sure{background:var(--red);color:#fff}
@@ -1954,7 +1956,7 @@ function admRooms(){
 }
 
 const OTX = {
-  tr:{ delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
+  tr:{ reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
     kickQ:x=>`@${x} oyundan atılsın mı? Tekrar bas.`, outKick:x=>`⛔ @${x} oda kurucusu tarafından atıldı`, fbMine:'Mesajların ve cevaplar', fbReply:'Yönetici cevabı', fbNoReply:'Henüz cevap yok', frMenuS:'Ekle, kabul et, yönet', shareMenuS:'Uygulama linkini WhatsApp vb. ile paylaş', outQ:'Çıkış yapmak için tekrar bas', shareApp:'Arkadaşlarını davet et', shareAppText:'Harf Çarkı\'nı dene! Çarkı çevir, son harften isim söyle, arkadaşlarınla online yarış 🎡', frLogin:'Arkadaşlarını görmek için giriş yap', pushT:'Bildirimleri aç', pushS:'Davetler ve arkadaşlık istekleri telefon kilitliyken bile gelsin', pushBtn:'Aç', pushOn:'🔔 Bildirimler açıldı', pushDenied:'Bildirim izni kapalı. Tarayıcı ayarlarından bu site için bildirimlere izin ver.', pushNo:'Bu tarayıcı bildirimleri desteklemiyor', ogTitle:'Oyun', micErr:'Mikrofon açılamadı. Tarayıcı ayarlarından mikrofon izni ver ve "Mikrofonu aç"a bas.', ogRound:(a,b)=>`Tur ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlıyor', ogFirst:x=>`İlk isim ${x} harfiyle başlamalı`, ogWon:x=>`🏆 Turu <b>@${x}</b> kazandı (+2)`, ogYouSpin:'Sıra sende: çarkı çevir! (20 sn içinde çevirmezsen kendiliğinden döner)', ogSpinBtn:'Çarkı çevir', ogWaitSpin:x=>`<b>@${x}</b> çarkı çevirecek…`, ogSpinning:'Çark dönüyor…',
     ogYourTurn:x=>`🎤 Sıra sende! <b>${x}</b> harfiyle bir isim söyle`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogMic:'Mikrofonu aç',
     outTime:x=>`⏱ @${x} süresi doldu, elendi`, outLeft:x=>`🚫 @${x} uygulamadan çıktı, elendi`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitti', pts:'puan', ogAgain:'Tekrar oyna', ogWaitAgain:x=>`@${x} yeni oyun başlatabilir`, ogShare:'Sonucu paylaş',
@@ -1968,12 +1970,12 @@ const OTX = {
     olCreateS:'Arkadaşlarını davet et ya da link paylaş', olJoin:'Kodla katıl', olJoinBtn:'Katıl', olInv:'Davetlerim', olFrRooms:'Arkadaşlarının açık odaları',
     invNone:'Şu an davet yok.', invText:c=>`seni ${c} odasına çağırıyor`, invToast:x=>`📩 @${x} seni odasına davet etti`, roomsNone:'Şu an açık oda yok. Arkadaşın bir oda kurunca burada görünür.',
     roomLine:(n,l,tm,rd)=>`${n} kişi · ${l === 'az' ? 'Azərbaycan' : 'Türkçe'} · ${tm} sn · ${rd ? rd + ' tur' : 'tüm harfler'}`, full:'Dolu', codeBad:'Kod 6 karakter olmalı',
-    errNone:'Böyle bir oda yok', errKicked:'Bu odadan çıkarıldın', errStarted:'Oyun başlamış, artık katılamazsın', errFull:'Oda dolu (11 kişi)', netErrX:'Bağlantı hatası, tekrar dene',
+    errNone:'Böyle bir oda yok', errKicked:'Oda kurucusu seni bu odadan çıkarmıştı. Seni yeniden davet ederse girebilirsin.', errStarted:'Oyun başlamış, artık katılamazsın', errFull:'Oda dolu (11 kişi)', netErrX:'Bağlantı hatası, tekrar dene',
     roomClosed:'Oda kapatıldı', youKicked:'Oda kurucusu seni odadan çıkardı', roomLeft:'Odadan çıktın', hostLeaveQ:'Çıkarsan oda kapanır. Tekrar bas.',
     rmTitle:'Bekleme odası', rmCode:'ODA KODU', rmShare:'Linki paylaş', rmCopy:'Kopyala', rmPlayers:'Oyuncular', kick:'Çıkar', you:'sen', rmInvite:'Arkadaşlarını davet et', invite:'Davet et', invSent:'Gönderildi ✓', invSentT:x=>`@${x} davet edildi`,
     rmStart:'Oyunu başlat', rmNeed2:'Başlatmak için en az 2 kişi gerekli', rmWaitHost:x=>`@${x} oyunu başlatınca oyun başlayacak`, rmClose:'Odayı kapat', rmLeave:'Odadan çık',
     shareText:c=>`Harf Çarkı'nda benimle oyna! Oda kodu: ${c}`, copied:'Link kopyalandı', linkLogin:'Odaya katılmak için önce giriş yap' },
-  az:{ delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
+  az:{ reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
     kickQ:x=>`@${x} oyundan çıxarılsın? Yenidən bas.`, outKick:x=>`⛔ @${x} otağı quran tərəfindən çıxarıldı`, fbMine:'Mesajların və cavablar', fbReply:'Admin cavabı', fbNoReply:'Hələ cavab yoxdur', frMenuS:'Əlavə et, qəbul et, idarə et', shareMenuS:'Tətbiq linkini WhatsApp və s. ilə paylaş', outQ:'Çıxış etmək üçün yenidən bas', shareApp:'Dostlarını dəvət et', shareAppText:'Harf Çarkı-nı yoxla! Çarxı fırlat, son hərfdən ad de, dostlarınla onlayn yarış 🎡', frLogin:'Dostlarını görmək üçün daxil ol', pushT:'Bildirişləri aç', pushS:'Dəvətlər və dostluq istəkləri telefon kilidli olanda belə gəlsin', pushBtn:'Aç', pushOn:'🔔 Bildirişlər açıldı', pushDenied:'Bildiriş icazəsi bağlıdır. Brauzer ayarlarından bu sayt üçün bildirişlərə icazə ver.', pushNo:'Bu brauzer bildirişləri dəstəkləmir', ogTitle:'Oyun', micErr:'Mikrofon açılmadı. Brauzer ayarlarından mikrofon icazəsi ver və "Mikrofonu aç" düyməsinə bas.', ogRound:(a,b)=>`Raund ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlayır', ogFirst:x=>`İlk ad ${x} hərfi ilə başlamalıdır`, ogWon:x=>`🏆 Raundu <b>@${x}</b> qazandı (+2)`, ogYouSpin:'Növbə səndədir: çarxı fırlat! (20 san ərzində fırlatmasan özü dönəcək)', ogSpinBtn:'Çarxı fırlat', ogWaitSpin:x=>`<b>@${x}</b> çarxı fırladacaq…`, ogSpinning:'Çarx fırlanır…',
     ogYourTurn:x=>`🎤 Növbə səndədir! <b>${x}</b> hərfi ilə ad de`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogMic:'Mikrofonu aç',
     outTime:x=>`⏱ @${x} vaxtı bitdi, çıxdı`, outLeft:x=>`🚫 @${x} tətbiqdən çıxdı, raunddan çıxarıldı`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitdi', pts:'xal', ogAgain:'Yenidən oyna', ogWaitAgain:x=>`@${x} yeni oyun başlada bilər`, ogShare:'Nəticəni paylaş',
@@ -1987,7 +1989,7 @@ const OTX = {
     olCreateS:'Dostlarını dəvət et və ya link paylaş', olJoin:'Kodla qoşul', olJoinBtn:'Qoşul', olInv:'Dəvətlərim', olFrRooms:'Dostlarının açıq otaqları',
     invNone:'Hazırda dəvət yoxdur.', invText:c=>`səni ${c} otağına çağırır`, invToast:x=>`📩 @${x} səni otağına dəvət etdi`, roomsNone:'Hazırda açıq otaq yoxdur. Dostun otaq quranda burada görünəcək.',
     roomLine:(n,l,tm,rd)=>`${n} nəfər · ${l === 'az' ? 'Azərbaycan' : 'Türkçe'} · ${tm} san · ${rd ? rd + ' raund' : 'bütün hərflər'}`, full:'Doludur', codeBad:'Kod 6 simvol olmalıdır',
-    errNone:'Belə otaq yoxdur', errKicked:'Bu otaqdan çıxarılmısan', errStarted:'Oyun başlayıb, artıq qoşula bilməzsən', errFull:'Otaq doludur (11 nəfər)', netErrX:'Bağlantı xətası, yenidən cəhd et',
+    errNone:'Belə otaq yoxdur', errKicked:'Otağı quran səni bu otaqdan çıxarmışdı. Yenidən dəvət etsə, qoşula bilərsən.', errStarted:'Oyun başlayıb, artıq qoşula bilməzsən', errFull:'Otaq doludur (11 nəfər)', netErrX:'Bağlantı xətası, yenidən cəhd et',
     roomClosed:'Otaq bağlandı', youKicked:'Otağı quran səni otaqdan çıxardı', roomLeft:'Otaqdan çıxdın', hostLeaveQ:'Çıxsan otaq bağlanacaq. Yenidən bas.',
     rmTitle:'Gözləmə otağı', rmCode:'OTAQ KODU', rmShare:'Linki paylaş', rmCopy:'Kopyala', rmPlayers:'Oyunçular', kick:'Çıxar', you:'sən', rmInvite:'Dostlarını dəvət et', invite:'Dəvət et', invSent:'Göndərildi ✓', invSentT:x=>`@${x} dəvət olundu`,
     rmStart:'Oyunu başlat', rmNeed2:'Başlatmaq üçün ən azı 2 nəfər lazımdır', rmWaitHost:x=>`@${x} oyunu başladanda oyun başlayacaq`, rmClose:'Otağı bağla', rmLeave:'Otaqdan çıx',
@@ -2016,8 +2018,8 @@ function startLobby(){
   OL.subs.push(F.onSnapshot(F.query(col('invites'), F.where('to', '==', me.uid)), s => {
     OL.invites = s.docs.map(d => ({ id:d.id, ...d.data() })).filter(x => (x.at || 0) > Date.now() - 3 * 3600e3).sort((a,b) => b.at - a.at);
     renderLobby();
-    const fresh = OL.invites.find(x => x.at > Date.now() - 15e3 && !OL.seen?.has(x.id));
-    OL.seen = OL.seen || new Set(); OL.invites.forEach(x => OL.seen.add(x.id));
+    const fresh = OL.invites.find(x => x.at > Date.now() - 15e3 && !OL.seen?.has(x.id + x.at));
+    OL.seen = OL.seen || new Set(); OL.invites.forEach(x => OL.seen.add(x.id + x.at));
     if (fresh && !OL.room) toast(ot('invToast', fresh.fromName));
   }, err));
 }
@@ -2156,11 +2158,12 @@ function enterRoom(code){
     renderRoom();
   }, e => { console.warn(e); toast(t('netErr')); });
   clearInterval(OL.beat);
-  OL.beat = setInterval(() => { if (OL.room && OL.room.host === me.uid && OL.room.status === 'wait') F.updateDoc(F.doc(db, 'rooms', code), { hostSeen:Date.now() }).catch(() => {}); }, 60e3);
+  setPresence(code);
+  OL.beat = setInterval(() => { setPresence(OL.code); refreshFStats(); if (OL.room && OL.room.host === me.uid && OL.room.status === 'wait') F.updateDoc(F.doc(db, 'rooms', code), { hostSeen:Date.now() }).catch(() => {}); }, 45e3);
   $('rmBody').innerHTML = `<p class="s-note" style="text-align:center;padding:30px">…</p>`;
   openPage('roomPage');
 }
-function exitRoom(){ clearInterval(GR.ticker); if (ONL){ ONL = false; stopListening(); } GR.gid = null; if (OL.roomUnsub) OL.roomUnsub(); OL.roomUnsub = null; clearInterval(OL.beat); OL.code = null; OL.room = null; if (isOpen('roomPage')) closePage('roomPage'); renderLobby(); }
+function exitRoom(){ setPresence(''); clearInterval(GR.ticker); if (ONL){ ONL = false; stopListening(); } GR.gid = null; if (OL.roomUnsub) OL.roomUnsub(); OL.roomUnsub = null; clearInterval(OL.beat); OL.code = null; OL.room = null; if (isOpen('roomPage')) closePage('roomPage'); renderLobby(); }
 async function leaveRoom(silent){
   const code = OL.code, r = OL.room; if (!code) return;
   const { F, db } = FB, ref = F.doc(db, 'rooms', code);
@@ -2172,6 +2175,30 @@ async function leaveRoom(silent){
 $('rmBack').onclick = () => { if (inPlay() && !$('rmBack').dataset.sure){ $('rmBack').dataset.sure = 1; toast(ot('leaveWarn')); setTimeout(() => delete $('rmBack').dataset.sure, 3500); return; }
   if (OL.room && OL.room.status === 'wait' && OL.room.host === me.uid && !$('rmBack').dataset.sure){ $('rmBack').dataset.sure = 1; toast(ot('hostLeaveQ')); setTimeout(() => delete $('rmBack').dataset.sure, 3500); return; } leaveRoom(); };
 
+/* ---------- Oyuncu durumu: odada mı, oyunda mı ---------- */
+OL.fst = {};
+function setPresence(code){ if (!FB || !me) return; FB.F.updateDoc(FB.F.doc(FB.db, 'users', me.uid), { inRoom:code || '', inRoomAt:Date.now() }).catch(() => {}); }
+async function loadFStat(uid, force){
+  const c = OL.fst[uid]; if (!force && c && Date.now() - c.t < 20000) return;
+  OL.fst[uid] = { t:Date.now(), v:(c && c.v) || null };
+  try {
+    const u = await FB.F.getDoc(FB.F.doc(FB.db, 'users', uid)); const d = u.exists() ? u.data() : {};
+    let v = null;
+    if (d.inRoom && d.inRoom !== OL.code && (d.inRoomAt || 0) > Date.now() - 3 * 60e3){
+      v = 'room';
+      try { const r = await FB.F.getDoc(FB.F.doc(FB.db, 'rooms', d.inRoom)); if (!r.exists()) v = null; else if (r.data().status === 'play') v = 'play'; } catch(_){}
+    }
+    OL.fst[uid] = { t:Date.now(), v };
+  } catch(_){}
+}
+const fStat = uid => (OL.fst[uid] || {}).v || null;
+async function refreshFStats(){
+  const r = OL.room; if (!r || r.status !== 'wait') return;
+  const ids = OL.friends.filter(f => !r.players[f.id]).map(f => f.id);
+  const before = JSON.stringify(ids.map(fStat));
+  await Promise.all(ids.map(id => loadFStat(id)));
+  if (JSON.stringify(ids.map(fStat)) !== before && OL.room && OL.room.status === 'wait') renderRoom();
+}
 /* ---------- Bekleme odası ---------- */
 function renderRoom(){
   const r = OL.room; if (!r || !$('rmBody')) return;
@@ -2182,6 +2209,7 @@ function renderRoom(){
   const F2 = fid(), out = new Set(OL.outReqs.map(x => x.to)), inR = new Set(OL.inReqs.map(x => x.from));
   const set = ot('roomLine', ps.length, r.lang, r.time, r.rounds);
   const invitable = OL.friends.filter(f => !r.players[f.id]);
+  if (!OL.fstT || Date.now() - OL.fstT > 20000){ OL.fstT = Date.now(); setTimeout(refreshFStats, 0); }
   $('rmBody').innerHTML = `
     <section class="s-sec rm-code"><small>${ot('rmCode')}</small><b>${escH(OL.code)}</b><span class="s-note">${escH(set)}</span>
       <div class="row" style="margin-top:10px"><button class="btn mic sm" id="rmShare">📤 ${ot('rmShare')}</button><button class="btn ghost sm" id="rmCopy">🔗 ${ot('rmCopy')}</button></div></section>
@@ -2192,7 +2220,8 @@ function renderRoom(){
         if (!F2.has(uid)) side += out.has(uid) ? `<span class="s-note">${ot('frSent')}</span>` : `<button class="abtn" data-req="${escH(uid)}">+ ${ot('frAddBtn')}</button>`;
       }
       return `<div class="arow">${avOf(p.name, p.photo)}<span class="grow"><b>@${escH(p.name)}</b>${uid === r.host ? ' 👑' : ''}${uid === me.uid ? `<small>${ot('you')}</small>` : ''}${inR.has(uid) ? `<small>${ot('frWants')}</small>` : ''}</span>${side}</div>`; }).join('')}</section>
-    ${invitable.length ? `<section class="s-sec"><h3>${ot('rmInvite')}</h3>${invitable.map(f => `<div class="arow">${avOf(f.name, f.photo)}<span class="grow"><b>@${escH(f.name)}</b></span><button class="abtn ok" data-inv="${escH(f.id)}">${(OL.invSent || new Set()).has(OL.code + f.id) ? ot('invSent') : ot('invite')}</button></div>`).join('')}</section>` : ''}
+    ${invitable.length ? `<section class="s-sec"><h3>${ot('rmInvite')}</h3>${invitable.map(f => { const st = fStat(f.id), sent = (OL.invSent || new Map()).get(OL.code + f.id), cool = sent && Date.now() - sent < 8000;
+      return `<div class="arow">${avOf(f.name, f.photo)}<span class="grow"><b>@${escH(f.name)}</b>${st ? `<small class="busy">${ot(st === 'play' ? 'stPlay' : 'stRoom')}</small>` : ''}</span><button class="abtn ok" data-inv="${escH(f.id)}"${cool ? ' disabled' : ''}>${cool ? ot('invSent') : sent ? ot('reInvite') : ot('invite')}</button></div>`; }).join('')}</section>` : ''}
     <div class="rule-note">${ot('rule')}</div>
     ${host ? `<button class="btn spin" id="rmStart" ${ps.length < 2 ? 'disabled' : ''}>▶ ${ot('rmStart')}</button>${ps.length < 2 ? `<p class="s-note" style="text-align:center">${ot('rmNeed2')}</p>` : ''}`
            : `<p class="s-note" style="text-align:center">${ot('rmWaitHost', r.hostName)}</p>`}
@@ -2211,8 +2240,16 @@ $('roomPage').addEventListener('click', async e => {
   const q = e.target.closest('[data-req]'); if (q){ q.disabled = true; const p = OL.room.players[q.dataset.req] || {}; sendReq(q.dataset.req, p.name, p.photo); return; }
   const i = e.target.closest('[data-inv]');
   if (i){ const f = OL.friends.find(x => x.id === i.dataset.inv); if (!f) return; const mine = myCard();
-    try { await F.setDoc(F.doc(db, 'invites', OL.code + '_' + f.id), { room:OL.code, from:me.uid, fromName:mine.name, fromPhoto:mine.photo, to:f.id, at:Date.now() });
-      OL.invSent = OL.invSent || new Set(); OL.invSent.add(OL.code + f.id); i.textContent = ot('invSent'); toast(ot('invSentT', f.name)); } catch(err){ console.warn(err); toast(t('netErr')); } }
+    try { if (OL.room && OL.room.host === me.uid && (OL.room.kicked || []).includes(f.id)) await F.updateDoc(F.doc(db, 'rooms', OL.code), { kicked:F.arrayRemove(f.id) });
+      i.disabled = true;
+      const iref = F.doc(db, 'invites', OL.code + '_' + f.id);
+      await F.deleteDoc(iref).catch(() => {});
+      await F.setDoc(iref, { room:OL.code, from:me.uid, fromName:mine.name, fromPhoto:mine.photo, to:f.id, at:Date.now() });
+      OL.invSent = OL.invSent || new Map(); OL.invSent.set(OL.code + f.id, Date.now());
+      await loadFStat(f.id, true); const st = fStat(f.id);
+      toast(st ? ot(st === 'play' ? 'busyPlay' : 'busyRoom', f.name) : ot('invSentT', f.name));
+      renderRoom(); setTimeout(() => { if (OL.room) renderRoom(); }, 8100);
+    } catch(err){ console.warn(err); i.disabled = false; toast(t('netErr')); } }
 });
 
 /* ---------- Link ile gelen ---------- */
