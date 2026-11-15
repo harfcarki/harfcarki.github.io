@@ -1,6 +1,6 @@
 // İsim Zinciri: önce internetten yeni sürümü al, internet yoksa kayıtlı sürümü aç
-const C = 'isim-zinciri-v87', WPC = 'iz-duvar-v1';
-self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png']))); });
+const C = 'isim-zinciri-v92', WPC = 'iz-duvar-v1';
+self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'].map(u => new Request(u, { cache:'reload' }))))); });
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
@@ -11,7 +11,9 @@ self.addEventListener('fetch', e => {
     return;
   }
   if (u.origin !== location.origin) return;
-  e.respondWith(fetch(e.request).then(r => { const copy = r.clone(); caches.open(C).then(c => c.put(e.request, copy)); return r; })
+  // Tarayıcının 10 dakikalık önbelleğini atla: her açılışta sunucudaki en yeni sürüm gelsin (değişmediyse sunucu hızlıca "aynı" der)
+  const fresh = e.request.mode === 'navigate' || /\/(index\.html)?$|\.(js|json)$/.test(u.pathname) ? fetch(u.href, { cache:'no-cache', credentials:'same-origin' }) : fetch(e.request);
+  e.respondWith(fresh.then(r => { const copy = r.clone(); caches.open(C).then(c => c.put(e.request, copy)); return r; })
     .catch(() => caches.match(e.request).then(r => r || caches.match('./index.html'))));
 });
 
