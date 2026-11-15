@@ -4357,7 +4357,7 @@ function renderGame(){
   const names = r.names || [];
   $('ogList').innerHTML = names.map(n => n.s === 'out'
     ? `<li class="og-out">${escH(ot(n.why === 'left' ? 'outLeft' : n.why === 'quit' ? 'outQuit' : n.why === 'kick' ? 'outKick' : n.why === 'conn' ? 'outConn' : 'outTime', n.nm || pname2(r, n.by)))}</li>`
-    : `<li class="${n.s === 'wrong' ? 'wrong' : n.s === 'rep' ? 'rep' : n.s === 'unk' ? 'unk' : ''}"><span class="t"><span class="by">@${escH(pname2(r, n.by))}</span>${escH(n.t)}</span>${n.s === 'ok' ? `<span class="np${(n.p || 1) > 1 ? ' hi' : ''}">+${n.p || 1}</span>` : ''}${n.s === 'wrong' ? `<span class="wt">${t('wrong', n.need)}</span>` : n.s === 'rep' ? `<span class="tag">${t('rep')}</span>` : n.s === 'unk' ? `<span class="ut">${t('unk')}</span>` : ''}</li>`).join('');
+    : `<li class="${n.s === 'wrong' ? 'wrong' : n.s === 'rep' ? 'rep' : n.s === 'unk' ? 'unk' : ''}"><span class="t"><span class="by">@${escH(pname2(r, n.by))}</span>${n.s === 'ok' && n.k ? nameHtml({ text:n.t, key:n.k }) : escH(n.t)}</span>${n.s === 'ok' ? `<span class="np${(n.p || 1) > 1 ? ' hi' : ''}">+${n.p || 1}</span>` : ''}${n.s === 'wrong' ? `<span class="wt">${t('wrong', n.need)}</span>` : n.s === 'rep' ? `<span class="tag">${t('rep')}</span>` : n.s === 'unk' ? `<span class="ut">${t('unk')}</span>` : ''}</li>`).join('');
   $('ogEmpty').textContent = names.length ? '' : (r.phase === 'turn' ? ot('ogFirst', r.letter || '') : '');
   const ol = $('ogList'); ol.parentElement.scrollTop = ol.parentElement.scrollHeight;
   // Eylem ve durum
