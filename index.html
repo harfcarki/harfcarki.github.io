@@ -1211,6 +1211,13 @@
   #roomPage.playing .og-chat .bub small{display:inline;margin:0 0 0 8px;font-size:10px;vertical-align:1px}
   #roomPage.playing .og-chat .rc-head{padding:7px 14px 3px;font-size:13px}
   #roomPage.playing .og-chat #rcList > :first-child{margin-top:auto}
+  /* Giriş: Online ve Aynı telefonda yan yana, Yönetici paneli altta */
+  #goOnline{order:1} #goLocal{order:2} #goAdmin{order:3}
+  .home-btns .btn.big .ico svg{width:24px;height:24px;flex:none;display:block}
+  /* Mod kartlarında başlıklar aynı hizada başlasın */
+  .home-btns .btn.big:not(#goAdmin){justify-content:flex-start}
+  .home-btns .btn.big:not(#goAdmin) .ico{margin-bottom:14px}
+  .home-btns .btn.big:not(#goAdmin) > span:not(.ico):not(.onl-pill){display:block;width:100%}
 </style>
 </head>
 <body>
@@ -1292,8 +1299,8 @@
     <div class="acct" id="acctCard"></div>
     <div class="home-btns">
       <button class="btn mic big" id="goOnline"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5c2.6 2.6 3.9 5.8 3.9 9.5s-1.3 6.9-3.9 9.5c-2.6-2.6-3.9-5.8-3.9-9.5S9.4 5.1 12 2.5z"/></svg></span><span><b data-i18n="playOnline">Online oyna</b><small data-i18n="playOnlineS">Arkadaşlarınla, herkes kendi telefonundan</small></span><span class="onl-pill" id="onlN" hidden></span></button>
-      <button class="btn ghost big adm-only" id="goAdmin"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 13l-8 8-3-3 1.7-1.3a4 4 0 0 0-5-5L3 10l8-8z"/></svg></span><span><b data-i18n="admPanelT">Yönetici paneli</b><small data-i18n="admPanelS">İstatistik, öneriler, kullanıcılar, duyuru</small></span></button>
-      <button class="btn ghost big" id="goLocal"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.2h3"/><path d="M9 6.5l2 2 4-3.5"/></svg></span><span><b data-i18n="playLocal">Aynı telefonda oyna</b><small data-i18n="playLocalS">İnternetsiz, tek telefonda sırayla</small></span></button>
+      <button class="btn ghost big adm-only" id="goAdmin"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.4-3.1 8.2-7.5 9.5-4.4-1.3-7.5-5.1-7.5-9.5V6z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.4"/></svg></span><span><b data-i18n="admPanelT">Yönetici paneli</b><small data-i18n="admPanelS">İstatistik, öneriler, kullanıcılar, duyuru</small></span></button>
+      <button class="btn ghost big" id="goLocal"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/><path d="M10.5 18h3"/></svg></span><span><b data-i18n="playLocal">Aynı telefonda oyna</b><small data-i18n="playLocalS">İnternetsiz, tek telefonda sırayla</small></span></button>
     </div>
     <div class="menu">
       <button class="mrow" id="homeMsgs"><span class="mi" style="--mc:#7c5ea8">💬</span><span class="mt"><span data-i18n="msgTitle">Mesajlar</span><small data-i18n="msgMenuS">Özel, arkadaşlar ve herkese açık sohbet</small></span><span class="n-badge" id="homeMsgN"></span><span class="chev">›</span></button>
