@@ -513,6 +513,24 @@
   body.wp .wheel-wrap::before{opacity:.5}
   body.wp #wheel text, body.wp #ogWheel text{paint-order:stroke;stroke:rgba(0,0,0,.45);stroke-width:2.6px;stroke-linejoin:round}
   body.wp .og-status, body.wp .og-top{text-shadow:0 1px 6px var(--bg)}
+
+  /* Yönetici rozeti */
+  .adm-b{display:inline-flex;align-items:center;gap:3px;background:#e3efe9;color:#2f6f5e;font-size:10.5px;font-weight:800;padding:2px 7px 2px 4px;border-radius:999px;letter-spacing:.2px;vertical-align:middle;margin-left:5px;white-space:nowrap;line-height:1.3}
+  .adm-b svg{width:12px;height:12px;flex:none}
+  :root[data-theme="dark"] .adm-b{background:rgba(47,191,113,.16);color:#6fd6a0}
+  .up-t .adm-b{font-size:12px;padding:3px 9px 3px 5px} .up-t .adm-b svg{width:14px;height:14px}
+  .ch-card .adm-b{background:rgba(255,255,255,.25);color:#fff}
+  .og-p .adm-b{margin-left:3px}
+  /* Yönetici araçları ve detay */
+  .adm-tools{margin-top:14px;padding:12px;border-radius:16px;background:var(--bg);border:1px dashed var(--line);text-align:left}
+  .adm-h{display:block;font-size:13.5px;color:var(--accent);margin-bottom:8px}
+  .adm-g{display:flex;flex-wrap:wrap;gap:6px} .adm-g .abtn{font-size:13px}
+  .adm-ban{color:var(--red);font-weight:700;font-size:13.5px;margin:4px 0 8px}
+  .dsec{text-align:left;margin-top:12px;padding:12px;border-radius:16px;background:var(--bg)} .dsec h4{font-size:14px;margin:0 0 8px}
+  .dkv{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:5px 0;border-bottom:1px solid var(--line)} .dkv:last-child{border-bottom:none} .dkv span{color:var(--muted)}
+  .dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px} .dstats>div{background:var(--card);border-radius:12px;padding:8px 4px;text-align:center}
+  .dstats b{display:block;font-size:16px;color:var(--accent)} .dstats small{font-size:11px;color:var(--muted)}
+  .dsec .cup-row{background:var(--card);margin-top:6px} .dsec .rep-ctx{background:var(--card)}
   /* Şampiyonlar */
   .champs-sec{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
   .ch-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -2069,7 +2087,7 @@ async function fbInit(){
     U.onAuthStateChanged(auth, async u => {
       me = u; profile = null; setAdmin(false);
       if (u){ await loadProfile(); checkAdmin(); }
-      fbReady = true; loadPushCfg(); if (!u){ stopLobby(); pushOK = false; } renderAcct(); afterAuth(); watchMyFb(); if (u && profile && profile.username && !OL.subs.length) startLobby(); if (linkRoom) tryLinkJoin(); runNavWant(); pushInit();
+      fbReady = true; loadPushCfg(); loadStaff(); if (!u){ stopLobby(); pushOK = false; } renderAcct(); afterAuth(); watchMyFb(); if (u && profile && profile.username && !OL.subs.length) startLobby(); if (linkRoom) tryLinkJoin(); runNavWant(); pushInit();
     });
   } catch(e){ console.warn('Firebase yüklenemedi', e); fbReady = false; renderAcct(); }
 }
@@ -2085,7 +2103,7 @@ async function loadRemoteNames(){
     buildIndexes(); renderNames(); recompute();
   } catch(e){ console.warn('İsim listesi alınamadı', e); }
 }
-function setAdmin(v){ isAdminUser = v; document.body.classList.toggle('admin', v); window.adminSync = v ? queueSync : null; renderNames(); }
+function setAdmin(v){ isAdminUser = v; document.body.classList.toggle('admin', v); if (v && me) staffJoin(); window.adminSync = v ? queueSync : null; renderNames(); }
 async function checkAdmin(){
   try {
     const s = await FB.F.getDoc(FB.F.doc(FB.db, 'admins', me.uid));
@@ -2300,7 +2318,7 @@ function admRooms(){
 }
 
 const OTX = {
-  tr:{giTr:'🇹🇷 Türkçe isimler', giAz:'🇦🇿 Azerbaycan isimleri', giRound:n=>`Tur ${n}`, giRounds:n=>n ? `${n} tur` : 'Harfler bitene kadar', giTime:s=>`${s} sn`, giLeft:n=>`${n} harf kaldı`, cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
+  tr:{admB:'Yönetici', resName:'Bu kullanıcı adı ayrılmış, başka bir ad seç', admTools:'Yönetici araçları', admDetail:'Detayları gör', admKick:c=>`Odadan at (${c})`, admBan7:'7 gün engelle', admBan30:'30 gün engelle', admBanInf:'Kalıcı engelle', admUnban:'Engeli kaldır', admNoPhoto:'Fotoğrafı kaldır', admRen:'Adını değiştir', admSave:'Kaydet', admKicked:x=>`@${x} odadan atıldı`, admBanned:x=>`@${x} engellendi`, admUnbanned:x=>`@${x} engeli kaldırıldı`, admPhotoDone:'Fotoğraf kaldırıldı', admBanForever:'Kalıcı olarak engelli', admBanUntil:d=>`${d} tarihine kadar engelli`, durM:m=>`${m} dk`, durHM:(h,m)=>`${h} sa ${m} dk`, dAcc:'Hesap', dJoined:'Katıldı', dSeen:'Son görülme', dWhere:'Şu an', dWhereRoom:c=>`🎮 ${c} odasında`, dWhereOn:'🟢 Çevrimiçi (lobide)', dWhereOff:'⚪ Çevrimdışı', dFriends:'Arkadaş sayısı', dGames:'Online oyunlar', dG:'oyun', dP:'toplam puan', dW:'birincilik', dT:'oynama süresi', dAvg:'Oyun başına ortalama puan', dNote:'İstatistikler 15 Kasım 2026 güncellemesinden sonraki online oyunları sayar.', dRank:'Sıralama ve kupalar', dReps:n=>`Hakkındaki şikayetler (${n})`, dNoReps:'Hakkında şikayet yok 👍', dBack:'Kişi kartına dön', giTr:'🇹🇷 Türkçe isimler', giAz:'🇦🇿 Azerbaycan isimleri', giRound:n=>`Tur ${n}`, giRounds:n=>n ? `${n} tur` : 'Harfler bitene kadar', giTime:s=>`${s} sn`, giLeft:n=>`${n} harf kaldı`, cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
     kickQ:x=>`@${x} oyundan atılsın mı? Tekrar bas.`, outKick:x=>`⛔ @${x} oda kurucusu tarafından atıldı`, fbMine:'Mesajların ve cevaplar', fbReply:'Yönetici cevabı', fbNoReply:'Henüz cevap yok', frMenuS:'Ekle, kabul et, yönet', shareMenuS:'Uygulama linkini WhatsApp vb. ile paylaş', outQ:'Çıkış yapmak için tekrar bas', shareApp:'Arkadaşlarını davet et', shareAppText:'Harf Çarkı\'nı dene! Çarkı çevir, son harften isim söyle, arkadaşlarınla online yarış 🎡', frLogin:'Arkadaşlarını görmek için giriş yap', pushT:'Bildirimleri aç', pushS:'Davetler ve arkadaşlık istekleri telefon kilitliyken bile gelsin', pushBtn:'Aç', pushOn:'🔔 Bildirimler açıldı', pushDenied:'Bildirim izni kapalı. Tarayıcı ayarlarından bu site için bildirimlere izin ver.', pushNo:'Bu tarayıcı bildirimleri desteklemiyor', ogTitle:'Oyun', micErr:'Mikrofon açılamadı. Tarayıcı ayarlarından mikrofon izni ver ve "Mikrofonu aç"a bas.', ogRound:(a,b)=>`Tur ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlıyor', ogFirst:x=>`İlk isim ${x} harfiyle başlamalı`, ogWon:x=>`🏆 Turu <b>@${x}</b> kazandı (+2)`, ogYouSpin:'Sıra sende: çarkı çevir! (20 sn içinde çevirmezsen kendiliğinden döner)', ogSpinBtn:'Çarkı çevir', ogWaitSpin:x=>`<b>@${x}</b> çarkı çevirecek…`, ogSpinning:'Çark dönüyor…',
     ogYourTurn:x=>`🎤 Sıra sende! <b>${x}</b> harfiyle bir isim söyle ya da yaz`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, pttHold:'Basılı tut ve konuş', pttLive:'Dinliyorum… bırakınca gönderilir', typeName:'ya da ismi yaz…', sendName:'Gönder', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu kapat',
     outTime:x=>`⏱ @${x} süresi doldu, elendi`, outLeft:x=>`🚫 @${x} uygulamadan çıktı, elendi`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitti', pts:'puan', ogAgain:'Tekrar oyna', ogWaitAgain:x=>`@${x} yeni oyun başlatabilir`, ogShare:'Sonucu paylaş',
@@ -2319,7 +2337,7 @@ const OTX = {
     rmTitle:'Bekleme odası', rmCode:'ODA KODU', rmShare:'Linki paylaş', rmCopy:'Kopyala', rmPlayers:'Oyuncular', kick:'Çıkar', you:'sen', rmInvite:'Arkadaşlarını davet et', invite:'Davet et', invSent:'Gönderildi ✓', invSentT:x=>`@${x} davet edildi`,
     rmStart:'Oyunu başlat', rmNeed2:'Başlatmak için en az 2 kişi gerekli', rmWaitHost:x=>`@${x} oyunu başlatınca oyun başlayacak`, rmClose:'Odayı kapat', rmLeave:'Odadan çık',
     shareText:c=>`Harf Çarkı'nda benimle oyna! Oda kodu: ${c}`, copied:'Link kopyalandı', linkLogin:'Odaya katılmak için önce giriş yap' },
-  az:{giTr:'🇹🇷 Türk adları', giAz:'🇦🇿 Azərbaycan adları', giRound:n=>`Raund ${n}`, giRounds:n=>n ? `${n} raund` : 'Hərflər bitənədək', giTime:s=>`${s} san`, giLeft:n=>`${n} hərf qaldı`, cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
+  az:{admB:'Admin', resName:'Bu istifadəçi adı ayrılıb, başqa ad seç', admTools:'Admin alətləri', admDetail:'Ətraflı bax', admKick:c=>`Otaqdan çıxar (${c})`, admBan7:'7 gün blokla', admBan30:'30 gün blokla', admBanInf:'Həmişəlik blokla', admUnban:'Bloku götür', admNoPhoto:'Şəkli sil', admRen:'Adını dəyiş', admSave:'Yadda saxla', admKicked:x=>`@${x} otaqdan çıxarıldı`, admBanned:x=>`@${x} bloklandı`, admUnbanned:x=>`@${x} blokdan çıxarıldı`, admPhotoDone:'Şəkil silindi', admBanForever:'Həmişəlik bloklanıb', admBanUntil:d=>`${d} tarixinədək bloklanıb`, durM:m=>`${m} dəq`, durHM:(h,m)=>`${h} saat ${m} dəq`, dAcc:'Hesab', dJoined:'Qoşulub', dSeen:'Son görünmə', dWhere:'Hazırda', dWhereRoom:c=>`🎮 ${c} otağında`, dWhereOn:'🟢 Onlayn (lobbidə)', dWhereOff:'⚪ Oflayn', dFriends:'Dost sayı', dGames:'Onlayn oyunlar', dG:'oyun', dP:'ümumi xal', dW:'birincilik', dT:'oyun müddəti', dAvg:'Oyun başına orta xal', dNote:'Statistika 15 Noyabr 2026 yeniləməsindən sonrakı onlayn oyunları sayır.', dRank:'Sıralama və kuboklar', dReps:n=>`Haqqında şikayətlər (${n})`, dNoReps:'Haqqında şikayət yoxdur 👍', dBack:'Şəxs kartına qayıt', giTr:'🇹🇷 Türk adları', giAz:'🇦🇿 Azərbaycan adları', giRound:n=>`Raund ${n}`, giRounds:n=>n ? `${n} raund` : 'Hərflər bitənədək', giTime:s=>`${s} san`, giLeft:n=>`${n} hərf qaldı`, cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
     kickQ:x=>`@${x} oyundan çıxarılsın? Yenidən bas.`, outKick:x=>`⛔ @${x} otağı quran tərəfindən çıxarıldı`, fbMine:'Mesajların və cavablar', fbReply:'Admin cavabı', fbNoReply:'Hələ cavab yoxdur', frMenuS:'Əlavə et, qəbul et, idarə et', shareMenuS:'Tətbiq linkini WhatsApp və s. ilə paylaş', outQ:'Çıxış etmək üçün yenidən bas', shareApp:'Dostlarını dəvət et', shareAppText:'Harf Çarkı-nı yoxla! Çarxı fırlat, son hərfdən ad de, dostlarınla onlayn yarış 🎡', frLogin:'Dostlarını görmək üçün daxil ol', pushT:'Bildirişləri aç', pushS:'Dəvətlər və dostluq istəkləri telefon kilidli olanda belə gəlsin', pushBtn:'Aç', pushOn:'🔔 Bildirişlər açıldı', pushDenied:'Bildiriş icazəsi bağlıdır. Brauzer ayarlarından bu sayt üçün bildirişlərə icazə ver.', pushNo:'Bu brauzer bildirişləri dəstəkləmir', ogTitle:'Oyun', micErr:'Mikrofon açılmadı. Brauzer ayarlarından mikrofon icazəsi ver və "Mikrofonu aç" düyməsinə bas.', ogRound:(a,b)=>`Raund ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlayır', ogFirst:x=>`İlk ad ${x} hərfi ilə başlamalıdır`, ogWon:x=>`🏆 Raundu <b>@${x}</b> qazandı (+2)`, ogYouSpin:'Növbə səndədir: çarxı fırlat! (20 san ərzində fırlatmasan özü dönəcək)', ogSpinBtn:'Çarxı fırlat', ogWaitSpin:x=>`<b>@${x}</b> çarxı fırladacaq…`, ogSpinning:'Çarx fırlanır…',
     ogYourTurn:x=>`🎤 Növbə səndədir! <b>${x}</b> hərfi ilə ad de və ya yaz`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, pttHold:'Basılı saxla və danış', pttLive:'Dinləyirəm… buraxanda göndərilir', typeName:'və ya adı yaz…', sendName:'Göndər', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu bağla',
     outTime:x=>`⏱ @${x} vaxtı bitdi, çıxdı`, outLeft:x=>`🚫 @${x} tətbiqdən çıxdı, raunddan çıxarıldı`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitdi', pts:'xal', ogAgain:'Yenidən oyna', ogWaitAgain:x=>`@${x} yeni oyun başlada bilər`, ogShare:'Nəticəni paylaş',
@@ -2544,6 +2562,106 @@ async function leaveRoom(silent){
 $('rmBack').onclick = () => { if (inPlay() && !$('rmBack').dataset.sure){ $('rmBack').dataset.sure = 1; toast(ot('leaveWarn')); setTimeout(() => delete $('rmBack').dataset.sure, 3500); return; }
   if (OL.room && OL.room.status === 'wait' && OL.room.host === me.uid && !$('rmBack').dataset.sure){ $('rmBack').dataset.sure = 1; toast(ot('hostLeaveQ')); setTimeout(() => delete $('rmBack').dataset.sure, 3500); return; } leaveRoom(); };
 
+/* ---------- Yönetici rozeti + yönetici araçları ---------- */
+const RESERVED = /(harfcarki|harf_carki|harf\.carki|admin|yonetici|yonetim|destek|resmi|official|moderator|moderat)/;
+let STAFF = new Set();
+async function loadStaff(){ try { const d = await FB.F.getDoc(FB.F.doc(FB.db, 'config', 'staff')); STAFF = new Set(d.exists() ? (d.data().uids || []) : []); badgeScan(true); } catch(_){} }
+async function staffJoin(){ STAFF.add(me.uid); badgeScan(true); try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'staff'), { uids:FB.F.arrayUnion(me.uid) }, { merge:true }); } catch(e){ console.warn('staff', e); } }
+const isStaff = uid => !!uid && STAFF.has(uid);
+const ADMB = () => `<span class="adm-b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.3l3.2 3.2L17 8.7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>${escH(ot('admB'))}</span>`;
+function badgeScan(all){
+  document.querySelectorAll('[data-prof],[data-badge]').forEach(el => {
+    const uid = el.dataset.prof || el.dataset.badge;
+    if (el.dataset.bd === uid && !all) return; el.dataset.bd = uid;
+    const old = el.querySelector(':scope > .adm-b, :scope > b + .adm-b'); if (old) old.remove();
+    el.querySelectorAll('.adm-b').forEach(x => x.remove());
+    if (!isStaff(uid)) return;
+    const b = el.tagName === 'B' ? null : el.querySelector('b');
+    if (b) b.insertAdjacentHTML('afterend', ADMB()); else el.insertAdjacentHTML('beforeend', ADMB());
+  });
+}
+let bdQ = false;
+new MutationObserver(() => { if (bdQ) return; bdQ = true; requestAnimationFrame(() => { bdQ = false; if (STAFF.size) badgeScan(); }); }).observe(document.body, { childList:true, subtree:true });
+document.addEventListener('contextmenu', e => { const el = e.target.closest('[data-prof]'); if (!el || !me || el.dataset.prof === me.uid) return; e.preventDefault(); openUser(el.dataset.prof, el.dataset.ctx || ''); });
+
+function admToolsHtml(uid, u){
+  const inRoom = u.inRoom && (u.inRoomAt || 0) > Date.now() - 3 * 60e3 ? u.inRoom : '', bn = banEnd(u);
+  return `<div class="adm-tools"><b class="adm-h">🛡 ${ot('admTools')}</b>
+    ${bn ? `<p class="adm-ban">⛔ ${bn >= FOREVER ? ot('admBanForever') : ot('admBanUntil', new Date(bn).toLocaleString(LOC()))}</p>` : ''}
+    <div class="adm-g">
+      <button class="abtn" data-up="adm-detail">📋 ${ot('admDetail')}</button>
+      ${inRoom ? `<button class="abtn no" data-up="adm-kick" data-room="${escH(inRoom)}">🚪 ${ot('admKick', inRoom)}</button>` : ''}
+      <button class="abtn no" data-up="adm-b7">⛔ ${ot('admBan7')}</button><button class="abtn no" data-up="adm-b30">⛔ ${ot('admBan30')}</button><button class="abtn no" data-up="adm-binf">⛔ ${ot('admBanInf')}</button>
+      ${bn ? `<button class="abtn ok" data-up="adm-unban">✓ ${ot('admUnban')}</button>` : ''}
+      ${u.photo && u.photo !== 'none' ? `<button class="abtn no" data-up="adm-nophoto">🖼 ${ot('admNoPhoto')}</button>` : ''}
+      <button class="abtn" data-up="adm-ren">✏️ ${ot('admRen')}</button>
+    </div><div id="admRenBox"></div></div>`;
+}
+async function admTool(a, btn){
+  const uid = UP.uid, u = UP.u || {}, { F, db } = FB, ref = F.doc(db, 'users', uid), nm = u.username || '?';
+  const sure = () => { if (btn.dataset.sure) return true; btn.dataset.sure = 1; btn.dataset.txt = btn.textContent; btn.textContent = ot('sure'); setTimeout(() => { if (btn.isConnected){ delete btn.dataset.sure; btn.textContent = btn.dataset.txt; } }, 3000); return false; };
+  try {
+    if (a === 'detail'){ openAdmDetail(uid); return; }
+    if (a === 'kick'){ if (!sure()) return; const ok = await removeFromGame(uid, true, btn.dataset.room); toast(ok ? ot('admKicked', nm) : t('netErr')); }
+    else if (a === 'b7' || a === 'b30' || a === 'binf'){ if (!sure()) return;
+      const until = a === 'binf' ? FOREVER : new Date(Date.now() + (a === 'b7' ? 7 : 30) * 864e5);
+      await F.updateDoc(ref, { bannedUntil:F.Timestamp.fromDate(until) });
+      if (u.inRoom && (u.inRoomAt || 0) > Date.now() - 3 * 60e3) await removeFromGame(uid, true, u.inRoom);
+      toast(ot('admBanned', nm)); }
+    else if (a === 'unban'){ await F.updateDoc(ref, { bannedUntil:F.deleteField() }); toast(ot('admUnbanned', nm)); }
+    else if (a === 'nophoto'){ if (!sure()) return; await F.updateDoc(ref, { photo:'none' }); F.deleteDoc(F.doc(db, 'avatars', uid)).catch(() => {}); toast(ot('admPhotoDone')); }
+    else if (a === 'ren'){
+      $('admRenBox').innerHTML = `<div class="ainput" style="margin-top:8px"><input id="admRenIn" value="${escH(nm)}" autocapitalize="off" autocomplete="off"><button class="abtn ok" id="admRenGo">${ot('admSave')}</button></div>`;
+      $('admRenIn').focus();
+      $('admRenGo').onclick = async () => {
+        const nu = $('admRenIn').value.trim().replace(/^@/, ''), key = nu.toLocaleLowerCase('tr');
+        if (!UNAME_RE.test(key)){ toast(t('unameBad')); return; }
+        try { await F.runTransaction(db, async tx => {
+            const nref = F.doc(db, 'usernames', key), ex = await tx.get(nref);
+            if (ex.exists() && ex.data().uid !== uid) throw new Error('taken');
+            if (u.unameLower && u.unameLower !== key) tx.delete(F.doc(db, 'usernames', u.unameLower));
+            if (!ex.exists()) tx.set(nref, { uid });
+            tx.update(ref, { username:nu, unameLower:key, updatedAt:F.serverTimestamp() });
+          }); toast(`@${nm} → @${nu}`); }
+        catch(e){ toast(e.message === 'taken' ? t('unameTaken') : t('netErr')); return; }
+        openUser(uid, UP.ctx);
+      };
+      return;
+    }
+    setTimeout(() => openUser(uid, UP.ctx), 400);
+  } catch(e){ console.warn('admTool', e); toast(t('netErr')); }
+}
+function fmtDur(ms){ const m = Math.round((ms || 0) / 60e3); if (m < 60) return ot('durM', m); const h = Math.floor(m / 60); return ot('durHM', h, m % 60); }
+async function openAdmDetail(uid){
+  $('upBox').classList.remove('show');
+  $('lbBody').innerHTML = `<p class="s-note" style="padding:30px 0">…</p>`; $('lbBox').classList.add('show');
+  const { F, db } = FB, P = perInfo();
+  const safe = p => p.catch(e => { console.warn(e); return null; });
+  const [ud, cups, bw, bm, reps, frc] = await Promise.all([
+    safe(F.getDoc(F.doc(db, 'users', uid))), safe(cupsOf(uid)),
+    safe(F.getDoc(F.doc(db, 'boards', P.w.key, 'u', uid))), safe(F.getDoc(F.doc(db, 'boards', P.m.key, 'u', uid))),
+    safe(F.getDocs(F.query(F.collection(db, 'reports'), F.where('target', '==', uid)))),
+    safe(F.getCountFromServer(F.collection(db, 'users', uid, 'friends')))]);
+  const u = ud && ud.exists() ? ud.data() : {}, st = u.stats || {}, bn = banEnd(u);
+  const rankOf = async (key, d) => { if (!d || !d.exists()) return null; const x = d.data(); try { return { pts:x.pts || 0, rank:(await F.getCountFromServer(F.query(F.collection(db, 'boards', key, 'u'), F.where('pts', '>', x.pts || 0)))).data().count + 1 }; } catch(_){ return { pts:x.pts || 0, rank:'?' }; } };
+  const [rw, rm] = await Promise.all([rankOf(P.w.key, bw), rankOf(P.m.key, bm)]);
+  const repList = reps ? reps.docs.map(d => d.data()).sort((a, b) => (b.at || 0) - (a.at || 0)) : [];
+  const dt = v => { const ms = v && v.toMillis ? v.toMillis() : v; return ms ? new Date(ms).toLocaleString(LOC(), { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—'; };
+  const seen = u.lastSeen || 0, where = u.inRoom && (u.inRoomAt || 0) > Date.now() - 3 * 60e3 ? ot('dWhereRoom', u.inRoom) : Date.now() - seen < 150e3 ? ot('dWhereOn') : ot('dWhereOff');
+  const kv = (k, v) => `<div class="dkv"><span>${k}</span><b>${v}</b></div>`;
+  const avg = st.games ? Math.round((st.pts || 0) / st.games) : 0;
+  $('lbBody').innerHTML = `<div class="up-av">${avOf(u.username, u.photo)}</div><b class="up-t" data-badge="${escH(uid)}">@${escH(u.username || '?')}</b>
+    ${bn ? `<p class="adm-ban">⛔ ${bn >= FOREVER ? ot('admBanForever') : ot('admBanUntil', new Date(bn).toLocaleString(LOC()))}</p>` : ''}
+    <div class="dsec"><h4>👤 ${ot('dAcc')}</h4>${kv(ot('dJoined'), dt(u.createdAt))}${kv(ot('dSeen'), dt(seen))}${kv(ot('dWhere'), where)}${kv(ot('dFriends'), frc ? frc.data().count : '—')}</div>
+    <div class="dsec"><h4>🎮 ${ot('dGames')}</h4>
+      <div class="dstats"><div><b>${st.games || 0}</b><small>${ot('dG')}</small></div><div><b>${st.pts || 0}</b><small>${ot('dP')}</small></div><div><b>${st.wins || 0}</b><small>${ot('dW')}</small></div><div><b>${fmtDur(st.playMs)}</b><small>${ot('dT')}</small></div></div>
+      ${kv(ot('dAvg'), avg)}<p class="s-note" style="font-size:11.5px;margin-top:4px">${ot('dNote')}</p></div>
+    <div class="dsec"><h4>🏆 ${ot('dRank')}</h4>${kv(ot('lbWeek'), rw ? `${rw.rank}. · ${ot('ptsN', rw.pts)}` : '—')}${kv(ot('lbMonth'), rm ? `${rm.rank}. · ${ot('ptsN', rm.pts)}` : '—')}
+      ${(cups || []).length ? (cups || []).map(x => `<div class="cup-row">${trophy(x.kind, 26)}<span class="grow"><b>${ot(x.kind === 'w' ? 'chW' : 'chM')}</b><small>📅 ${escH(perLabel(x.kind, x.start, x.end))} · ${ot('ptsN', x.pts)}</small></span></div>`).join('') : `<p class="s-note">${ot('cupsNone')}</p>`}</div>
+    <div class="dsec"><h4>🚩 ${ot('dReps', repList.length)}</h4>${repList.length ? repList.slice(0, 8).map(r => `<div class="rep-ctx"><small>${escH(RR[r.reason] || r.reason)} · @${escH(r.uname || '?')} · ${dt(r.at)}</small>${r.text ? escH(r.text) : ''}${r.ctx ? `<br><i>“${escH(r.ctx)}”</i>` : ''}</div>`).join('') : `<p class="s-note">${ot('dNoReps')}</p>`}</div>
+    <button class="btn ghost sm" style="margin-top:12px;width:100%" data-back="${escH(uid)}">‹ ${ot('dBack')}</button>`;
+  const bk = $('lbBody').querySelector('[data-back]'); if (bk) bk.onclick = () => { $('lbBox').classList.remove('show'); openUser(uid, ''); };
+}
 /* ---------- Haftanın / ayın şampiyonu ---------- */
 const TZ = 3 * 3600e3;
 const trtNow = () => new Date(Date.now() + TZ);
@@ -2597,7 +2715,7 @@ async function loadChamps(){
 function renderChamps(){
   const el = $('olChamps'); if (!el) return; const P = perInfo();
   const card = (k, c, rg) => `<button class="ch-card k-${k}" data-lb="${k}">${trophy(k, 46)}<span class="ch-tx"><small>${ot(k === 'w' ? 'chW' : 'chM')}</small>
-    ${c ? `<span class="ch-who">${avOf(c.name, c.photo)}<b>@${escH(c.name)}</b></span><small class="ch-pts">${ot('ptsN', c.pts)} · ${escH(perLabel(k, c.start, c.end))}</small>` : `<span class="ch-none">${ot('chNone')}</span><small class="ch-pts">${escH(perLabel(k, rg.start, rg.end))}</small>`}</span></button>`;
+    ${c ? `<span class="ch-who" data-badge="${escH(c.uid)}">${avOf(c.name, c.photo)}<b>@${escH(c.name)}</b></span><small class="ch-pts">${ot('ptsN', c.pts)} · ${escH(perLabel(k, c.start, c.end))}</small>` : `<span class="ch-none">${ot('chNone')}</span><small class="ch-pts">${escH(perLabel(k, rg.start, rg.end))}</small>`}</span></button>`;
   const lead = (k, l) => l ? `<button class="ch-lead" data-lb="${k}">🔥 ${ot(k === 'w' ? 'leadW' : 'leadM')}: <b>@${escH(l.name)}</b> · ${ot('ptsN', l.pts)}</button>` : `<button class="ch-lead" data-lb="${k}">🔥 ${ot(k === 'w' ? 'leadW' : 'leadM')}: <i>${ot('leadNone')}</i></button>`;
   el.innerHTML = `<div class="ch-row">${card('w', CH.w, P.pw)}${card('m', CH.m, P.pm)}</div><div class="ch-leads">${lead('w', CH.lw)}${lead('m', CH.lm)}</div>`;
 }
@@ -2630,6 +2748,9 @@ async function recordBoard(r){
   try { if (localStorage.getItem('iz-rec-' + r.gid)) return; localStorage.setItem('iz-rec-' + r.gid, '1'); } catch(_){}
   const pts = Math.min(1000, Math.max(0, Math.round(sc[me.uid] || 0))), top = Math.max(...Object.values(sc).map(Number)), win = pts > 0 && pts === top ? 1 : 0;
   const { F, db } = FB, P = perInfo(), mine = myCard();
+  const playMs = Math.max(0, Math.min(3 * 3600e3, srvNow() - (r.startAt || srvNow())));
+  F.updateDoc(F.doc(db, 'users', me.uid), { 'stats.games':F.increment(1), 'stats.pts':F.increment(pts), 'stats.wins':F.increment(win), 'stats.playMs':F.increment(Math.round(playMs)) }).catch(e => console.warn('stats', e));
+  if (isAdminUser) return;   // yönetici sıralamaya ve şampiyonluğa girmez
   for (const key of [P.w.key, P.m.key]){
     const ref = F.doc(db, 'boards', key, 'u', me.uid);
     try { await F.runTransaction(db, async tx => {
@@ -2760,9 +2881,10 @@ function renderUser(){
   else if (inc) main = `<button class="btn mic" data-up="acc">✅ ${ot('frAccept')}</button>`;
   else if (out) main = `<button class="btn ghost" disabled>✓ ${ot('frSent')}</button>`;
   else main = `<button class="btn mic" data-up="add">➕ ${ot('upAdd')}</button>`;
-  $('upBody').innerHTML = `<div class="up-av">${avOf(nm, u.photo)}</div><b class="up-t">@${escH(nm)}</b><div class="up-st">${st}</div><div class="up-cups" id="upCups"></div>
+  $('upBody').innerHTML = `<div class="up-av">${avOf(nm, u.photo)}</div><b class="up-t" data-badge="${escH(uid)}">@${escH(nm)}</b><div class="up-st">${st}</div><div class="up-cups" id="upCups"></div>
     <div class="up-btns">${main}</div>
-    <div class="up-sub">${blk ? '' : `<button class="linkbtn" data-up="blk">🚫 ${ot('blk')}</button>`}<button class="linkbtn" data-up="rep">⚠️ ${ot('rep')}</button></div>`;
+    <div class="up-sub">${blk ? '' : `<button class="linkbtn" data-up="blk">🚫 ${ot('blk')}</button>`}<button class="linkbtn" data-up="rep">⚠️ ${ot('rep')}</button></div>
+    ${isAdminUser ? admToolsHtml(uid, u) : ''}`;
   cupsOf(uid).then(l => { if (UP.uid !== uid || !$('upCups')) return; $('upCups').innerHTML = cupLine(l, uid, nm); });
 }
 $('upX').onclick = () => $('upBox').classList.remove('show');
@@ -2777,6 +2899,7 @@ $('upBox').addEventListener('click', async e => {
   else if (a === 'blk'){ if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = '🚫 ' + ot('blkSure'); return; } if (await blockUser(uid, nm)){ if (MSG.peer && MSG.peer.id === uid) closePage('chatPage'); setTimeout(renderUser, 300); } }
   else if (a === 'unblk'){ if (await unblockUser(uid, nm)) setTimeout(renderUser, 300); }
   else if (a === 'rep'){ UP.rep = true; renderUser(); }
+  else if (a.startsWith('adm-')) admTool(a.slice(4), b);
 });
 
 /* ---------- Gizlilik: sadece arkadaşlar davet etsin + engellenenler ---------- */
@@ -3012,7 +3135,7 @@ function renderRoom(){
         if (host) side += `<button class="abtn no" data-kick="${escH(uid)}">${ot('kick')}</button>`;
         if (!F2.has(uid)) side += out.has(uid) ? `<span class="s-note">${ot('frSent')}</span>` : `<button class="abtn" data-req="${escH(uid)}">+ ${ot('frAddBtn')}</button>`;
       }
-      return `<div class="arow">${avOf(p.name, p.photo)}<span class="grow"${uid !== me.uid ? ` data-prof="${escH(uid)}"` : ''}><b>@${escH(p.name)}</b>${uid === r.host ? ' 👑' : ''}${uid === me.uid ? `<small>${ot('you')}</small>` : ''}${inR.has(uid) ? `<small>${ot('frWants')}</small>` : ''}</span>${side}</div>`; }).join('')}</section>
+      return `<div class="arow">${avOf(p.name, p.photo)}<span class="grow" ${uid !== me.uid ? `data-prof="${escH(uid)}"` : `data-badge="${escH(uid)}"`}><b>@${escH(p.name)}</b>${uid === r.host ? ' 👑' : ''}${uid === me.uid ? `<small>${ot('you')}</small>` : ''}${inR.has(uid) ? `<small>${ot('frWants')}</small>` : ''}</span>${side}</div>`; }).join('')}</section>
     ${invitable.length ? `<section class="s-sec"><h3>${ot('rmInvite')}</h3>${invitable.map(f => { const st = fStat(f.id), sent = (OL.invSent || new Map()).get(OL.code + f.id), cool = sent && Date.now() - sent < 8000;
       return `<div class="arow">${avP(f.id, f.name, f.photo)}<span class="grow" data-prof="${escH(f.id)}"><b>@${escH(f.name)}</b>${st ? `<small class="busy">${ot(st === 'play' ? 'stPlay' : 'stRoom')}</small>` : `<small class="pt ${presOf(f.id)}">${presTxt(f.id)}</small>`}</span><button class="abtn ok" data-inv="${escH(f.id)}"${cool ? ' disabled' : ''}>${cool ? ot('invSent') : sent ? ot('reInvite') : ot('invite')}</button></div>`; }).join('')}</section>` : ''}
     ${host ? `<section class="s-sec"><h3>🌐 ${ot('lobT')}</h3><p class="s-note" style="margin-bottom:8px">${ot('lobNote')}</p>${lob.length ? lob.map(u => { const sent = (OL.invSent || new Map()).get(OL.code + u.id), cool = sent && Date.now() - sent < 8000;
@@ -3100,7 +3223,7 @@ async function startGame(){
   if (order.length < 2){ toast(ot('rmNeed2')); return; }
   const scores = {}; order.forEach(u => scores[u] = 0);
   try {
-    await FB.F.updateDoc(roomRef(), { status:'play', gid:Math.random().toString(36).slice(2, 9), order, scores, strikes:{}, round:0, used:[],
+    await FB.F.updateDoc(roomRef(), { status:'play', gid:Math.random().toString(36).slice(2, 9), startAt:srvNow(), order, scores, strikes:{}, round:0, used:[],
       phase:'spin', spinner:me.uid, phaseAt:srvNow(), names:[], alive:[], turn:null, turnAt:0, need:null, letter:null, rot:GR.rot || 0, last:null });
   } catch(e){ console.warn(e); toast(t('netErr')); }
 }
@@ -3205,11 +3328,11 @@ async function eliminate(uid, why, expectTurnAt){
 }
 /* Oyun sırasında odadan tamamen ayrılma (geri tuşu ya da 3. kez uygulamadan çıkma) */
 async function quitGame(){ return removeFromGame(me.uid, false); }
-async function removeFromGame(uid, kick){
-  const { F, db } = FB;
+async function removeFromGame(uid, kick, code){
+  const { F, db } = FB, ref = code ? F.doc(db, 'rooms', code) : roomRef();
   try {
     await F.runTransaction(db, async tx => {
-      const s = await tx.get(roomRef()); if (!s.exists()) return;
+      const s = await tx.get(ref); if (!s.exists()) return;
       const r = s.data(), upd = { ['players.' + uid]:F.deleteField() };
       if (kick) upd.kicked = F.arrayUnion(uid);
       const rest = presentOrder(r).filter(u => u !== uid);
@@ -3220,10 +3343,12 @@ async function removeFromGame(uid, kick){
         if (r.turn === uid){ upd.turn = nextIn(r.alive, uid); upd.turnAt = srvNow(); }
         if (alive.length <= 1) roundEndUpd({ ...r, order:rest }, alive, upd, F);
       } else if (r.phase === 'spin' && r.spinner === uid && rest.length) upd.spinner = rest[0];
-      if (rest.length < 2 && r.phase !== 'end'){ upd.phase = 'end'; upd.phaseAt = srvNow(); }
-      tx.update(roomRef(), upd);
+      if (r.status === 'play' && rest.length < 2 && r.phase !== 'end'){ upd.phase = 'end'; upd.phaseAt = srvNow(); }
+      if (r.status !== 'play') delete upd.names;
+      tx.update(ref, upd);
     });
-  } catch(e){ console.warn('quit', e); }
+    return true;
+  } catch(e){ console.warn('quit', e); return false; }
 }
 /* Uygulamadan çıkma: o turdan elenir, 3. seferde odadan atılır */
 async function strikeLeave(){
@@ -3284,7 +3409,7 @@ function renderGame(){
   $('ogCode').textContent = OL.code;
   const order = presentOrder(r), alive = new Set(r.alive || []);
   $('ogPs').innerHTML = order.map(u => { const p = r.players[u], out = r.phase === 'turn' && !alive.has(u), cur = r.phase === 'turn' && r.turn === u;
-    return `<span class="og-p${cur ? ' cur' : ''}${out ? ' out' : ''}">${avOf(p.name, p.photo)}<b>@${escH(p.name)}${u === me.uid ? ` (${ot('you')})` : ''}</b><i>${(r.scores || {})[u] || 0}</i>${r.host === me.uid && u !== me.uid ? `<button class="og-kick" data-gk="${escH(u)}" aria-label="${ot('kick')}">✕</button>` : ''}</span>`; }).join('');
+    return `<span class="og-p${cur ? ' cur' : ''}${out ? ' out' : ''}">${avOf(p.name, p.photo)}<b ${u !== me.uid ? `data-prof="${escH(u)}"` : `data-badge="${escH(u)}"`}>@${escH(p.name)}${u === me.uid ? ` (${ot('you')})` : ''}</b><i>${(r.scores || {})[u] || 0}</i>${r.host === me.uid && u !== me.uid ? `<button class="og-kick" data-gk="${escH(u)}" aria-label="${ot('kick')}">✕</button>` : ''}</span>`; }).join('');
   const names = r.names || [];
   $('ogList').innerHTML = names.map(n => n.s === 'out'
     ? `<li class="og-out">${escH(ot(n.why === 'left' ? 'outLeft' : n.why === 'quit' ? 'outQuit' : n.why === 'kick' ? 'outKick' : 'outTime', n.nm || pname2(r, n.by)))}</li>`
@@ -3607,7 +3732,7 @@ function renderMsg(){
     const peers = new Set(MSG.dm.map(c => c.members.find(u => u !== me.uid)));
     body.innerHTML = `<section class="s-sec"><h3>${ot('msgChats')}</h3>${MSG.dm.length ? MSG.dm.map(c => { const o = c.members.find(u => u !== me.uid), nm = (c.names || {})[o] || (OL.friends.find(f => f.id === o) || {}).name || '?';
         const ph = (c.photos || {})[o] || (OL.friends.find(f => f.id === o) || {}).photo, un = c.last.from !== me.uid && (c.last.at || 0) > ((c.read || {})[me.uid] || 0);
-        return `<button class="arow cv${un ? ' un' : ''}" data-peer="${escH(o)}">${avP(o, nm, ph)}<span class="grow"><b>@${escH(nm)}</b><small>${c.last.from === me.uid ? ot('you') + ': ' : ''}${escH(c.last.t)}</small></span><span class="tm">${fmtT(c.last.at)}${un ? '<i></i>' : ''}</span></button>`; }).join('') : `<p class="s-note">${ot('msgNoChats')}</p>`}</section>
+        return `<button class="arow cv${un ? ' un' : ''}" data-peer="${escH(o)}">${avP(o, nm, ph)}<span class="grow" data-badge="${escH(o)}"><b>@${escH(nm)}</b><small>${c.last.from === me.uid ? ot('you') + ': ' : ''}${escH(c.last.t)}</small></span><span class="tm">${fmtT(c.last.at)}${un ? '<i></i>' : ''}</span></button>`; }).join('') : `<p class="s-note">${ot('msgNoChats')}</p>`}</section>
       <section class="s-sec"><h3>${ot('msgNew')}</h3>${OL.friends.length ? `<div class="fchips">${OL.friends.map(f => `<button class="fchip" data-peer="${escH(f.id)}">${avP(f.id, f.name, f.photo)}<span>@${escH(f.name)}</span></button>`).join('')}</div>` : `<p class="s-note">${ot('frEmpty')}</p>`}</section>`;
   } else {
     body.innerHTML = `<section class="s-sec"><h3>${ot('wallPost')}</h3><p class="s-note" style="margin-top:0">${ot('wallNote', OL.friends.length)}</p>${composer('wallIn', ot('wallPh'), ot('sendName'), true)}</section>
@@ -3634,7 +3759,7 @@ function openChat(uid){
   const f = OL.friends.find(x => x.id === uid) || (() => { const c = MSG.dm.find(c => c.members.includes(uid)); return c ? { id:uid, name:(c.names || {})[uid], photo:(c.photos || {})[uid] } : null; })();
   if (!f){ toast(ot('msgNotFriend')); return; }
   MSG.peer = f; MSG.th = [];
-  $('chatName').textContent = '@' + f.name; $('chatAv').innerHTML = avOf(f.name, f.photo); $('chatName').dataset.prof = uid; $('chatName').style.cursor = 'pointer';
+  $('chatName').textContent = '@' + f.name; delete $('chatName').dataset.bd; $('chatAv').innerHTML = avOf(f.name, f.photo); $('chatName').dataset.prof = uid; $('chatName').style.cursor = 'pointer';
   $('chatFoot').innerHTML = OL.friends.find(x => x.id === uid) ? composer('dmIn', ot('msgPh'), ot('sendName')) : `<p class="s-note" style="text-align:center">${ot('msgNotFriend')}</p>`;
   $('chatList').innerHTML = `<p class="s-note" style="text-align:center">…</p>`;
   if (MSG.thUnsub) MSG.thUnsub();
@@ -3946,6 +4071,7 @@ $('unameForm').onsubmit = async e => {
   const shown = $('uName').value.trim(), key = unameKey(shown);
   if (!UNAME_RE.test(key)){ $('uMsg').className = 'amsg'; $('uMsg').textContent = t('unameBad'); return; }
   if (hasBad(shown)){ $('uMsg').className = 'amsg'; $('uMsg').textContent = ot('badName'); return; }
+  if (!isAdminUser && RESERVED.test(foldW(key))){ $('uMsg').className = 'amsg'; $('uMsg').textContent = ot('resName'); return; }
   busy($('uSave'), true);
   const { F, db } = FB;
   try {
