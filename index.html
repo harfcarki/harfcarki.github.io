@@ -98,7 +98,9 @@
     body{padding:max(24px, env(safe-area-inset-top)) 28px 24px}
     .app{max-width:1400px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);gap:28px;align-items:stretch}
     .stage{justify-content:center;gap:16px;min-height:0}
-    .stage .langs,.stage .row,.stage .timer,.stage .msg{width:min(100%, 560px);align-self:center}
+    .stage .langs,.stage .row,.stage .timer,.stage .msg,.stage .off-acts{width:min(100%, 560px);align-self:center}
+    body.playing{ --w:min(34vw, 40dvh, 460px); }
+    .stage .off-acts .ptt{padding:16px}
     .stage .top{width:100%}
     h1{font-size:24px}
     .list-card{min-height:0;height:100%}
@@ -107,6 +109,7 @@
   @media (min-width: 820px) and (orientation: portrait){
     :root{ --w:min(70vw, 42dvh, 600px); }
     .app{display:flex;flex-direction:column;max-width:760px}
+    body.playing{ --w:min(60vw, 32dvh, 460px); }
   }
   .card{background:var(--card);border-radius:18px;padding:16px;border:1px solid var(--line)}
   .card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
@@ -494,6 +497,14 @@
 
 
 
+  .g-info{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .g-info:empty{display:none}
+  .gi{font-size:13px;font-weight:700;padding:6px 11px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--ink);white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .gi-lang{font-size:14.5px;font-weight:800;color:#fff;border:none;padding:7px 14px}
+  .gi-lang.l-tr{background:linear-gradient(90deg,#d62b2b,#a51c1c)} .gi-lang.l-az{background:linear-gradient(90deg,#0092bc,#d62b2b 55%,#00a04a)}
+  body.playing .langs{display:none}
+  #offInfo{margin-bottom:2px}
+  .off-acts{display:flex;flex-direction:column;gap:8px;margin-top:10px} .off-acts .btn{width:100%} .off-acts .btn.ghost.sm{font-size:13.5px;padding:9px} .off-acts form{margin-top:0}
   /* Online odada duvar kağıdı + yarı saydam çark */
   .rm-tools{margin-left:auto;display:flex;gap:8px}
   body.wp #roomPage .panel{background:linear-gradient(var(--veil),var(--veil)), var(--wpimg) center/cover no-repeat #33403b}
@@ -728,6 +739,7 @@
       </div>
     </header>
 
+    <div class="g-info" id="offInfo"></div>
     <div class="langs" id="langs">
       <button class="lang on" data-l="tr">Türkçe</button>
       <button class="lang" data-l="az">Azərbaycan</button>
@@ -744,9 +756,13 @@
 
     <div class="row">
       <button class="btn spin" id="spinBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg><span id="spinLabel">Çarkı Çevir</span></button>
-      <button class="btn mic" id="micBtn" disabled><span class="dot"></span><span id="micLabel">Başlat</span></button>
+      
     </div>
-    <button class="linkbtn micfix" id="micFix">🔧 <span data-i18n="micFix">Mikrofonu kontrol et</span></button>
+    <div class="off-acts" id="offActs">
+      <button class="btn mic ptt" id="micBtn" type="button" disabled><span id="micLabel">🎤 Basılı tut ve konuş</span></button>
+      <form class="og-type" id="form" autocomplete="off"><input id="input" placeholder="Ya da ismi yaz…" data-i18n-ph="typeName" autocomplete="off" dir="auto"><button class="abtn ok" type="submit" data-i18n="sendName">Gönder</button></form>
+      <button class="btn ghost sm" id="micFix" type="button">🔧 <span data-i18n="micFix">Mikrofonu kontrol et</span></button>
+    </div>
     <div class="timer" id="timer"><i id="timerBar"></i></div>
     <div class="msg" id="msg"></div>
   </section>
@@ -759,14 +775,11 @@
     </div>
     <div class="scroll" id="scrollBox">
       <ol id="list"></ol>
-      <div class="empty" id="empty" data-i18n="empty">Çarkı çevir, sonra "Başlat"a bas ve isimleri söyle.</div>
+      <div class="empty" id="empty" data-i18n="empty">Çarkı çevir. Harf çıkınca mikrofona basılı tutarak ismi söyle ya da yaz.</div>
     </div>
     <div class="interim" id="interim"></div>
     <div class="legend" id="legend"><span><i style="background:var(--red)"></i><em data-i18n="lgRep">Tekrar / yanlış harf</em></span><span><i style="background:#e8b630"></i><em data-i18n="lgUnk">Listede yok</em></span><span><i style="background:var(--blue)"></i><em data-i18n="lgNext">Sıradaki harf</em></span></div>
-    <form id="form">
-      <input id="input" placeholder="Ya da ismi yaz…" data-i18n-ph="typeName" autocomplete="off" dir="auto">
-      <button type="submit" data-i18n="add">Ekle</button>
-    </form>
+
   </section>
 </div>
 
@@ -1190,7 +1203,7 @@ function removeCustom(l, k){
 function acceptName(i){
   const n = names[i], wasValid = !n.unk;
   n.key.split(' ').forEach(p => { if (!isKnown1(p)) addCustom(lang, p); }); recompute();
-  if (P() && !wasValid && i === names.length - 1 && n.by === turn && !n.wrong && !n.rep && !n.unk){ turn = nextAlive(turn); renderPbar(); if (listening) timerStart(); }
+  if (P() && !wasValid && i === names.length - 1 && n.by === turn && !n.wrong && !n.rep && !n.unk){ turn = nextAlive(turn); renderPbar(); if (!roundOver) timerStart(); }
 }
 let lang = 'tr', used = new Set(), current = null, rotation = 0, spinning = false;
 let names = [];
@@ -1200,7 +1213,7 @@ const wheel = $('wheel'), hub = $('hub');
 /* ---------- Arayüz dili ---------- */
 const I18N = {
   tr: { sub:'Son harften devam et', reset:'Sıfırla', spin:'Çarkı Çevir', newLetter:'Yeni Harf', start:'Başlat', stop:'Durdur',
-    listTitle:'Söylenen isimler', empty:'Çarkı çevir, sonra "Başlat"a bas ve isimleri söyle.', lgRep:'Tekrar / yanlış harf', lgUnk:'Listede yok', lgNext:'Sıradaki harf',
+    listTitle:'Söylenen isimler', empty:'Çarkı çevir. Harf çıkınca mikrofona basılı tutarak ismi söyle ya da yaz.', lgRep:'Tekrar / yanlış harf', lgUnk:'Listede yok', lgNext:'Sıradaki harf',
     typeName:'Ya da ismi yaz…', add:'Ekle', timeUp:'Süre doldu!', cont:'Devam et', allUsed:'Tüm harfler kullanıldı',
     allUsedQ:'Bu oturumdaki bütün harfler çıktı. Yeni oturum başlatılsın mı?', cancel:'Vazgeç',
     left:n=>`${n} harf kaldı`, listening:l=>`🎤 ${l==='az'?'Azərbaycanca':'Türkçe'} dinleniyor`,
@@ -1214,7 +1227,7 @@ const I18N = {
     nmAdded:x=>`"${x}" listeye eklendi`, nmExists:x=>`"${x}" zaten listede`, nmRemoved:x=>`"${x}" listeden çıkarıldı`,
     nmResetQ:'Bu dildeki tüm eklemeler ve çıkarmalar geri alınsın mı? Tekrar bas.', nmResetDone:'Liste varsayılana döndü',
     about:'Hakkında', aboutText:'Harf Çarkı, çocukken oynadığımız "son harften isim söyleme" oyununun sesli hâli. Çark ilk harfi seçer, isimleri söylersin, uygulama yazar ve kontrol eder.',
-    how1:'Çarkı çevir. Tek telefonda "Başlat"a bas, online oyunda mikrofon kendiliğinden açılır.', how2:'Her isim, bir önceki ismin son harfiyle başlamalı.', how3:'Tekrar eden ve yanlış harfli isimler kırmızı görünür.', how4:()=>`Her isim için 3 + ${settings.time} saniyen var. Süresi dolan elenir.`,
+    how1:'Çarkı çevir. Sıra sendeyken mikrofona basılı tutup ismi söyle, ya da yaz.', how2:'Her isim, bir önceki ismin son harfiyle başlamalı.', how3:'Tekrar eden ve yanlış harfli isimler kırmızı görünür.', how4:()=>`Her isim için 3 + ${settings.time} saniyen var. Süresi dolan elenir.`,
     aboutVer:'Sürüm 2.0 · İsim listesi yönetici tarafından güncellenir.',
     how5:'Her geçerli isim 1 puan, turu kazanan +2 puan alır.',
     players:'Oyuncular', playersHint:'En fazla 11 oyuncu. Boş bırakırsan tek başına oynarsın.', addPlayer:'+ Oyuncu ekle', playerN:n=>`${n}. oyuncu`,
@@ -1229,7 +1242,7 @@ const I18N = {
     howBtn:'❓ Nasıl oynanır?', tutLocal:'📱 Tek telefon', tutOnline:'🌐 Online', tutSkip:'Atla', tutPrev:'Geri', tutNext:'İleri', tutGo:'Oynamaya başla',
     tut:{
       wheel:['🔤','Çark harfi seçer','<b>Çarkı Çevir</b> butonuna bas. Çıkan harfle başlayan bir isim söyleyerek tur başlar. Her harf bir kez çıkar.'],
-      local:['📱','Tek telefonda','Harf çıkınca <b>Başlat</b>’a bas, mikrofon açılır. Oyuncular telefonu ortaya koyar ve <b>sırayla</b> isim söyler. Oyuncuları <b>Oyuncu ekle</b> ile yazarsın (2–11 kişi).'],
+      local:['📱','Tek telefonda','Harf çıkınca süre başlar. Sırası gelen <b>🎤 düğmesine basılı tutup</b> ismi söyler, bırakınca gönderilir; istersen yazabilirsin. Oyuncular telefonu ortaya koyar ve <b>sırayla</b> isim söyler. Oyuncuları <b>Oyuncu ekle</b> ile yazarsın (2–11 kişi).'],
       online:['🌐','Online oyunda','Herkes <b>kendi telefonundan</b> oynar. İlk turda çarkı <b>oda kurucusu</b>, sonraki turlarda <b>bir önceki turun kazananı</b> çevirir. <b>Başlat yok</b>: 3-2-1 sayılır, sırası gelenin mikrofonu kendiliğinden açılır. Oda kurucusu tur sayısını seçer: 5, 10 ya da harfler bitene kadar.'],
       chain:['🔗','Son harften devam','Her yeni isim, bir öncekinin <b>son harfiyle</b> başlar. <b>Mavi</b> harf sıradakidir. <b>ı</b> veya <b>ğ</b> ile biten isimde bir önceki harf geçer (Nazlı → Z).','<span>Al<i class="l">i</i></span><span>İlya<i class="l">s</i></span><span>Seli<i class="l">n</i></span>'],
       bad:['🚫','Geçmeyen isimler','<b>Kırmızı</b>: tekrar eden ya da yanlış harfle başlayan isim. <b>Sarı</b>: listede olmayan isim. Bunlar zinciri ilerletmez. Listede olmayan ismi <b>💡 Öner</b> ile yöneticiye gönderebilirsin.','<span class="r">Ali (tekrar)</span><span class="u">Sarpedon</span>'],
@@ -1253,7 +1266,7 @@ const I18N = {
       'auth/email-already-in-use':'Bu e-postayla zaten bir hesap var, giriş yapmayı dene', 'auth/weak-password':'Şifre en az 6 karakter olmalı', 'auth/too-many-requests':'Çok fazla deneme yapıldı, biraz sonra tekrar dene',
       'auth/network-request-failed':'İnternet bağlantısı yok', 'auth/popup-closed-by-user':'Google girişi kapatıldı', 'auth/unauthorized-domain':'Bu adres Firebase\'de izinli değil', other:'Bir sorun oldu, tekrar dene' } },
   az: { sub:'Son hərfdən davam et', reset:'Sıfırla', spin:'Çarxı fırlat', newLetter:'Yeni hərf', start:'Başla', stop:'Dayandır',
-    listTitle:'Deyilən adlar', empty:'Çarxı fırlat, sonra "Başla" düyməsinə bas və adları de.', lgRep:'Təkrar / səhv hərf', lgUnk:'Siyahıda yoxdur', lgNext:'Növbəti hərf',
+    listTitle:'Deyilən adlar', empty:'Çarxı fırlat. Hərf çıxanda mikrofona basılı saxlayaraq adı de və ya yaz.', lgRep:'Təkrar / səhv hərf', lgUnk:'Siyahıda yoxdur', lgNext:'Növbəti hərf',
     typeName:'Və ya adı yaz…', add:'Əlavə et', timeUp:'Vaxt bitdi!', cont:'Davam et', allUsed:'Bütün hərflər istifadə olundu',
     allUsedQ:'Bu oyunda bütün hərflər çıxdı. Yeni oyun başlansın?', cancel:'Ləğv et',
     left:n=>`${n} hərf qaldı`, listening:l=>`🎤 ${l==='az'?'Azərbaycanca':'Türkcə'} dinlənilir`,
@@ -1267,7 +1280,7 @@ const I18N = {
     nmAdded:x=>`"${x}" siyahıya əlavə olundu`, nmExists:x=>`"${x}" artıq siyahıdadır`, nmRemoved:x=>`"${x}" siyahıdan çıxarıldı`,
     nmResetQ:'Bu dildəki bütün dəyişikliklər geri qaytarılsın? Yenidən bas.', nmResetDone:'Siyahı ilkin vəziyyətə qaytarıldı',
     about:'Haqqında', aboutText:'Harf Çarkı uşaqlıqda oynadığımız "son hərfdən ad demə" oyununun səsli formasıdır. Çarx ilk hərfi seçir, sən adları deyirsən, tətbiq yazır və yoxlayır.',
-    how1:'Çarxı fırlat və "Başla" düyməsinə bas.', how2:'Hər ad əvvəlki adın son hərfi ilə başlamalıdır.', how3:'Təkrar və səhv hərfli adlar qırmızı görünür.', how4:()=>`Hər ad üçün 3 + ${settings.time} saniyən var. Vaxtı bitən oyundan çıxır.`,
+    how1:'Çarxı fırlat. Növbə səndə olanda mikrofona basılı saxlayıb adı de və ya yaz.', how2:'Hər ad əvvəlki adın son hərfi ilə başlamalıdır.', how3:'Təkrar və səhv hərfli adlar qırmızı görünür.', how4:()=>`Hər ad üçün 3 + ${settings.time} saniyən var. Vaxtı bitən oyundan çıxır.`,
     aboutVer:'Versiya 2.0 · Ad siyahısını admin yeniləyir.',
     how5:'Hər düzgün ad 1 xal, raundu qazanan +2 xal alır.',
     players:'Oyunçular', playersHint:'Ən çox 11 oyunçu. Boş saxlasan tək oynayırsan.', addPlayer:'+ Oyunçu əlavə et', playerN:n=>`${n}. oyunçu`,
@@ -1282,7 +1295,7 @@ const I18N = {
     howBtn:'❓ Necə oynanılır?', tutLocal:'📱 Bir telefon', tutOnline:'🌐 Onlayn', tutSkip:'Keç', tutPrev:'Geri', tutNext:'İrəli', tutGo:'Oynamağa başla',
     tut:{
       wheel:['🔤','Çarx hərfi seçir','<b>Çarxı fırlat</b> düyməsinə bas. Çıxan hərflə başlayan ad deməklə raund başlayır. Hər hərf bir dəfə çıxır.'],
-      local:['📱','Bir telefonda','Hərf çıxanda <b>Başla</b> düyməsinə bas, mikrofon açılır. Oyunçular telefonu ortaya qoyur və <b>növbə ilə</b> ad deyir. Oyunçuları <b>Oyunçu əlavə et</b> ilə yazırsan (2–11 nəfər).'],
+      local:['📱','Bir telefonda','Hərf çıxanda vaxt başlayır. Növbəsi gələn <b>🎤 düyməsinə basılı saxlayıb</b> adı deyir, buraxanda göndərilir; istəsən yaza bilərsən. Oyunçular telefonu ortaya qoyur və <b>növbə ilə</b> ad deyir. Oyunçuları <b>Oyunçu əlavə et</b> ilə yazırsan (2–11 nəfər).'],
       online:['🌐','Onlayn oyunda','Hər kəs <b>öz telefonundan</b> oynayır. İlk raundda çarxı <b>otağı quran</b>, sonrakı raundlarda <b>əvvəlki raundun qalibi</b> fırladır. <b>Başla düyməsi yoxdur</b>: 3-2-1 sayılır, növbəsi gələnin mikrofonu özü açılır. Otağı quran raund sayını seçir: 5, 10 və ya hərflər bitənədək.'],
       chain:['🔗','Son hərfdən davam','Hər yeni ad əvvəlkinin <b>son hərfi</b> ilə başlayır. <b>Göy</b> hərf növbətidir. <b>ı</b> və ya <b>ğ</b> ilə bitən adda ondan əvvəlki hərf keçir.','<span>Əl<i class="l">i</i></span><span>İlqa<i class="l">r</i></span><span>Rəşa<i class="l">d</i></span>'],
       bad:['🚫','Keçməyən adlar','<b>Qırmızı</b>: təkrar və ya səhv hərflə başlayan ad. <b>Sarı</b>: siyahıda olmayan ad. Bunlar zənciri irəlilətmir. Siyahıda olmayan adı <b>💡 Təklif et</b> ilə adminə göndərə bilərsən.','<span class="r">Əli (təkrar)</span><span class="u">Sarpedon</span>'],
@@ -1388,7 +1401,15 @@ function renderEx(){
   $('exGrid').innerHTML = LANGS[exL].letters.map(ch => `<button type="button" class="${ex.has(ch) ? 'off' : ''}" data-ch="${ch}">${ch}</button>`).join('');
   $('exReset').style.visibility = ex.size ? 'visible' : 'hidden';
 }
-function setPlaying(){ document.body.classList.toggle('playing', !!current && !roundOver); }
+function setPlaying(){ document.body.classList.toggle('playing', !!current && !roundOver); renderOffInfo(); }
+let roundNo = 0;
+function giLangChip(l){ return `<span class="gi gi-lang l-${l}">${ot(l === 'az' ? 'giAz' : 'giTr')}</span>`; }
+function renderOffInfo(){
+  const el = $('offInfo'); if (!el) return;
+  if (!current || roundOver){ el.innerHTML = ''; return; }
+  const left = activeLetters().filter(ch => !used.has(ch)).length;
+  el.innerHTML = giLangChip(lang) + `<span class="gi">🔄 ${ot('giRound', roundNo)}</span><span class="gi">⏱ ${ot('giTime', settings.time || 15)}</span>`;
+}
 function endRound(winner){
   roundOver = true; stopListening(); timerStop(); $('timeout').classList.remove('show');
   const valid = names.filter(n => !n.wrong && !n.unk && !n.rep);
@@ -1458,7 +1479,7 @@ function spin(){
   const L = activeLetters();
   const pool = L.filter(ch => !used.has(ch));
   if (!pool.length){ $('modal').classList.add('show'); return; }
-  statFlush(); stopListening();
+  statFlush(); stopListening(); timerStop(); $('timeout').classList.remove('show');
   $('sumModal').classList.remove('show');
   spinning = true; $('spinBtn').disabled = true; $('micBtn').disabled = true;
   hub.textContent = '…';
@@ -1471,13 +1492,13 @@ function spin(){
   rotation = target;
   wheel.style.transform = `rotate(${rotation}deg)`;
   setTimeout(() => {
-    spinning = false; current = pick; used.add(pick);
+    spinning = false; current = pick; used.add(pick); roundNo++;
     hub.textContent = pick; hub.classList.add('pop'); setTimeout(()=>hub.classList.remove('pop'), 300);
     names = []; roundOver = false; statIdx = 0; statCounted = false;
     if (P()){ alive = settings.players.map(() => true); turn = startTurn % P(); startTurn++; }
     renderList(); drawWheel(); setPlaying(); keepAwake(true);
     $('spinBtn').disabled = false; $('micBtn').disabled = false;
-    $('spinLabel').textContent = t('newLetter');
+    $('spinLabel').textContent = t('newLetter'); if (!ONL) timerStart();
   }, 4700);
 }
 
@@ -1492,8 +1513,8 @@ function statFlush(){
 }
 document.addEventListener('visibilitychange', () => { if (document.hidden) statFlush(); });
 function resetSession(){
-  statFlush(); stopListening();
-  used.clear(); current = null; names = []; statIdx = 0; statCounted = false; hub.textContent = '?'; roundOver = false; resetPlayers(); setPlaying(); keepAwake(false);
+  statFlush(); stopListening(); timerStop();
+  used.clear(); current = null; roundNo = 0; names = []; statIdx = 0; statCounted = false; hub.textContent = '?'; roundOver = false; resetPlayers(); setPlaying(); keepAwake(false);
   $('spinLabel').textContent = t('spin'); $('micBtn').disabled = true;
   $('legend').style.display = NAMESET[lang] ? 'flex' : 'none';
   drawWheel(); renderList();
@@ -1575,7 +1596,7 @@ function addName(words){
   if (P() && !n.wrong && !n.rep && !n.unk){ turn = nextAlive(turn); renderPbar(); }
   if (navigator.vibrate){ if (n.wrong) navigator.vibrate([80,60,80]); else if (n.rep) navigator.vibrate(120); }
   $('timeout').classList.remove('show');
-  if (listening && !n.wrong && !n.rep && !n.unk) timerStart();
+  if (!roundOver && !n.wrong && !n.rep && !n.unk) timerStart();
 }
 function removeName(i){ names.splice(i,1); recompute(); }
 /* Zinciri baştan hesapla: listede olmayan, yanlış harfli ve tekrar edilen isimler zinciri ilerletmez */
@@ -1664,7 +1685,7 @@ function timeUp(){
   $('toText').innerHTML = t('notFound', nextLetter()) + '<br><br>' + t('elim', pname(out).replace(/</g,'&lt;'), pname(turn).replace(/</g,'&lt;'));
   $('timeout').classList.add('show');
 }
-$('toBtn').onclick = () => { $('timeout').classList.remove('show'); if (listening) timerStart(); };
+$('toBtn').onclick = () => { $('timeout').classList.remove('show'); if (current && !roundOver) timerStart(); };
 
 /* ---------- Speech ---------- */
 let listening = false, rec = null, dict = null, engine = null, dictFallback = {}, micLang = null;
@@ -1684,9 +1705,9 @@ if (inClaude && window.claude.use){
 function setListening(on){
   listening = on;
   $('micBtn').classList.toggle('live', on);
-  $('micLabel').textContent = t(on ? 'stop' : 'start');
+  $('micLabel').textContent = on ? '🔴 ' + ot('pttLive') : '🎤 ' + ot('pttHold');
   if (!on) micLang = null; drawWheel();
-  if (on){ if (!ONL) timerStart(); } else { $('interim').textContent = ''; engine = null; timerStop(); $('timeout').classList.remove('show'); }
+  if (!on){ $('interim').textContent = ''; engine = null; }
   if (typeof GR !== 'undefined' && OL.room) try { renderGame(); } catch(_){}
 }
 
@@ -1766,7 +1787,7 @@ function startListening(){
       const code = err && err.code;
       if (code === 'unavailable' && useLang === 'az'){
         dictFallback.az = 'tr';
-        $('msg').textContent = 'Azərbaycan dili burada desteklenmiyor. Türkçe tanımayla devam etmek için tekrar "Başlat"a bas.';
+        $('msg').textContent = 'Azərbaycan dili burada desteklenmiyor. Türkçe tanımayla devam etmek için mikrofona tekrar basılı tut.';
       } else if (code === 'not_granted'){
         $('msg').textContent = t('micDenied');
       } else if (code !== 'stopped'){
@@ -1804,7 +1825,7 @@ async function micFix(){
   setTimeout(() => { toast(t('micOk')); if (was) { try { startListening(); } catch(_){} } }, 350);
 }
 $('micFix').onclick = () => micFix();
-$('micBtn').onclick = () => { ensureAudio(); listening ? stopListening() : startListening(); };
+
 $('resetBtn').onclick = resetSession;
 $('mYes').onclick = () => { $('modal').classList.remove('show'); resetSession(); };
 $('mNo').onclick = () => $('modal').classList.remove('show');
@@ -2279,7 +2300,7 @@ function admRooms(){
 }
 
 const OTX = {
-  tr:{cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
+  tr:{giTr:'🇹🇷 Türkçe isimler', giAz:'🇦🇿 Azerbaycan isimleri', giRound:n=>`Tur ${n}`, giRounds:n=>n ? `${n} tur` : 'Harfler bitene kadar', giTime:s=>`${s} sn`, giLeft:n=>`${n} harf kaldı`, cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
     kickQ:x=>`@${x} oyundan atılsın mı? Tekrar bas.`, outKick:x=>`⛔ @${x} oda kurucusu tarafından atıldı`, fbMine:'Mesajların ve cevaplar', fbReply:'Yönetici cevabı', fbNoReply:'Henüz cevap yok', frMenuS:'Ekle, kabul et, yönet', shareMenuS:'Uygulama linkini WhatsApp vb. ile paylaş', outQ:'Çıkış yapmak için tekrar bas', shareApp:'Arkadaşlarını davet et', shareAppText:'Harf Çarkı\'nı dene! Çarkı çevir, son harften isim söyle, arkadaşlarınla online yarış 🎡', frLogin:'Arkadaşlarını görmek için giriş yap', pushT:'Bildirimleri aç', pushS:'Davetler ve arkadaşlık istekleri telefon kilitliyken bile gelsin', pushBtn:'Aç', pushOn:'🔔 Bildirimler açıldı', pushDenied:'Bildirim izni kapalı. Tarayıcı ayarlarından bu site için bildirimlere izin ver.', pushNo:'Bu tarayıcı bildirimleri desteklemiyor', ogTitle:'Oyun', micErr:'Mikrofon açılamadı. Tarayıcı ayarlarından mikrofon izni ver ve "Mikrofonu aç"a bas.', ogRound:(a,b)=>`Tur ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlıyor', ogFirst:x=>`İlk isim ${x} harfiyle başlamalı`, ogWon:x=>`🏆 Turu <b>@${x}</b> kazandı (+2)`, ogYouSpin:'Sıra sende: çarkı çevir! (20 sn içinde çevirmezsen kendiliğinden döner)', ogSpinBtn:'Çarkı çevir', ogWaitSpin:x=>`<b>@${x}</b> çarkı çevirecek…`, ogSpinning:'Çark dönüyor…',
     ogYourTurn:x=>`🎤 Sıra sende! <b>${x}</b> harfiyle bir isim söyle ya da yaz`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, pttHold:'Basılı tut ve konuş', pttLive:'Dinliyorum… bırakınca gönderilir', typeName:'ya da ismi yaz…', sendName:'Gönder', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu kapat',
     outTime:x=>`⏱ @${x} süresi doldu, elendi`, outLeft:x=>`🚫 @${x} uygulamadan çıktı, elendi`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitti', pts:'puan', ogAgain:'Tekrar oyna', ogWaitAgain:x=>`@${x} yeni oyun başlatabilir`, ogShare:'Sonucu paylaş',
@@ -2298,7 +2319,7 @@ const OTX = {
     rmTitle:'Bekleme odası', rmCode:'ODA KODU', rmShare:'Linki paylaş', rmCopy:'Kopyala', rmPlayers:'Oyuncular', kick:'Çıkar', you:'sen', rmInvite:'Arkadaşlarını davet et', invite:'Davet et', invSent:'Gönderildi ✓', invSentT:x=>`@${x} davet edildi`,
     rmStart:'Oyunu başlat', rmNeed2:'Başlatmak için en az 2 kişi gerekli', rmWaitHost:x=>`@${x} oyunu başlatınca oyun başlayacak`, rmClose:'Odayı kapat', rmLeave:'Odadan çık',
     shareText:c=>`Harf Çarkı'nda benimle oyna! Oda kodu: ${c}`, copied:'Link kopyalandı', linkLogin:'Odaya katılmak için önce giriş yap' },
-  az:{cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
+  az:{giTr:'🇹🇷 Türk adları', giAz:'🇦🇿 Azərbaycan adları', giRound:n=>`Raund ${n}`, giRounds:n=>n ? `${n} raund` : 'Hərflər bitənədək', giTime:s=>`${s} san`, giLeft:n=>`${n} hərf qaldı`, cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
     kickQ:x=>`@${x} oyundan çıxarılsın? Yenidən bas.`, outKick:x=>`⛔ @${x} otağı quran tərəfindən çıxarıldı`, fbMine:'Mesajların və cavablar', fbReply:'Admin cavabı', fbNoReply:'Hələ cavab yoxdur', frMenuS:'Əlavə et, qəbul et, idarə et', shareMenuS:'Tətbiq linkini WhatsApp və s. ilə paylaş', outQ:'Çıxış etmək üçün yenidən bas', shareApp:'Dostlarını dəvət et', shareAppText:'Harf Çarkı-nı yoxla! Çarxı fırlat, son hərfdən ad de, dostlarınla onlayn yarış 🎡', frLogin:'Dostlarını görmək üçün daxil ol', pushT:'Bildirişləri aç', pushS:'Dəvətlər və dostluq istəkləri telefon kilidli olanda belə gəlsin', pushBtn:'Aç', pushOn:'🔔 Bildirişlər açıldı', pushDenied:'Bildiriş icazəsi bağlıdır. Brauzer ayarlarından bu sayt üçün bildirişlərə icazə ver.', pushNo:'Bu brauzer bildirişləri dəstəkləmir', ogTitle:'Oyun', micErr:'Mikrofon açılmadı. Brauzer ayarlarından mikrofon icazəsi ver və "Mikrofonu aç" düyməsinə bas.', ogRound:(a,b)=>`Raund ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlayır', ogFirst:x=>`İlk ad ${x} hərfi ilə başlamalıdır`, ogWon:x=>`🏆 Raundu <b>@${x}</b> qazandı (+2)`, ogYouSpin:'Növbə səndədir: çarxı fırlat! (20 san ərzində fırlatmasan özü dönəcək)', ogSpinBtn:'Çarxı fırlat', ogWaitSpin:x=>`<b>@${x}</b> çarxı fırladacaq…`, ogSpinning:'Çarx fırlanır…',
     ogYourTurn:x=>`🎤 Növbə səndədir! <b>${x}</b> hərfi ilə ad de və ya yaz`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, pttHold:'Basılı saxla və danış', pttLive:'Dinləyirəm… buraxanda göndərilir', typeName:'və ya adı yaz…', sendName:'Göndər', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu bağla',
     outTime:x=>`⏱ @${x} vaxtı bitdi, çıxdı`, outLeft:x=>`🚫 @${x} tətbiqdən çıxdı, raunddan çıxarıldı`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitdi', pts:'xal', ogAgain:'Yenidən oyna', ogWaitAgain:x=>`@${x} yeni oyun başlada bilər`, ogShare:'Nəticəni paylaş',
@@ -3218,6 +3239,7 @@ async function strikeLeave(){
 function buildGameUI(){
   $('rmBody').innerHTML = `<div class="og">
     <div class="og-top"><b id="ogRound"></b><span class="pts-chip" id="ogPtsChip" hidden></span><span id="ogCode"></span></div>
+    <div class="g-info" id="ogInfo"></div>
     <div class="og-wheel"><div class="wheel-wrap"><div class="pointer"><svg viewBox="0 0 40 52"><path d="M20 51 C14 38 3 30 3 18 A17 17 0 0 1 37 18 C37 30 26 38 20 51Z" fill="#1c1b19"/><circle cx="20" cy="18" r="6.5" fill="#e8b630"/></svg></div>
       <svg id="ogWheel" viewBox="0 0 300 300"></svg><div class="hub" id="ogHub">?</div></div><div class="og-count" id="ogCount"></div></div>
     <div class="og-status" id="ogStatus"></div>
@@ -3255,7 +3277,10 @@ function renderGame(){
   if ((r.rot || 0) !== GR.rot){ const w = $('ogWheel'); w.style.transition = ''; void w.offsetWidth; w.style.transform = `rotate(${r.rot}deg)`; GR.rot = r.rot; }
   drawOgWheel(r, spinning);
   $('ogHub').textContent = r.phase === 'turn' ? (spinning ? '…' : r.need || r.letter) : (r.letter || '?');
-  $('ogRound').textContent = r.round ? ot('ogRound', r.round, r.rounds) : ot('ogReady');
+  $('ogRound').textContent = r.round ? '' : ot('ogReady');
+  { const left = olLetters(r).filter(ch => !(r.used || []).includes(ch)).length;
+    const inf = giLangChip(r.lang) + (r.round ? `<span class="gi">🔄 ${ot('ogRound', r.round, r.rounds)}</span>` : `<span class="gi">🔄 ${ot('giRounds', r.rounds)}</span>`) + `<span class="gi">⏱ ${ot('giTime', r.time || 15)}</span><span class="gi">🔤 ${ot('giLeft', left)}</span>`;
+    if ($('ogInfo').innerHTML !== inf) $('ogInfo').innerHTML = inf; }
   $('ogCode').textContent = OL.code;
   const order = presentOrder(r), alive = new Set(r.alive || []);
   $('ogPs').innerHTML = order.map(u => { const p = r.players[u], out = r.phase === 'turn' && !alive.has(u), cur = r.phase === 'turn' && r.turn === u;
@@ -3330,6 +3355,7 @@ function pttUp(){
   }, 650);
 }
 ['pointerup', 'pointercancel'].forEach(ev => document.addEventListener(ev, pttUp));
+pttBind($('micBtn')); setListening(listening);
 document.addEventListener('visibilitychange', () => { if (document.hidden) pttUp(); });
 /* Saniye saniye: geri sayım, süre çubuğu, otomatik çark ve hakemlik */
 function gameTick(){
