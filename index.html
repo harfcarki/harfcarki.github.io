@@ -1379,6 +1379,11 @@
   /* Sayfa içeriği çubuğun altında kalmasın */
   body.has-dock .s-body{padding-bottom:calc(84px + env(safe-area-inset-bottom))!important}
   body.has-dock .home-in{padding-bottom:84px}
+  /* Ana sayfadaki ayarlar/zil düğmeleri her zaman üstte (animasyonlu başlık üstüne binmesin) */
+  .home-set,.home-bell{z-index:6}
+  /* Oyun ekranındaki boş liste kartı hiç görünmesin (yalnız duyulan yazı varken) */
+  .app > .list-card{display:none}
+  .app > .list-card:has(#interim:not(:empty)){display:flex;padding:8px 14px;min-height:0}
 </style>
 </head>
 <body>
@@ -5358,7 +5363,7 @@ function dockWanted(){
   if (isOpen('msgPage') || isOpen('chatPage') || isOpen('authPage') || isOpen('unamePage')) return false;
   if (document.querySelector('.modal.show, .nm-ask, .tut.show, .imgview.show, .leftbox.show')) return false;
   const home = !$('home').classList.contains('hide'), sheet = document.querySelector('.sheet.open');
-  if (sheet && sheet.id === 'roomPage' && sheet.classList.contains('playing')) return false;   // oyunda oda sohbeti var
+  if (isOpen('roomPage')) return false;   // oda/oyun sayfasında kendi sohbet kutusu var
   if (!home && !sheet) return false;   // oyun ekranında kendi mesaj kutusu var
   return true;
 }
