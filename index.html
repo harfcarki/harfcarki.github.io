@@ -3155,14 +3155,18 @@ async function fbInit(){
     U.getRedirectResult(auth).catch(e => authErr(e));
     namesReady = loadRemoteNames(); loadAnn();
     U.onAuthStateChanged(auth, async u => {
-      me = u; profile = null; setAdmin(false);
-      if (u){ await loadProfile(); checkAdmin(); }
+      ACC_LOAD = true; me = u; profile = null; setAdmin(false);
+      if (u){ await loadProfile(); if (ACC && ACC.uid === u.uid && ACC.admin) await checkAdmin(); else checkAdmin(); }
+      ACC_LOAD = false; document.body.classList.toggle('admin', isAdminUser);
       fbReady = true; loadPushCfg(); loadStaff(); watchAppCfg(); loadWords(); if (!u){ stopLobby(); pushOK = false; } renderAcct(); afterAuth(); watchMyFb(); if (u && profile && profile.username && !OL.subs.length) startLobby(); if (linkRoom) tryLinkJoin(); runNavWant(); pushInit();
     });
   } catch(e){ console.warn('Firebase yüklenemedi', e); fbReady = false; renderAcct(); }
 }
 /* ---------- İsim listesi (admin) ---------- */
 let namesReady = Promise.resolve(), isAdminUser = false, syncT = null;
+/* Açılışta zıplama olmasın: son hesap görünümü hafızadan hemen çizilir, Firebase gelince sessizce güncellenir */
+let ACC_LOAD = true, ACC = null; try { ACC = JSON.parse(localStorage.getItem('iz-acct') || 'null'); } catch(_){}
+try { if (ACC){ if (ACC.admin) document.body.classList.add('admin'); const ac = document.getElementById('acctCard'); if (ac && ACC.html) ac.innerHTML = ACC.html; } } catch(_){}
 async function loadRemoteNames(){
   try {
     const s = await FB.F.getDoc(FB.F.doc(FB.db, 'config', 'names'));
@@ -3173,7 +3177,7 @@ async function loadRemoteNames(){
     buildIndexes(); renderNames(); recompute();
   } catch(e){ console.warn('İsim listesi alınamadı', e); }
 }
-function setAdmin(v){ isAdminUser = v; setTimeout(applyMaint, 0); document.body.classList.toggle('admin', v); if (v && me) staffJoin(); try { renderAcct(); } catch(_){} window.adminSync = v ? queueSync : null; renderNames(); }
+function setAdmin(v){ isAdminUser = v; if (!v && ACC_LOAD && ACC && ACC.admin) return; setTimeout(applyMaint, 0); document.body.classList.toggle('admin', v); if (v && me) staffJoin(); try { renderAcct(); } catch(_){} window.adminSync = v ? queueSync : null; renderNames(); }
 async function checkAdmin(){
   try {
     const s = await FB.F.getDoc(FB.F.doc(FB.db, 'admins', me.uid));
@@ -5756,7 +5760,7 @@ function showDayCard(force){
   const close = () => { const c = $('dayCard'); if (!c) return; c.classList.add('out'); setTimeout(() => { $('dayBox').innerHTML = ''; }, 650); };
   $('dayX').onclick = close; clearTimeout(showDayCard.t); showDayCard.t = setTimeout(close, 12000);
 }
-setTimeout(() => { try { showDayCard(); } catch(e){ console.warn(e); } }, 1500);
+try { showDayCard(); } catch(e){ setTimeout(() => { try { showDayCard(); } catch(_){} }, 0); }   // hemen göster: sonradan belirip sayfayı kaydırmasın
 /* Arayüz dili değişince açık/çizilmiş her şeyi yeni dilde yeniden çiz */
 function relang(){
   const fns = ['renderPbar','renderEx','renderOffInfo','renderAnn','renderLobby','renderFriends','renderEvents','renderChamps','renderInst','renderNow','renderAcct','renderMyFb','renderAll','renderMsg','renderThread','renderRoomChat'];
@@ -5801,6 +5805,7 @@ function avHtml(){
   return me && profile && profile.username ? `<span class="av-ed" data-phpick role="button" tabindex="0" aria-label="${escH(ot('phT'))}">${av}<i class="cam">📷</i></span>` : av;
 }
 function renderAcct(){
+  if (ACC_LOAD && ACC && (!fbReady || (me && !(profile && profile.username)))){ if (ACC.html && $('acctCard').innerHTML !== ACC.html) $('acctCard').innerHTML = ACC.html; return; }
   const esc = x => String(x || '').replace(/</g,'&lt;');
   let home, set;
   if (me && profile && profile.username){
@@ -5825,6 +5830,7 @@ function renderAcct(){
     set = `<div class="acct">${who}</div><div class="row"><button class="btn spin sm" id="setSign">${t('signIn')}</button></div><div class="menu"><button class="mrow" id="setShare"><span class="mi" style="--mc:#1f6fd1">📤</span><span class="mt">${t('shareApp')}<small>${t('shareMenuS')}</small></span><span class="chev">›</span></button></div>`;
   }
   $('acctCard').innerHTML = home; $('setAcct').innerHTML = set; try { renderInst(); } catch(_){}
+  try { if (me && profile && profile.username){ ACC = { uid:me.uid, html:home, admin:isAdminUser }; localStorage.setItem('iz-acct', JSON.stringify(ACC)); } else if (!me && fbReady){ ACC = null; localStorage.removeItem('iz-acct'); } } catch(_){}
   if ($('homeBell')) $('homeBell').hidden = !(me && profile && profile.username);
   const on = (id, fn) => { const el = $(id); if (el) el.onclick = fn; };
   on('setAdmin', () => openAdmin()); on('setMsgs', () => openMsgs()); if (typeof msgBadges === 'function' && me) setTimeout(msgBadges, 0); on('setDel', () => openDel()); on('setPv', () => openPv()); on('setNt', () => openNt()); if (typeof ntBadges === 'function') setTimeout(ntBadges, 0); on('setCups', () => openCups(me.uid, profile.username, true)); if (me && profile) myCupCount(); on('setFriends', () => openFriends()); on('setShare', () => shareApp()); on('homeSign', () => openAuth()); on('setSign', () => openAuth());
