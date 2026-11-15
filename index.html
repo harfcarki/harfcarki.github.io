@@ -954,7 +954,7 @@
   .home::after{width:60vmax;height:60vmax;right:-28vmax;bottom:-30vmax;background:radial-gradient(circle, rgba(232,182,48,.38), transparent 65%);animation:aur2 22s ease-in-out infinite alternate}
   @keyframes aur1{to{transform:translate(12vmax,10vmax) scale(1.1)}} @keyframes aur2{to{transform:translate(-10vmax,-8vmax) scale(1.15)}}
   .home-in{gap:18px;padding-bottom:10px}
-  .home-in > *{animation:hUp .6s cubic-bezier(.2,.8,.2,1) both}
+  .home.intro .home-in > *{animation:hUp .6s cubic-bezier(.2,.8,.2,1) both}
   .home-in > :nth-child(4){animation-delay:.04s} .home-in > :nth-child(5){animation-delay:.08s} .home-in > :nth-child(6){animation-delay:.1s}
   .home-in > :nth-child(7){animation-delay:.12s} .home-in > :nth-child(8){animation-delay:.16s} .home-in > :nth-child(9){animation-delay:.22s}
   .home-in > :nth-child(10){animation-delay:.28s} .home-in > :nth-child(11){animation-delay:.34s}
@@ -1440,6 +1440,9 @@
   .g-top .gi-lang .cs{width:22px;height:20px}
   .g-top .gi-lang .swap{font-size:12px}
   #ogSec.idle{opacity:.55}
+  /* Sayfa geçişlerinde titreme olmasın */
+  .sheet .panel{will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:layout paint}
+  .home,.app{backface-visibility:hidden;-webkit-backface-visibility:hidden}
 </style>
 </head>
 <body>
@@ -1508,7 +1511,7 @@
 </div>
 
 <!-- Açılış ekranı -->
-<div class="home" id="home">
+<div class="home intro" id="home">
   <div class="home-in">
     <button class="icon-btn home-bell" id="homeBell" aria-label="Bildirimler" hidden>🔔<span class="n-badge in" id="bellN"></span></button>
     <button class="icon-btn home-set" id="homeSet" aria-label="Ayarlar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
@@ -2432,6 +2435,7 @@ function nameHtml(n){
   return ch.slice(0,i).join('') + `<span class="last">${ch[i]}</span>` + ch.slice(i+1).join('');
 }
 function renderList(){
+  try { if (!ONL && current && !roundOver && !spinning){ const nx = expectedLetter(); if (nx && hub.textContent !== nx){ hub.textContent = nx; hub.classList.add('pop'); setTimeout(() => hub.classList.remove('pop'), 300); } } } catch(_){}
   renderSaid('offSaid', names.map((n, i) => { const ok = !n.wrong && !n.unk && !n.rep, sg = lang + ':' + n.key;
       return { id:i, f:ok ? fold(n.key) : '', k:n.wrong ? 'wrong' : n.rep ? 'rep' : n.unk ? 'unk' : 'ok', name:nameHtml(n),
         by:n.by >= 0 && pname(n.by) ? escH(pname(n.by)) : '', tag:n.wrong ? escH(t('wrong', n.exp)) : n.rep ? escH(t('rep')) : n.unk ? escH(t('unk')) + ` <button class="sug" data-s="${i}"${sugSent.has(sg) ? ' disabled' : ''}>${sugSent.has(sg) ? escH(t('sugSent')) : '💡 ' + escH(t('sugBtn'))}</button>` : '',
@@ -5761,6 +5765,7 @@ function relang(){
   try { if (isOpen('adminPage')){ ADM_STATIC(); admShow(admTab); } } catch(_){}
 }
 function showHome(){ statFlush(); stopListening(); timerStop(); $('home').classList.remove('hide'); renderAcct(); }
+setTimeout(() => { try { $('home').classList.remove('intro'); } catch(_){} }, 1400);   // giriş animasyonu yalnız ilk açılışta (sayfa değişince titreme olmasın)
 function hideHome(){ $('home').classList.add('hide'); try { setPlaying(); } catch(_){} }
 function navTop(){
   for (const id of ['chatPage','msgPage','adminPage','roomPage','createPage','friendsPage','unamePage','authPage','sheet','onlinePage']) if (isOpen(id)) return id;
