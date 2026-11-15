@@ -514,6 +514,75 @@
   body.wp #wheel text, body.wp #ogWheel text{paint-order:stroke;stroke:rgba(0,0,0,.45);stroke-width:2.6px;stroke-linejoin:round}
   body.wp .og-status, body.wp .og-top{text-shadow:0 1px 6px var(--bg)}
 
+
+
+
+  /* Bağlantı kapsülü */
+  .net-pill{position:fixed;left:50%;top:calc(64px + env(safe-area-inset-top));z-index:95;transform:translate(-50%,-140%);display:flex;align-items:center;gap:8px;padding:7px 14px 7px 11px;border-radius:999px;font-size:13px;font-weight:700;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:transform .35s cubic-bezier(.2,1.2,.4,1),background .3s;pointer-events:none;white-space:nowrap;max-width:92vw}
+  .net-pill.show{transform:translate(-50%,0)}
+  .net-pill i{width:8px;height:8px;border-radius:50%;background:#fff;flex:none}
+  .net-pill.k-down{background:#d64541} .net-pill.k-retry{background:#e8a317;color:#3a2500} .net-pill.k-retry i{background:#3a2500;animation:netBlink .8s ease-in-out infinite}
+  .net-pill.k-ok{background:#22a862} .net-pill.k-weak{background:#e8590c} .net-pill.k-weak i{animation:netBlink 1.2s ease-in-out infinite}
+  @keyframes netBlink{0%,100%{opacity:1}50%{opacity:.25}}
+  /* Yönetici genişletmeleri */
+  .warn-box{margin-top:6px;padding:10px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
+  .warn-pre{display:flex;flex-direction:column;gap:5px;margin-bottom:6px} .warn-pre .abtn{font-size:12.5px;white-space:normal;text-align:left;width:100%;padding:8px 10px}
+  .rm-p .grow,.pen-row .grow,.log-row .grow{flex:1;min-width:0}
+  .warn-box textarea{width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:none}
+  .rm-card .st-chip{margin-left:4px} .rm-ps{display:flex;flex-direction:column;gap:4px}
+  .rm-p{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:12px;background:var(--bg)} .rm-p small{color:var(--muted);font-size:12px} .rm-p.out{opacity:.5}
+  .rm-chat{display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto}
+  .pen-row,.log-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)} .pen-row:last-child,.log-row:last-child{border-bottom:none}
+  .pen-row small{display:block;font-size:12px;color:var(--muted)} .log-row{font-size:13.5px} .log-row small{font-size:11.5px;color:var(--muted);white-space:nowrap}
+  .xw-list{display:flex;flex-wrap:wrap;gap:6px} .xw{display:inline-flex;align-items:center;gap:4px;background:var(--red-bg);color:var(--red);font-weight:700;font-size:13px;padding:4px 6px 4px 10px;border-radius:999px}
+  .xw button{border:none;background:none;color:var(--red);font-size:16px;cursor:pointer;padding:0 4px}
+  .kpis.k3{grid-template-columns:repeat(3,1fr)} .kpis.k3 .kpi b{font-size:22px}
+  .mini-ch{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:120px}
+  .mc{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%} .mc b{font-size:12px} .mc small{font-size:11px;color:var(--muted)}
+  .mc i{display:block;width:70%;border-radius:6px 6px 2px 2px;background:var(--accent)} .mc i.n{background:#e08a00}
+  /* Bakım */
+  .maint{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px} .maint[hidden]{display:none}
+  .maint-in{max-width:420px;text-align:center} .maint-ic{font-size:72px;animation:sfFlick 1s ease-in-out infinite alternate} .maint h2{font-size:26px;margin:10px 0} .maint p{color:var(--muted);font-size:16px;line-height:1.5;margin-bottom:20px}
+  /* Etkinlikler */
+  .ev-sec{display:flex;flex-direction:column;gap:8px;margin-bottom:12px} .ev-sec:empty{display:none} .ev-h{font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin:0}
+  .ev-card{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:none;border-radius:18px;padding:12px 14px;font:inherit;color:#fff;cursor:pointer;background:linear-gradient(140deg,#7c3aed,#c02660);box-shadow:0 8px 20px rgba(124,58,237,.25)}
+  .ev-card.k-ev{background:linear-gradient(140deg,#0ea5e9,#2f6f5e)} .ev-card.st-past{filter:grayscale(.5);opacity:.85}
+  .ev-card .grow{display:flex;flex-direction:column;gap:2px} .ev-card b{font-size:16px} .ev-card small{font-size:12px;opacity:.92} .ev-ic{font-size:30px}
+  .ev-big{font-size:56px;text-align:center} .ev-desc{text-align:left;white-space:pre-wrap;font-size:14.5px;line-height:1.55;background:var(--bg);border-radius:14px;padding:10px 12px;margin-top:10px}
+  .ev-prize{font-weight:700;margin-top:8px}
+  .ev-dates{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px} .ev-dates label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+  .ev-dates input{font:inherit;font-size:14px;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+  .ev-adm{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-bottom:1px solid var(--line)} .ev-adm:last-child{border-bottom:none}
+  /* Bildirimler */
+  .home-bell{position:absolute;top:0;right:56px;font-size:19px} .home-bell .n-badge{position:absolute;top:-4px;right:-4px}
+  .nt-in{width:min(94vw, 460px)!important} .nt-list{display:flex;flex-direction:column;gap:10px;text-align:left}
+  .nt-card{border-radius:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);text-align:left}
+  .nt-card.nt-ann{background:linear-gradient(160deg,#fff8e6,var(--card));border-color:#f0d58a} :root[data-theme="dark"] .nt-card.nt-ann{background:linear-gradient(160deg,rgba(245,197,66,.12),var(--card))}
+  .nt-card.unread{border-left:4px solid var(--accent)}
+  .nt-h{display:flex;align-items:center;gap:8px;margin-bottom:6px} .nt-h .grow{display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px} .nt-h b{font-size:15px} .nt-ic{font-size:20px}
+  .nt-card p{font-size:14.5px;line-height:1.5;margin:0 0 6px;white-space:pre-wrap} .nt-card small{font-size:12px;color:var(--muted)}
+  .nt-pop{width:min(90vw, 400px)!important;text-align:left}
+  .bc-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)} .bc-row:last-child{border-bottom:none}
+  .bc-row p{margin:2px 0 4px;font-size:14px;white-space:pre-wrap} .bc-row small{font-size:12px;color:var(--muted)}
+  input.atext{width:100%;box-sizing:border-box}
+  /* Şikayet kartları (yeni) */
+  .rg{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px;display:flex;flex-direction:column;gap:12px}
+  .rg.hot{border:2px solid var(--red);box-shadow:0 0 0 4px var(--red-bg)}
+  .rg-head{display:flex;align-items:center;gap:10px} .rg-head .grow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .rg-name{font-size:17px}
+  .rg-n{width:28px;height:28px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-weight:800;font-size:13px;flex:none} .rg.hot .rg-n{background:var(--red);color:#fff}
+  .rg-hot{background:var(--red);color:#fff;font-weight:800;padding:3px 9px;border-radius:999px;font-size:11.5px}
+  .rg-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px} .rg-stats>div{background:var(--bg);border-radius:12px;padding:8px 4px;text-align:center}
+  .rg-stats b{display:block;font-size:19px;color:var(--accent)} .rg.hot .rg-stats>div:first-child b{color:var(--red)} .rg-stats small{font-size:11px;color:var(--muted)}
+  .rg-sec{display:flex;flex-direction:column;gap:6px} .rg-sec .adm-lbl{margin:0}
+  .rg-rs{display:flex;flex-wrap:wrap;gap:6px} .rg-rs span{font-size:12.5px;font-weight:600;background:var(--red-bg);color:var(--red);padding:4px 10px;border-radius:999px}
+  .rg-meta{font-size:13px;color:var(--muted)} .rg-meta b{color:var(--ink)} .rg-same{color:#b97a06;font-weight:700}
+  .rg-btns{margin-top:0}
+  .rg-list{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+  .rl-item{background:var(--bg);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px} .rl-item.new{border-left:3px solid var(--red)}
+  .rl-top{display:flex;justify-content:space-between;align-items:center} .rl-reason{font-weight:800;font-size:13.5px}
+  .rl-st{font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--card);color:var(--muted)} .rl-item.new .rl-st{background:var(--red-bg);color:var(--red)}
+  .rl-item small{font-size:12px;color:var(--muted)} .rl-txt{margin:2px 0 0;font-size:14px} .rl-ctx{margin:2px 0 0;font-size:13.5px;font-style:italic;background:var(--card);padding:6px 10px;border-radius:10px} .rl-ctx small{display:block;font-style:normal}
   /* Yönetici rozeti */
   .adm-b{display:inline-flex;align-items:center;gap:3px;background:#e3efe9;color:#2f6f5e;font-size:10.5px;font-weight:800;padding:2px 7px 2px 4px;border-radius:999px;letter-spacing:.2px;vertical-align:middle;margin-left:5px;white-space:nowrap;line-height:1.3}
   .adm-b svg{width:12px;height:12px;flex:none}
@@ -521,10 +590,25 @@
   .up-t .adm-b{font-size:12px;padding:3px 9px 3px 5px} .up-t .adm-b svg{width:14px;height:14px}
   .ch-card .adm-b{background:rgba(255,255,255,.25);color:#fff}
   .og-p .adm-b{margin-left:3px}
+  .host-tools{border-style:solid;background:var(--card)}
+  .mute-note{display:none;color:var(--red);font-weight:700;font-size:13.5px;margin:6px 0;text-align:center}
+  .rc.muted .mute-note{display:block} .rc.muted .composer,.rc.muted .emo{display:none}
   /* Yönetici araçları ve detay */
   .adm-tools{margin-top:14px;padding:12px;border-radius:16px;background:var(--bg);border:1px dashed var(--line);text-align:left}
   .adm-h{display:block;font-size:13.5px;color:var(--accent);margin-bottom:8px}
-  .adm-g{display:flex;flex-wrap:wrap;gap:6px} .adm-g .abtn{font-size:13px}
+  .adm-g{display:flex;flex-direction:column;gap:6px}
+  .adm-row{display:grid;gap:6px} .adm-row.c1{grid-template-columns:1fr} .adm-row.c2{grid-template-columns:1fr 1fr} .adm-row.c3{grid-template-columns:1fr 1fr 1fr}
+  .adm-row .abtn{width:100%;min-height:40px;padding:8px 6px;font-size:13px;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.2}
+  .adm-row .abtn:disabled{opacity:.4}
+  .adm-lbl{font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:6px}
+  .kpi.hot b{color:var(--red)}
+  .rg.hot{border:2px solid var(--red);box-shadow:0 0 0 4px var(--red-bg)}
+  .rg-top{display:flex;align-items:center;gap:10px} .rg-top small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .rg-n{width:26px;height:26px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+  .rg-c{font-size:22px;font-weight:900;color:var(--accent)} .rg.hot .rg-c{color:var(--red)}
+  .rg-hot{background:var(--red);color:#fff;font-weight:800;padding:1px 7px;border-radius:999px;font-size:11px}
+  .rg-rs{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px} .rg-rs span{font-size:12px;font-weight:700;background:var(--red-bg);color:var(--red);padding:3px 9px;border-radius:999px}
+  .rg-list{margin-top:8px;display:flex;flex-direction:column;gap:6px} .rg-list .rep-ctx.new{border-left:3px solid var(--red)}
   .adm-ban{color:var(--red);font-weight:700;font-size:13.5px;margin:4px 0 8px}
   .dsec{text-align:left;margin-top:12px;padding:12px;border-radius:16px;background:var(--bg)} .dsec h4{font-size:14px;margin:0 0 8px}
   .dkv{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:5px 0;border-bottom:1px solid var(--line)} .dkv:last-child{border-bottom:none} .dkv span{color:var(--muted)}
@@ -804,6 +888,7 @@
 <!-- Açılış ekranı -->
 <div class="home" id="home">
   <div class="home-in">
+    <button class="icon-btn home-bell" id="homeBell" aria-label="Bildirimler" hidden>🔔<span class="n-badge in" id="bellN"></span></button>
     <button class="icon-btn home-set" id="homeSet" aria-label="Ayarlar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <div class="hero">
       <div class="hero-logo"><span class="logo"><svg viewBox="0 0 32 32"><g transform="rotate(8 11 11)"><rect x="3" y="3" width="15" height="15" rx="4" fill="#fff"/><text x="10.5" y="15.2" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#2f6f5e">A</text></g><g transform="rotate(-8 21 21)"><rect x="13.5" y="13.5" width="15" height="15" rx="4" fill="#f0be3c"/><text x="21" y="25.6" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#28241e">Z</text></g></svg></span></div>
@@ -871,6 +956,7 @@
     <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" data-close="onlinePage" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2 data-i18n="playOnline">Online oyna</h2></div></div>
     <div class="s-body"><div class="s-wrap">
       <section class="s-sec"><div class="me-row" id="onlineMe"></div></section>
+      <section class="ev-sec" id="olEvents"></section>
       <section class="champs-sec" id="olChamps"></section>
       <div class="push-card" id="pushCard"><span>🔔</span><span class="grow"><b data-i18n="pushT">Bildirimleri aç</b><small data-i18n="pushS">Davetler ve arkadaşlık istekleri telefon kilitliyken bile gelsin</small></span><button class="abtn ok" id="pushBtn" data-i18n="pushBtn">Aç</button></div>
       <div class="ol-acts">
@@ -1033,7 +1119,7 @@
     <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" data-close="adminPage" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Yönetici paneli</h2></div></div>
     <div class="s-body"><div class="s-wrap">
       <div class="adm-tabs" id="admTabs">
-        <button data-v="sum" class="on">📊 Özet</button><button data-v="sug">💡 Öneriler<span class="n" id="sugCnt"></span></button><button data-v="users">👥 Kullanıcılar</button><button data-v="ann">📣 Duyuru</button><button data-v="rooms">🎮 Odalar</button><button data-v="rep">🚩 Şikayetler<span class="n" id="repCnt"></span></button><button data-v="champ">🏆 Şampiyonlar</button>
+        <button data-v="sum" class="on">📊 Özet</button><button data-v="sug">💡 Öneriler<span class="n" id="sugCnt"></span></button><button data-v="rep">🚩 Şikayetler<span class="n" id="repCnt"></span></button><button data-v="pen">⛔ Cezalar</button><button data-v="users">👥 Kullanıcılar</button><button data-v="rooms">🎮 Odalar</button><button data-v="ann">📣 Duyuru</button><button data-v="ev">🎉 Etkinlikler</button><button data-v="champ">🏆 Şampiyonlar</button><button data-v="flt">🧹 Filtre</button><button data-v="log">📜 Kayıt</button>
       </div>
       <div id="admBody"></div>
     </div></div>
@@ -1065,9 +1151,15 @@
 <div class="leftbox" id="upBox"><div class="in up-in"><button class="up-x" id="upX" aria-label="Kapat">✕</button><div id="upBody"></div></div></div>
 <div class="leftbox" id="pvBox"><div class="in up-in"><button class="up-x" data-pvx aria-label="Kapat">✕</button><div id="pvBody"></div></div></div>
 <div class="leftbox" id="lbBox"><div class="in up-in lb-in"><button class="up-x" data-lbx aria-label="Kapat">✕</button><div id="lbBody"></div></div></div>
+<div class="leftbox" id="muteBox"><div class="in"><div style="font-size:42px">🔇</div><b id="muteT2"></b><p id="muteT"></p><button class="btn spin" style="width:100%" onclick="this.closest('.leftbox').classList.remove('show')">OK</button></div></div>
+<div class="leftbox" id="ntBox"><div class="in up-in nt-in"><button class="up-x" data-ntx aria-label="Kapat">✕</button><div id="ntBody"></div></div></div>
+<div class="leftbox" id="ntPop"><div class="in nt-pop"><div id="ntPopB"></div><button class="btn spin" style="width:100%;margin-top:12px" data-ntpok>OK</button></div></div>
+<div class="maint" id="maintBox" hidden><div class="maint-in"><div class="maint-ic">🔧</div><h2 id="maintT"></h2><p id="maintP"></p><button class="btn ghost" id="maintLocal"></button></div></div>
+<div class="leftbox" id="evBox"><div class="in up-in"><button class="up-x" data-evx aria-label="Kapat">✕</button><div id="evBody"></div></div></div>
 <div class="leftbox" id="invBox"><div class="in"><div id="invAv" class="inv-av"></div><b id="invT"></b><p id="invB"></p>
   <div class="row2"><button class="btn ghost" id="invNo"></button><button class="btn mic" id="invGo"></button></div></div></div>
 <div class="stage-fx" id="stageFx"></div>
+<div class="net-pill" id="netPill" role="status" aria-live="polite"></div>
 <div class="toast" id="toast"></div>
 <div class="wp-pop" id="wpPop"><div class="wp-box"><h4><span data-i18n="wpTitle">Duvar kağıdı</span><button class="icon-btn" id="wpClose" aria-label="Kapat">✕</button></h4><div class="wp-grid" id="wpGrid"></div></div></div>
 <div class="count" id="count"></div>
@@ -2087,7 +2179,7 @@ async function fbInit(){
     U.onAuthStateChanged(auth, async u => {
       me = u; profile = null; setAdmin(false);
       if (u){ await loadProfile(); checkAdmin(); }
-      fbReady = true; loadPushCfg(); loadStaff(); if (!u){ stopLobby(); pushOK = false; } renderAcct(); afterAuth(); watchMyFb(); if (u && profile && profile.username && !OL.subs.length) startLobby(); if (linkRoom) tryLinkJoin(); runNavWant(); pushInit();
+      fbReady = true; loadPushCfg(); loadStaff(); watchAppCfg(); loadWords(); if (!u){ stopLobby(); pushOK = false; } renderAcct(); afterAuth(); watchMyFb(); if (u && profile && profile.username && !OL.subs.length) startLobby(); if (linkRoom) tryLinkJoin(); runNavWant(); pushInit();
     });
   } catch(e){ console.warn('Firebase yüklenemedi', e); fbReady = false; renderAcct(); }
 }
@@ -2103,7 +2195,7 @@ async function loadRemoteNames(){
     buildIndexes(); renderNames(); recompute();
   } catch(e){ console.warn('İsim listesi alınamadı', e); }
 }
-function setAdmin(v){ isAdminUser = v; document.body.classList.toggle('admin', v); if (v && me) staffJoin(); window.adminSync = v ? queueSync : null; renderNames(); }
+function setAdmin(v){ isAdminUser = v; setTimeout(applyMaint, 0); document.body.classList.toggle('admin', v); if (v && me) staffJoin(); try { renderAcct(); } catch(_){} window.adminSync = v ? queueSync : null; renderNames(); }
 async function checkAdmin(){
   try {
     const s = await FB.F.getDoc(FB.F.doc(FB.db, 'admins', me.uid));
@@ -2176,8 +2268,9 @@ function openAdmin(){ if (!isAdminUser) return; openPage('adminPage'); admShow(a
 $('goAdmin').onclick = openAdmin;
 $('admTabs').onclick = e => { const b = e.target.closest('button'); if (b) admShow(b.dataset.v); };
 function admShow(v){
+  if (ADM.roomsUnsub && v !== 'rooms'){ ADM.roomsUnsub(); ADM.roomsUnsub = null; }
   admTab = v; document.querySelectorAll('#admTabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
-  ({ sum:admSummary, sug:admSug, users:admUsers, ann:admAnn, rooms:admRooms, fb:admFb, rep:admRep, champ:admChamp })[v]();
+  ({ sum:admSummary, sug:admSug, users:admUsers, ann:admAnn, rooms:admRooms, fb:admFb, rep:admRep, champ:admChamp, pen:admPen, ev:admEv, flt:admFlt, log:admLog })[v]();
 }
 const box = (title, inner) => `<section class="s-sec"><h3>${title}</h3>${inner}</section>`;
 const loading = () => { $('admBody').innerHTML = `<p class="s-note" style="text-align:center;padding:30px 0">Yükleniyor…</p>`; };
@@ -2201,6 +2294,14 @@ async function admSummary(){
     langSeg() +
     box('En çok söylenen isimler', said.length ? said.map(([k,v],i) => `<div class="arow"><span class="num">${i+1}</span><span class="grow">${escH(cap(k, admLang))}<div class="bar" style="width:${Math.max(6, v/mx*100)}%"></div></span><span class="num">${v}</span></div>`).join('') : '<p class="s-note">Henüz veri yok.</p>') +
     box('"Listede yok" denilenler', unk.length ? unk.map(([k,v]) => `<div class="arow"><span class="grow">${escH(cap(k, admLang))}<small>${v} kez söylendi</small></span><button class="abtn ok" data-add="${escH(k)}">+ Listeye ekle</button></div>`).join('') : '<p class="s-note">Listede olmayan isim söylenmemiş.</p>');
+  $('admBody').insertAdjacentHTML('afterbegin', box('🔧 Bakım modu', `<p class="s-note" style="margin-bottom:8px">Açınca yönetici dışında kimse online oyuna, mesajlara ve arkadaşlara giremez; açık odalardan çıkarılır. İsteyen tek telefonda oynamaya devam edebilir.</p>
+    <textarea class="atext" id="mtMsg" rows="2" maxlength="200" placeholder="Mesaj (isteğe bağlı) — örn: 30 dakika içinde döneceğiz">${escH(APPCFG.maintMsg || '')}</textarea>
+    <label class="tg"><span><b>Bakım modu ${APPCFG.maint ? '🔴 AÇIK' : 'kapalı'}</b></span><input type="checkbox" id="mtOn"${APPCFG.maint ? ' checked' : ''}><i></i></label>`) +
+    `<div id="sumMore"><p class="s-note" style="text-align:center">İstatistikler yükleniyor…</p></div>`);
+  $('mtOn').onchange = async () => { const on = $('mtOn').checked;
+    try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'app'), { maint:on, maintMsg:$('mtMsg').value.trim(), at:Date.now() }, { merge:true }); logMod('maint', '', '', { on }); toast(on ? '🔧 Bakım modu açıldı' : 'Bakım modu kapatıldı'); admSummary(); }
+    catch(_){ toast('Kaydedilemedi'); $('mtOn').checked = !on; } };
+  sumMore();
   $('admBody').insertAdjacentHTML('beforeend', box('🔔 Bildirim sunucusu', `<p class="s-note" style="margin-bottom:8px">Cloudflare'de kurduğun sunucunun adresini buraya yapıştır. Uygulama kapalıyken de bildirim gider.</p>
     <div class="ainput"><input id="pushUrl" placeholder="https://....workers.dev" value="${escH(PUSH.url || '')}" autocomplete="off" autocapitalize="off"><button class="abtn ok" id="pushSave">Kaydet</button></div>
     <button class="btn ghost sm" id="pushTest" style="margin-top:8px">📲 Kendime deneme bildirimi gönder</button><p class="s-note" id="pushRes" style="margin-top:6px"></p>`));
@@ -2215,6 +2316,22 @@ async function admSummary(){
   $('admBody').querySelectorAll('[data-add]').forEach(b => b.onclick = () => { addCustom(admLang, b.dataset.add); b.disabled = true; b.textContent = 'Eklendi ✓'; toast(`"${cap(b.dataset.add, admLang)}" eklendi`); });
 }
 
+
+async function sumMore(){
+  const { F, db } = FB, now = Date.now(), day0 = new Date(); day0.setHours(0, 0, 0, 0); const d0 = day0.getTime();
+  const cnt = async q => { try { return (await F.getCountFromServer(q)).data().count; } catch(_){ return '—'; } };
+  const U = F.collection(db, 'users'), TS = ms => F.Timestamp.fromDate(new Date(ms));
+  const [on, act1, act7, new1, new7] = await Promise.all([cnt(F.query(U, F.where('lastSeen', '>', now - 150e3))), cnt(F.query(U, F.where('lastSeen', '>=', d0))), cnt(F.query(U, F.where('lastSeen', '>=', d0 - 6 * 864e5))),
+    cnt(F.query(U, F.where('createdAt', '>=', TS(d0)))), cnt(F.query(U, F.where('createdAt', '>=', TS(d0 - 6 * 864e5))))]);
+  const days = [...Array(7)].map((_, i) => { const d = new Date(d0 - (6 - i) * 864e5); return { k:d.toLocaleDateString('sv'), l:d.toLocaleDateString('tr', { weekday:'short' }), ms:d.getTime() }; });
+  await Promise.all(days.map(async d => { try { const x = await F.getDoc(F.doc(db, 'stats', 'day_' + d.k)); d.g = x.exists() ? (x.data().games || 0) : 0; } catch(_){ d.g = 0; }
+    d.n = await cnt(F.query(U, F.where('createdAt', '>=', TS(d.ms)), F.where('createdAt', '<', TS(d.ms + 864e5)))); }));
+  if (!$('sumMore')) return;
+  const mg = Math.max(1, ...days.map(d => d.g)), mn = Math.max(1, ...days.map(d => +d.n || 0));
+  const bars = (key, mx, cls) => `<div class="mini-ch">${days.map(d => `<div class="mc"><b>${d[key]}</b><i class="${cls}" style="height:${Math.max(4, (+d[key] || 0) / mx * 70)}px"></i><small>${d.l}</small></div>`).join('')}</div>`;
+  $('sumMore').innerHTML = box('📈 Kullanıcılar', `<div class="kpis k3"><div class="kpi"><b>${on}</b><small>Şu an çevrimiçi</small></div><div class="kpi"><b>${act1}</b><small>Bugün aktif</small></div><div class="kpi"><b>${act7}</b><small>7 günde aktif</small></div><div class="kpi"><b>${new1}</b><small>Bugün yeni kayıt</small></div><div class="kpi"><b>${new7}</b><small>7 günde yeni kayıt</small></div></div>`) +
+    box('🎮 Son 7 gün · oynanan oyun', bars('g', mg, 'g')) + box('🆕 Son 7 gün · yeni kayıt', bars('n', mn, 'n'));
+}
 async function fetchSug(){
   const { F, db } = FB;
   const snap = await F.getDocs(F.query(F.collection(db, 'suggestions'), F.orderBy('createdAt', 'desc'), F.limit(300)));
@@ -2301,24 +2418,47 @@ async function userAct(u, act, btn){
 }
 
 async function admAnn(){
-  loading(); await loadAnn();
+  loading(); await loadAnn(); let past = [];
+  try { const sn = await FB.F.getDocs(FB.F.query(FB.F.collection(FB.db, 'announcements'), FB.F.orderBy('at', 'desc'), FB.F.limit(30))); past = sn.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => b.at - a.at); } catch(e){ console.warn(e); }
   if (admTab !== 'ann') return;
   const a = annData || {};
-  $('admBody').innerHTML = box('Duyuru', `<p class="s-note">Herkesin açılış ekranında görünür. Oyuncu kapatana kadar kalır, metni değiştirince yeniden görünür.</p>
-    <textarea class="atext" id="annT" rows="4" maxlength="300" placeholder="Örn: 200 yeni isim eklendi!">${escH(a.text)}</textarea>
-    <label class="tg"><span><b>Duyuru yayında</b></span><input type="checkbox" id="annOn"${a.on ? ' checked' : ''}><i></i></label>
-    <button class="btn spin sm" id="annSave" style="width:100%;margin-top:10px">Kaydet</button>`);
+  $('admBody').innerHTML = box('📣 Herkese bildirim gönder', `<p class="s-note" style="margin-bottom:10px">Tüm kullanıcılara gider: uygulamayı açanlar ekranda görür, uygulaması kapalı olanlara telefon bildirimi gelir. Herkesin <b>🔔 Bildirimler</b> listesinde de kalır. "Yönetici" etiketiyle görünür.</p>
+      <input class="atext" id="bcT" maxlength="60" placeholder="Başlık (isteğe bağlı) — örn: Hafta sonu turnuvası">
+      <textarea class="atext" id="bcX" rows="4" maxlength="500" placeholder="Mesajın… örn: Cumartesi 21:00'de büyük turnuva var, kazanan özel kupa alacak! 🏆" style="margin-top:8px"></textarea>
+      <button class="btn spin sm" id="bcGo" style="width:100%;margin-top:10px">📣 Herkese gönder</button><p class="s-note" id="bcRes" style="margin-top:8px"></p>`) +
+    box(`Gönderilen bildirimler (${past.length})`, past.length ? past.map(x => `<div class="bc-row"><div class="grow">${x.title ? `<b>${escH(x.title)}</b>` : ''}<p>${escH(x.text)}</p><small>${new Date(x.at).toLocaleString('tr')} · ${x.sent != null ? x.sent + ' cihaza bildirim' : 'gönderiliyor'}</small></div><button class="abtn no" data-bcdel="${escH(x.id)}">Sil</button></div>`).join('') : '<p class="s-note">Henüz bildirim gönderilmedi.</p>') +
+    box('📌 Ana ekranda sabit duyuru', `<p class="s-note">Herkesin açılış ekranının üstünde görünür. Oyuncu kapatana kadar kalır, metni değiştirince yeniden görünür. Bildirim göndermez.</p>
+      <textarea class="atext" id="annT" rows="3" maxlength="300" placeholder="Örn: 200 yeni isim eklendi!">${escH(a.text)}</textarea>
+      <label class="tg"><span><b>Duyuru yayında</b></span><input type="checkbox" id="annOn"${a.on ? ' checked' : ''}><i></i></label>
+      <button class="btn ghost sm" id="annSave" style="width:100%;margin-top:10px">Kaydet</button>`);
   $('annSave').onclick = async () => {
     try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'announce'), { text:$('annT').value.trim(), on:$('annOn').checked, updatedAt:FB.F.serverTimestamp() });
       toast('Duyuru kaydedildi'); loadAnn(); } catch(e){ toast('Kaydedilemedi'); }
   };
-}
-function admRooms(){
-  $('admBody').innerHTML = box('Açık odalar', `<div class="soon"><div class="big">🎮</div><b>Online oyun eklenince burada görünecek</b><p>Açık odaları, oyuncuları ve oyun durumunu buradan izleyip gerekirse odayı kapatabileceksin.</p></div>`);
+  $('bcGo').onclick = async () => {
+    const title = $('bcT').value.trim(), text = $('bcX').value.trim(); if (!text){ toast('Mesaj yaz'); return; }
+    const b = $('bcGo'); if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = 'Emin misin? Herkese gidecek — tekrar bas'; setTimeout(() => { if (b.isConnected){ delete b.dataset.sure; b.textContent = '📣 Herkese gönder'; } }, 4000); return; }
+    b.disabled = true; $('bcRes').textContent = 'Kaydediliyor…';
+    try {
+      const ref = await FB.F.addDoc(FB.F.collection(FB.db, 'announcements'), { title, text, at:Date.now(), by:me.uid, byName:profile.username });
+      let cur = '', sent = 0, n = 0, loops = 0;
+      if (PUSH.url) do {
+        const r = await notify('broadcast', 'announcements/' + ref.id, true, { cursor:cur });
+        if (!r || !r.ok){ $('bcRes').textContent = '⚠️ Bildirim sunucusu hata verdi: ' + ((r && r.err) || '') + ' · Uygulamayı açanlar yine de görecek.'; break; }
+        sent += r.sent || 0; n += r.n || 0; cur = r.next || ''; $('bcRes').textContent = `Gönderiliyor… ${sent} cihaz`;
+      } while (cur && ++loops < 200);
+      FB.F.updateDoc(ref, { sent }).catch(() => {});
+      $('bcRes').textContent = `✅ Gönderildi. ${sent} cihaza telefon bildirimi gitti; uygulamayı açan herkes de görecek.`;
+      $('bcT').value = ''; $('bcX').value = ''; setTimeout(admAnn, 1500);
+    } catch(e){ console.warn(e); $('bcRes').textContent = '❌ Gönderilemedi'; }
+    b.disabled = false; delete b.dataset.sure; b.textContent = '📣 Herkese gönder';
+  };
+  $('admBody').querySelectorAll('[data-bcdel]').forEach(b => b.onclick = async () => { if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = 'Emin?'; return; }
+    try { await FB.F.deleteDoc(FB.F.doc(FB.db, 'announcements', b.dataset.bcdel)); b.closest('.bc-row').remove(); toast('Silindi'); } catch(_){ toast('Silinemedi'); } });
 }
 
 const OTX = {
-  tr:{admB:'Yönetici', resName:'Bu kullanıcı adı ayrılmış, başka bir ad seç', admTools:'Yönetici araçları', admDetail:'Detayları gör', admKick:c=>`Odadan at (${c})`, admBan7:'7 gün engelle', admBan30:'30 gün engelle', admBanInf:'Kalıcı engelle', admUnban:'Engeli kaldır', admNoPhoto:'Fotoğrafı kaldır', admRen:'Adını değiştir', admSave:'Kaydet', admKicked:x=>`@${x} odadan atıldı`, admBanned:x=>`@${x} engellendi`, admUnbanned:x=>`@${x} engeli kaldırıldı`, admPhotoDone:'Fotoğraf kaldırıldı', admBanForever:'Kalıcı olarak engelli', admBanUntil:d=>`${d} tarihine kadar engelli`, durM:m=>`${m} dk`, durHM:(h,m)=>`${h} sa ${m} dk`, dAcc:'Hesap', dJoined:'Katıldı', dSeen:'Son görülme', dWhere:'Şu an', dWhereRoom:c=>`🎮 ${c} odasında`, dWhereOn:'🟢 Çevrimiçi (lobide)', dWhereOff:'⚪ Çevrimdışı', dFriends:'Arkadaş sayısı', dGames:'Online oyunlar', dG:'oyun', dP:'toplam puan', dW:'birincilik', dT:'oynama süresi', dAvg:'Oyun başına ortalama puan', dNote:'İstatistikler 15 Kasım 2026 güncellemesinden sonraki online oyunları sayar.', dRank:'Sıralama ve kupalar', dReps:n=>`Hakkındaki şikayetler (${n})`, dNoReps:'Hakkında şikayet yok 👍', dBack:'Kişi kartına dön', giTr:'🇹🇷 Türkçe isimler', giAz:'🇦🇿 Azerbaycan isimleri', giRound:n=>`Tur ${n}`, giRounds:n=>n ? `${n} tur` : 'Harfler bitene kadar', giTime:s=>`${s} sn`, giLeft:n=>`${n} harf kaldı`, cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
+  tr:{netWeak:'İnternet bağlantısı zayıf', netGood:'Bağlantı düzeldi', netDown:'İnternet bağlantısı kesildi', netRetry:n=>`Yeniden bağlanıyor… (${n}. deneme)`, netUp:'İnternete yeniden bağlandı', outConn:x=>`📶 @${x} bağlantısı koptu, oyundan çıkarıldı`, connKickT:'Bağlantın koptu', connKickP:'İnternet bağlantın uzun süre (1,5 dakikadan fazla) kesik kaldığı için oyundan çıkarıldın. Bağlantın düzelince tekrar katılabilirsin.', admWarn:'Uyar', admDelMsgs:'Açık mesajlarını sil', admWarnPh:'Uyarı mesajını yaz…', admWarnSend:'Uyarıyı gönder', admWarned:x=>`@${x} uyarıldı`, admMsgsDeleted:n=>`${n} mesaj silindi`, wp1:'Lütfen küfürlü ve kırıcı mesaj yazma.', wp2:'Spam yapma, aynı mesajı tekrar tekrar gönderme.', wp3:'Diğer oyunculara saygılı ol.', wp4:'Uygunsuz profil fotoğrafı kullanma.', ntWarn:x=>`⚠️ Yönetici uyarısı: ${x} Tekrarı halinde hesabına kısıtlama uygulanabilir.`, ntRepDone:x=>`👍 @${x} hakkındaki şikayetin incelendi ve gereken işlem yapıldı. Teşekkürler!`, ntEvWin:x=>`🏆 Tebrikler! «${x}» etkinliğinin kazananı oldun!`, dHist:'Ceza geçmişi', dNoHist:'Hiç işlem yapılmamış.', mtT:'Bakımdayız 🔧', mtP:'Uygulamayı daha iyi hale getiriyoruz. Kısa süre sonra geri döneceğiz!', mtLocal:'Bu sırada tek telefonda oyna', evTitle:'Etkinlikler', evTour:'Turnuva', evEvent:'Etkinlik', evLive:'Şimdi devam ediyor', evIn:x=>`${x} sonra başlıyor`, evDone:'Sona erdi', evWinner:'Kazanan', cdDH:(d,h)=>`${d} gün ${h} sa`, cdHM:(h,m)=>`${h} sa ${m} dk`, cdM:m=>`${m} dk`, ntT:'Bildirimler', ntS:'Yönetici duyuruları ve hesabınla ilgili bildirimler', ntNote:'Yöneticinin herkese gönderdiği duyurular ve hesabınla ilgili işlemler burada.', ntEmpty:'Henüz bildirim yok.', ntAnnT:'Duyuru', ntMeT:'Hesabınla ilgili', ntKick:r=>`🚪 Yönetici seni ${r} odasından çıkardı.`, ntBan:d=>`⛔ Hesabın kurallara uymadığı için ${d} tarihine kadar engellendi.`, ntBanInf:'⛔ Hesabın kurallara uymadığı için kalıcı olarak engellendi.', ntUnban:'✅ Hesabının engeli kaldırıldı. Tekrar hoş geldin!', ntMute:d=>`🔇 Yönetici seni ${d} tarihine kadar susturdu. Bu süre boyunca sohbetlere mesaj yazamazsın.`, ntRmute:r=>`🔇 Yönetici seni ${r} odasında susturdu. Oyun bitene ya da odadan çıkana kadar o odada yazamazsın.`, ntUnmute:'🔊 Susturman kaldırıldı, artık mesaj yazabilirsin.', ntNoPhoto:'🖼 Profil fotoğrafın kurallara uymadığı için yönetici tarafından kaldırıldı.', ntRename:n=>`✏️ Kullanıcı adın yönetici tarafından @${n} olarak değiştirildi.`, admInRoom:c=>`Şu an ${c} odasında`, admMuteAll:'Her yerde sustur', admBanAll:'Hesabı engelle', admProfile:'Profil', h1:'1 saat', h24:'24 saat', d7:'7 gün', d30:'30 gün', dInf:'Kalıcı', hostTools:'Oda yönetimi', muteBtn:'Odada sustur', unmuteBtn:'Susturmayı kaldır', kickBtn:'Odadan at', muteInfo:'Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamaz.', muteDone:x=>`@${x} susturuldu`, unmuteDone:x=>`@${x} artık yazabilir`, mutedRoomHost:'🔇 Oda kurucusu seni susturdu. Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamazsın.', mutedRoomAdm:'🔇 Yönetici tarafından susturuldunuz. Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamazsınız.', mutedG:d=>`🔇 Yönetici tarafından susturuldunuz. ${d} tarihine kadar hiçbir sohbette mesaj yazamazsınız.`, mutedUntilT:d=>`${d} tarihine kadar susturulmuş`, admRoomMute:c=>`Odada sustur (${c})`, admG1:'1 saat sustur', admG24:'24 saat sustur', admG7:'7 gün sustur', admGUnmute:'Susturmayı kaldır', admB:'Yönetici', resName:'Bu kullanıcı adı ayrılmış, başka bir ad seç', admTools:'Yönetici araçları', admDetail:'Detayları gör', admKick:c=>`Odadan at (${c})`, admBan7:'7 gün engelle', admBan30:'30 gün engelle', admBanInf:'Kalıcı engelle', admUnban:'Engeli kaldır', admNoPhoto:'Fotoğrafı kaldır', admRen:'Adını değiştir', admSave:'Kaydet', admKicked:x=>`@${x} odadan atıldı`, admBanned:x=>`@${x} engellendi`, admUnbanned:x=>`@${x} engeli kaldırıldı`, admPhotoDone:'Fotoğraf kaldırıldı', admBanForever:'Kalıcı olarak engelli', admBanUntil:d=>`${d} tarihine kadar engelli`, durM:m=>`${m} dk`, durHM:(h,m)=>`${h} sa ${m} dk`, dAcc:'Hesap', dJoined:'Katıldı', dSeen:'Son görülme', dWhere:'Şu an', dWhereRoom:c=>`🎮 ${c} odasında`, dWhereOn:'🟢 Çevrimiçi (lobide)', dWhereOff:'⚪ Çevrimdışı', dFriends:'Arkadaş sayısı', dGames:'Online oyunlar', dG:'oyun', dP:'toplam puan', dW:'birincilik', dT:'oynama süresi', dAvg:'Oyun başına ortalama puan', dNote:'İstatistikler 15 Kasım 2026 güncellemesinden sonraki online oyunları sayar.', dRank:'Sıralama ve kupalar', dReps:n=>`Hakkındaki şikayetler (${n})`, dNoReps:'Hakkında şikayet yok 👍', dBack:'Kişi kartına dön', giTr:'🇹🇷 Türkçe isimler', giAz:'🇦🇿 Azerbaycan isimleri', giRound:n=>`Tur ${n}`, giRounds:n=>n ? `${n} tur` : 'Harfler bitene kadar', giTime:s=>`${s} sn`, giLeft:n=>`${n} harf kaldı`, cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
     kickQ:x=>`@${x} oyundan atılsın mı? Tekrar bas.`, outKick:x=>`⛔ @${x} oda kurucusu tarafından atıldı`, fbMine:'Mesajların ve cevaplar', fbReply:'Yönetici cevabı', fbNoReply:'Henüz cevap yok', frMenuS:'Ekle, kabul et, yönet', shareMenuS:'Uygulama linkini WhatsApp vb. ile paylaş', outQ:'Çıkış yapmak için tekrar bas', shareApp:'Arkadaşlarını davet et', shareAppText:'Harf Çarkı\'nı dene! Çarkı çevir, son harften isim söyle, arkadaşlarınla online yarış 🎡', frLogin:'Arkadaşlarını görmek için giriş yap', pushT:'Bildirimleri aç', pushS:'Davetler ve arkadaşlık istekleri telefon kilitliyken bile gelsin', pushBtn:'Aç', pushOn:'🔔 Bildirimler açıldı', pushDenied:'Bildirim izni kapalı. Tarayıcı ayarlarından bu site için bildirimlere izin ver.', pushNo:'Bu tarayıcı bildirimleri desteklemiyor', ogTitle:'Oyun', micErr:'Mikrofon açılamadı. Tarayıcı ayarlarından mikrofon izni ver ve "Mikrofonu aç"a bas.', ogRound:(a,b)=>`Tur ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlıyor', ogFirst:x=>`İlk isim ${x} harfiyle başlamalı`, ogWon:x=>`🏆 Turu <b>@${x}</b> kazandı (+2)`, ogYouSpin:'Sıra sende: çarkı çevir! (20 sn içinde çevirmezsen kendiliğinden döner)', ogSpinBtn:'Çarkı çevir', ogWaitSpin:x=>`<b>@${x}</b> çarkı çevirecek…`, ogSpinning:'Çark dönüyor…',
     ogYourTurn:x=>`🎤 Sıra sende! <b>${x}</b> harfiyle bir isim söyle ya da yaz`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, pttHold:'Basılı tut ve konuş', pttLive:'Dinliyorum… bırakınca gönderilir', typeName:'ya da ismi yaz…', sendName:'Gönder', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu kapat',
     outTime:x=>`⏱ @${x} süresi doldu, elendi`, outLeft:x=>`🚫 @${x} uygulamadan çıktı, elendi`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitti', pts:'puan', ogAgain:'Tekrar oyna', ogWaitAgain:x=>`@${x} yeni oyun başlatabilir`, ogShare:'Sonucu paylaş',
@@ -2337,7 +2477,7 @@ const OTX = {
     rmTitle:'Bekleme odası', rmCode:'ODA KODU', rmShare:'Linki paylaş', rmCopy:'Kopyala', rmPlayers:'Oyuncular', kick:'Çıkar', you:'sen', rmInvite:'Arkadaşlarını davet et', invite:'Davet et', invSent:'Gönderildi ✓', invSentT:x=>`@${x} davet edildi`,
     rmStart:'Oyunu başlat', rmNeed2:'Başlatmak için en az 2 kişi gerekli', rmWaitHost:x=>`@${x} oyunu başlatınca oyun başlayacak`, rmClose:'Odayı kapat', rmLeave:'Odadan çık',
     shareText:c=>`Harf Çarkı'nda benimle oyna! Oda kodu: ${c}`, copied:'Link kopyalandı', linkLogin:'Odaya katılmak için önce giriş yap' },
-  az:{admB:'Admin', resName:'Bu istifadəçi adı ayrılıb, başqa ad seç', admTools:'Admin alətləri', admDetail:'Ətraflı bax', admKick:c=>`Otaqdan çıxar (${c})`, admBan7:'7 gün blokla', admBan30:'30 gün blokla', admBanInf:'Həmişəlik blokla', admUnban:'Bloku götür', admNoPhoto:'Şəkli sil', admRen:'Adını dəyiş', admSave:'Yadda saxla', admKicked:x=>`@${x} otaqdan çıxarıldı`, admBanned:x=>`@${x} bloklandı`, admUnbanned:x=>`@${x} blokdan çıxarıldı`, admPhotoDone:'Şəkil silindi', admBanForever:'Həmişəlik bloklanıb', admBanUntil:d=>`${d} tarixinədək bloklanıb`, durM:m=>`${m} dəq`, durHM:(h,m)=>`${h} saat ${m} dəq`, dAcc:'Hesab', dJoined:'Qoşulub', dSeen:'Son görünmə', dWhere:'Hazırda', dWhereRoom:c=>`🎮 ${c} otağında`, dWhereOn:'🟢 Onlayn (lobbidə)', dWhereOff:'⚪ Oflayn', dFriends:'Dost sayı', dGames:'Onlayn oyunlar', dG:'oyun', dP:'ümumi xal', dW:'birincilik', dT:'oyun müddəti', dAvg:'Oyun başına orta xal', dNote:'Statistika 15 Noyabr 2026 yeniləməsindən sonrakı onlayn oyunları sayır.', dRank:'Sıralama və kuboklar', dReps:n=>`Haqqında şikayətlər (${n})`, dNoReps:'Haqqında şikayət yoxdur 👍', dBack:'Şəxs kartına qayıt', giTr:'🇹🇷 Türk adları', giAz:'🇦🇿 Azərbaycan adları', giRound:n=>`Raund ${n}`, giRounds:n=>n ? `${n} raund` : 'Hərflər bitənədək', giTime:s=>`${s} san`, giLeft:n=>`${n} hərf qaldı`, cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
+  az:{netWeak:'İnternet bağlantısı zəifdir', netGood:'Bağlantı düzəldi', netDown:'İnternet bağlantısı kəsildi', netRetry:n=>`Yenidən qoşulur… (${n}. cəhd)`, netUp:'İnternetə yenidən qoşuldu', outConn:x=>`📶 @${x} bağlantısı kəsildi, oyundan çıxarıldı`, connKickT:'Bağlantın kəsildi', connKickP:'İnternet bağlantın uzun müddət (1,5 dəqiqədən çox) kəsik qaldığı üçün oyundan çıxarıldın. Bağlantın düzələndə yenidən qoşula bilərsən.', admWarn:'Xəbərdar et', admDelMsgs:'Açıq mesajlarını sil', admWarnPh:'Xəbərdarlıq mesajını yaz…', admWarnSend:'Xəbərdarlığı göndər', admWarned:x=>`@${x} xəbərdar edildi`, admMsgsDeleted:n=>`${n} mesaj silindi`, wp1:'Xahiş edirik söyüşlü və kobud mesaj yazma.', wp2:'Spam etmə, eyni mesajı təkrar-təkrar göndərmə.', wp3:'Digər oyunçulara hörmətli ol.', wp4:'Uyğunsuz profil şəkli istifadə etmə.', ntWarn:x=>`⚠️ Admin xəbərdarlığı: ${x} Təkrarlansa hesabına məhdudiyyət tətbiq edilə bilər.`, ntRepDone:x=>`👍 @${x} haqqındakı şikayətin yoxlanıldı və lazımi tədbir görüldü. Təşəkkürlər!`, ntEvWin:x=>`🏆 Təbriklər! «${x}» tədbirinin qalibi oldun!`, dHist:'Cəza tarixçəsi', dNoHist:'Heç bir əməliyyat edilməyib.', mtT:'Texniki işlər gedir 🔧', mtP:'Tətbiqi daha yaxşı edirik. Tezliklə qayıdacağıq!', mtLocal:'Bu vaxt bir telefonda oyna', evTitle:'Tədbirlər', evTour:'Turnir', evEvent:'Tədbir', evLive:'İndi davam edir', evIn:x=>`${x} sonra başlayır`, evDone:'Başa çatdı', evWinner:'Qalib', cdDH:(d,h)=>`${d} gün ${h} saat`, cdHM:(h,m)=>`${h} saat ${m} dəq`, cdM:m=>`${m} dəq`, ntT:'Bildirişlər', ntS:'Admin elanları və hesabınla bağlı bildirişlər', ntNote:'Adminin hamıya göndərdiyi elanlar və hesabınla bağlı əməliyyatlar burada.', ntEmpty:'Hələ bildiriş yoxdur.', ntAnnT:'Elan', ntMeT:'Hesabınla bağlı', ntKick:r=>`🚪 Admin səni ${r} otağından çıxardı.`, ntBan:d=>`⛔ Hesabın qaydalara uyğun olmadığı üçün ${d} tarixinədək bloklandı.`, ntBanInf:'⛔ Hesabın qaydalara uyğun olmadığı üçün həmişəlik bloklandı.', ntUnban:'✅ Hesabının bloku götürüldü. Yenidən xoş gəldin!', ntMute:d=>`🔇 Admin səni ${d} tarixinədək susdurdu. Bu müddətdə söhbətlərə mesaj yaza bilməzsən.`, ntRmute:r=>`🔇 Admin səni ${r} otağında susdurdu. Oyun bitənə və ya otaqdan çıxana qədər o otaqda yaza bilməzsən.`, ntUnmute:'🔊 Susdurman götürüldü, artıq mesaj yaza bilərsən.', ntNoPhoto:'🖼 Profil şəklin qaydalara uyğun olmadığı üçün admin tərəfindən silindi.', ntRename:n=>`✏️ İstifadəçi adın admin tərəfindən @${n} olaraq dəyişdirildi.`, admInRoom:c=>`Hazırda ${c} otağında`, admMuteAll:'Hər yerdə sustur', admBanAll:'Hesabı blokla', admProfile:'Profil', h1:'1 saat', h24:'24 saat', d7:'7 gün', d30:'30 gün', dInf:'Həmişəlik', hostTools:'Otaq idarəsi', muteBtn:'Otaqda sustur', unmuteBtn:'Susdurmanı götür', kickBtn:'Otaqdan çıxar', muteInfo:'Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməz.', muteDone:x=>`@${x} susduruldu`, unmuteDone:x=>`@${x} artıq yaza bilər`, mutedRoomHost:'🔇 Otağı quran səni susdurdu. Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməzsən.', mutedRoomAdm:'🔇 Admin tərəfindən susduruldunuz. Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməzsiniz.', mutedG:d=>`🔇 Admin tərəfindən susduruldunuz. ${d} tarixinədək heç bir söhbətdə mesaj yaza bilməzsiniz.`, mutedUntilT:d=>`${d} tarixinədək susdurulub`, admRoomMute:c=>`Otaqda sustur (${c})`, admG1:'1 saat sustur', admG24:'24 saat sustur', admG7:'7 gün sustur', admGUnmute:'Susdurmanı götür', admB:'Admin', resName:'Bu istifadəçi adı ayrılıb, başqa ad seç', admTools:'Admin alətləri', admDetail:'Ətraflı bax', admKick:c=>`Otaqdan çıxar (${c})`, admBan7:'7 gün blokla', admBan30:'30 gün blokla', admBanInf:'Həmişəlik blokla', admUnban:'Bloku götür', admNoPhoto:'Şəkli sil', admRen:'Adını dəyiş', admSave:'Yadda saxla', admKicked:x=>`@${x} otaqdan çıxarıldı`, admBanned:x=>`@${x} bloklandı`, admUnbanned:x=>`@${x} blokdan çıxarıldı`, admPhotoDone:'Şəkil silindi', admBanForever:'Həmişəlik bloklanıb', admBanUntil:d=>`${d} tarixinədək bloklanıb`, durM:m=>`${m} dəq`, durHM:(h,m)=>`${h} saat ${m} dəq`, dAcc:'Hesab', dJoined:'Qoşulub', dSeen:'Son görünmə', dWhere:'Hazırda', dWhereRoom:c=>`🎮 ${c} otağında`, dWhereOn:'🟢 Onlayn (lobbidə)', dWhereOff:'⚪ Oflayn', dFriends:'Dost sayı', dGames:'Onlayn oyunlar', dG:'oyun', dP:'ümumi xal', dW:'birincilik', dT:'oyun müddəti', dAvg:'Oyun başına orta xal', dNote:'Statistika 15 Noyabr 2026 yeniləməsindən sonrakı onlayn oyunları sayır.', dRank:'Sıralama və kuboklar', dReps:n=>`Haqqında şikayətlər (${n})`, dNoReps:'Haqqında şikayət yoxdur 👍', dBack:'Şəxs kartına qayıt', giTr:'🇹🇷 Türk adları', giAz:'🇦🇿 Azərbaycan adları', giRound:n=>`Raund ${n}`, giRounds:n=>n ? `${n} raund` : 'Hərflər bitənədək', giTime:s=>`${s} san`, giLeft:n=>`${n} hərf qaldı`, cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
     kickQ:x=>`@${x} oyundan çıxarılsın? Yenidən bas.`, outKick:x=>`⛔ @${x} otağı quran tərəfindən çıxarıldı`, fbMine:'Mesajların və cavablar', fbReply:'Admin cavabı', fbNoReply:'Hələ cavab yoxdur', frMenuS:'Əlavə et, qəbul et, idarə et', shareMenuS:'Tətbiq linkini WhatsApp və s. ilə paylaş', outQ:'Çıxış etmək üçün yenidən bas', shareApp:'Dostlarını dəvət et', shareAppText:'Harf Çarkı-nı yoxla! Çarxı fırlat, son hərfdən ad de, dostlarınla onlayn yarış 🎡', frLogin:'Dostlarını görmək üçün daxil ol', pushT:'Bildirişləri aç', pushS:'Dəvətlər və dostluq istəkləri telefon kilidli olanda belə gəlsin', pushBtn:'Aç', pushOn:'🔔 Bildirişlər açıldı', pushDenied:'Bildiriş icazəsi bağlıdır. Brauzer ayarlarından bu sayt üçün bildirişlərə icazə ver.', pushNo:'Bu brauzer bildirişləri dəstəkləmir', ogTitle:'Oyun', micErr:'Mikrofon açılmadı. Brauzer ayarlarından mikrofon icazəsi ver və "Mikrofonu aç" düyməsinə bas.', ogRound:(a,b)=>`Raund ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlayır', ogFirst:x=>`İlk ad ${x} hərfi ilə başlamalıdır`, ogWon:x=>`🏆 Raundu <b>@${x}</b> qazandı (+2)`, ogYouSpin:'Növbə səndədir: çarxı fırlat! (20 san ərzində fırlatmasan özü dönəcək)', ogSpinBtn:'Çarxı fırlat', ogWaitSpin:x=>`<b>@${x}</b> çarxı fırladacaq…`, ogSpinning:'Çarx fırlanır…',
     ogYourTurn:x=>`🎤 Növbə səndədir! <b>${x}</b> hərfi ilə ad de və ya yaz`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, pttHold:'Basılı saxla və danış', pttLive:'Dinləyirəm… buraxanda göndərilir', typeName:'və ya adı yaz…', sendName:'Göndər', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu bağla',
     outTime:x=>`⏱ @${x} vaxtı bitdi, çıxdı`, outLeft:x=>`🚫 @${x} tətbiqdən çıxdı, raunddan çıxarıldı`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitdi', pts:'xal', ogAgain:'Yenidən oyna', ogWaitAgain:x=>`@${x} yeni oyun başlada bilər`, ogShare:'Nəticəni paylaş',
@@ -2392,7 +2532,7 @@ function startLobby(){
   const err = e => console.warn('online', e);
   OL.subs.push(F.onSnapshot(F.collection(db, 'users', me.uid, 'friends'), s => {
     OL.friends = s.docs.map(d => ({ id:d.id, ...d.data() })).sort((a,b) => (a.name||'').localeCompare(b.name||'', 'tr'));
-    watchFriendRooms(); renderLobby(); renderFriends(); if (OL.room) renderRoom(); pingOnline(); watchBlocks(); setTimeout(() => { refreshPres(true); countOnline(); }, 600);
+    watchFriendRooms(); renderLobby(); renderFriends(); if (OL.room) renderRoom(); pingOnline(); watchBlocks(); watchMe(); watchNt(); setTimeout(() => { refreshPres(true); countOnline(); }, 600);
   }, err));
   OL.subs.push(F.onSnapshot(F.query(col('friendReqs'), F.where('to', '==', me.uid)), s => { OL.inReqs = s.docs.map(d => ({ id:d.id, ...d.data() })).filter(x => !isBlk(x.from)); renderLobby(); renderFriends(); }, err));
   OL.subs.push(F.onSnapshot(F.query(col('friendReqs'), F.where('from', '==', me.uid)), s => { OL.outReqs = s.docs.map(d => ({ id:d.id, ...d.data() })); renderFriends(); if (OL.room) renderRoom(); }, err));
@@ -2541,7 +2681,11 @@ function enterRoom(code){
     const r = s.data(); OL.room = r;
     const mp = r.players && r.players[me.uid];
     if (mp && mp.ts && mp.ts.toMillis && !s.metadata.hasPendingWrites && OL.off === undefined) OL.off = mp.ts.toMillis() - mp.at;
-    if (!r.players || !r.players[me.uid]){ toast((r.kicked || []).includes(me.uid) ? ot('youKicked') : ot('roomLeft')); exitRoom(); return; }
+    if (!r.players || !r.players[me.uid]){
+      const ln = (r.names || []).filter(n => n.by === me.uid && n.s === 'out').pop();
+      if (ln && ln.why === 'conn'){ $('leftT').textContent = ot('connKickT'); $('leftP').textContent = ot('connKickP'); $('leftBox').classList.add('show'); }
+      else toast((r.kicked || []).includes(me.uid) ? ot('youKicked') : ot('roomLeft'));
+      exitRoom(); return; }
     renderRoom();
   }, e => { console.warn(e); toast(t('netErr')); });
   clearInterval(OL.beat);
@@ -2562,6 +2706,288 @@ async function leaveRoom(silent){
 $('rmBack').onclick = () => { if (inPlay() && !$('rmBack').dataset.sure){ $('rmBack').dataset.sure = 1; toast(ot('leaveWarn')); setTimeout(() => delete $('rmBack').dataset.sure, 3500); return; }
   if (OL.room && OL.room.status === 'wait' && OL.room.host === me.uid && !$('rmBack').dataset.sure){ $('rmBack').dataset.sure = 1; toast(ot('hostLeaveQ')); setTimeout(() => delete $('rmBack').dataset.sure, 3500); return; } leaveRoom(); };
 
+const ADM = {};
+/* ---------- Yönetici: odalar, cezalar, kayıt, filtre, etkinlikler, bakım ---------- */
+const LOGL = { kick:'🚪 Odadan atıldı', ban:'⛔ Engellendi', unban:'✅ Engel kaldırıldı', mute:'🔇 Her yerde susturuldu', rmute:'🔇 Odada susturuldu', unmute:'🔊 Susturma kaldırıldı', nophoto:'🖼 Fotoğrafı kaldırıldı', rename:'✏️ Adı değiştirildi', warn:'⚠️ Uyarıldı', delmsgs:'🗑 Herkese açık mesajları silindi', delmsg:'🗑 Mesajı silindi', closeroom:'🎮 Oda kapatıldı', repdone:'✓ Şikayetler çözüldü', evwin:'🏆 Etkinlik kazananı yapıldı', maint:'🔧 Bakım modu', announce:'📣 Duyuru' };
+function logLabel(x){ const p = x.p || {}; let t = LOGL[x.action] || x.action;
+  if (x.action === 'ban') t += p.until ? ' (' + new Date(p.until).toLocaleDateString('tr') + ' kadar)' : ' (kalıcı)';
+  if (x.action === 'mute') t += ' (' + new Date(p.until).toLocaleString('tr', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) + ' kadar)';
+  if (x.action === 'rename') t += ' → @' + (p.name || ''); if (x.action === 'warn') t += ': ' + (p.text || '').slice(0, 60);
+  if (x.action === 'kick' || x.action === 'rmute' || x.action === 'closeroom') t += ' · ' + (p.room || ''); if (x.action === 'delmsgs') t += ' (' + (p.n || 0) + ')';
+  if (x.action === 'maint') t += p.on ? ' açıldı' : ' kapatıldı'; return t; }
+const leftTxt = ms => { const m = Math.max(1, Math.round((ms - Date.now()) / 60e3)); if (m < 60) return m + ' dk'; const h = Math.round(m / 60); if (h < 48) return h + ' sa'; return Math.round(h / 24) + ' gün'; };
+
+/* Odalar (canlı) */
+function admRooms(){
+  $('admBody').innerHTML = `<p class="s-note" style="text-align:center;padding:30px 0">Yükleniyor…</p>`;
+  if (ADM.roomsUnsub) ADM.roomsUnsub();
+  ADM.roomsUnsub = FB.F.onSnapshot(FB.F.query(FB.F.collection(FB.db, 'rooms'), FB.F.where('status', 'in', ['wait', 'play']), FB.F.limit(60)), sn => {
+    ADM.rooms = sn.docs.map(d => ({ id:d.id, ...d.data() })); if (admTab === 'rooms') renderAdmRooms();
+  }, e => { console.warn(e); $('admBody').innerHTML = '<p class="s-note">Odalar alınamadı.</p>'; });
+}
+function renderAdmRooms(){
+  const now = Date.now(), seenOf = r => Math.max(r.hostSeen || 0, r.turnAt || 0, r.phaseAt || 0, r.startAt || 0);
+  const rooms = (ADM.rooms || []).slice().sort((a, b) => (b.status === 'play') - (a.status === 'play') || seenOf(b) - seenOf(a));
+  const stale = rooms.filter(r => seenOf(r) < now - 30 * 60e3), live = rooms.filter(r => seenOf(r) >= now - 30 * 60e3);
+  const open = new Set([...document.querySelectorAll('.rm-chat:not([hidden])')].map(x => x.closest('[data-rc]').dataset.rc));
+  $('admBody').innerHTML = `<div class="kpis"><div class="kpi"><b>${live.length}</b><small>Aktif oda</small></div><div class="kpi"><b>${live.reduce((a, r) => a + Object.keys(r.players || {}).length, 0)}</b><small>Odalardaki kişi</small></div></div>
+    ${stale.length ? `<button class="btn ghost sm" id="rmStale" style="width:100%;margin:6px 0 12px">🧹 Terk edilmiş ${stale.length} odayı temizle</button>` : ''}` +
+    (live.length ? live.map(r => { const ps = Object.entries(r.players || {}).sort((a, b) => (a[1].at || 0) - (b[1].at || 0)), alive = new Set(r.alive || []), play = r.status === 'play';
+      return `<section class="rg rm-card" data-rc="${escH(r.id)}">
+        <div class="rg-head"><span class="grow"><b class="rg-name">🎮 ${escH(r.id)}</b><span class="st-chip ${play ? 'p' : 'w'}">${play ? 'Oyunda' : 'Bekliyor'}</span><span class="st-chip">${r.lang === 'az' ? '🇦🇿' : '🇹🇷'} ${r.time || 15} sn</span></span></div>
+        ${play ? `<div class="rg-meta">Tur <b>${r.round || 0}/${r.rounds || '∞'}</b>${r.letter ? ` · harf <b>${escH(r.need || r.letter)}</b>` : ''}${r.turn ? ` · sıra <b>@${escH(pname2(r, r.turn))}</b>` : ''}</div>` : `<div class="rg-meta">Kurucu ${Math.round((now - seenOf(r)) / 60e3)} dk önce görüldü</div>`}
+        <div class="rm-ps">${ps.map(([u, p]) => `<div class="rm-p${play && r.phase === 'turn' && !alive.has(u) ? ' out' : ''}"><span class="grow" data-prof="${escH(u)}"><b>@${escH(p.name || '?')}</b>${u === r.host ? ' 👑' : ''}${roomMuteOf(r, u) ? ' 🔇' : ''}${play ? ` <small>${(r.scores || {})[u] || 0} puan</small>` : ''}</span><button class="abtn no" data-rk="${escH(u)}">At</button></div>`).join('')}</div>
+        <div class="adm-row c2"><button class="abtn" data-rchat>💬 Sohbet</button><button class="abtn no" data-rclose>🗑 Odayı kapat</button></div>
+        <div class="rm-chat" ${open.has(r.id) ? '' : 'hidden'}></div></section>`; }).join('') : '<p class="s-note" style="text-align:center;padding:20px 0">Şu an açık oda yok.</p>');
+  if ($('rmStale')) $('rmStale').onclick = async () => { for (const r of stale) await FB.F.deleteDoc(FB.F.doc(FB.db, 'rooms', r.id)).catch(() => {}); toast(stale.length + ' oda temizlendi'); };
+  $('admBody').querySelectorAll('[data-rc]').forEach(sec => {
+    const code = sec.dataset.rc, r = live.find(x => x.id === code);
+    sec.querySelectorAll('[data-rk]').forEach(b => b.onclick = async () => { if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = 'Emin?'; return; }
+      const u = b.dataset.rk, nm = (r.players[u] || {}).name || ''; if (await removeFromGame(u, true, code)) { admInbox(u, 'kick', { room:code }, nm); toast('@' + nm + ' atıldı'); } });
+    sec.querySelector('[data-rclose]').onclick = async e => { const b = e.currentTarget; if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = 'Emin? Tekrar bas'; return; }
+      try { await FB.F.deleteDoc(FB.F.doc(FB.db, 'rooms', code)); logMod('closeroom', '', '', { room:code }); toast(code + ' kapatıldı'); } catch(_){ toast('Kapatılamadı'); } };
+    const ch = sec.querySelector('.rm-chat'), load = async () => {
+      try { const sn = await FB.F.getDocs(FB.F.query(FB.F.collection(FB.db, 'rooms', code, 'chat'), FB.F.orderBy('at', 'desc'), FB.F.limit(30)));
+        const L = sn.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => a.at - b.at);
+        ch.innerHTML = L.length ? L.map(m => `<div class="rl-item"><div class="rl-top"><b>@${escH(m.fromName || '?')}</b><a class="del" data-cdel="${escH(m.id)}" data-cby="${escH(m.from)}" data-cbn="${escH(m.fromName || '')}">sil</a></div><p class="rl-txt">${escH(m.text)}</p><small>${fmtT(m.at)}</small></div>`).join('') : '<p class="s-note">Sohbet boş.</p>';
+        ch.querySelectorAll('[data-cdel]').forEach(a => a.onclick = async () => { try { await FB.F.deleteDoc(FB.F.doc(FB.db, 'rooms', code, 'chat', a.dataset.cdel)); logMod('delmsg', a.dataset.cby, a.dataset.cbn, { room:code }); a.closest('.rl-item').remove(); } catch(_){ toast('Silinemedi'); } });
+      } catch(e){ ch.innerHTML = '<p class="s-note">Sohbet alınamadı.</p>'; } };
+    sec.querySelector('[data-rchat]').onclick = () => { ch.hidden = !ch.hidden; if (!ch.hidden) load(); };
+    if (!ch.hidden) load();
+  });
+}
+document.addEventListener('click', async e => { const a = e.target.closest('[data-rcdel]'); if (!a || !isAdminUser || !OL.code) return;
+  const m = (MSG.rc || []).find(x => x.id === a.dataset.rcdel);
+  try { await FB.F.deleteDoc(FB.F.doc(FB.db, 'rooms', OL.code, 'chat', a.dataset.rcdel)); if (m) logMod('delmsg', m.from, m.fromName || '', { room:OL.code }); } catch(_){ toast(t('netErr')); } });
+
+/* Cezalar */
+async function admPen(){
+  loading(); const { F, db } = FB, now = F.Timestamp.fromDate(new Date()); let ban = [], mute = [];
+  try { ban = (await F.getDocs(F.query(F.collection(db, 'users'), F.where('bannedUntil', '>', now), F.limit(100)))).docs.map(d => ({ id:d.id, ...d.data() })); } catch(e){ console.warn(e); }
+  try { mute = (await F.getDocs(F.query(F.collection(db, 'users'), F.where('mutedUntil', '>', now), F.limit(100)))).docs.map(d => ({ id:d.id, ...d.data() })); } catch(e){ console.warn(e); }
+  if (admTab !== 'pen') return;
+  const row = (u, kind) => { const end = kind === 'ban' ? banEnd(u) : muteEnd(u), inf = kind === 'ban' && end >= FOREVER;
+    return `<div class="pen-row"><span class="grow" data-prof="${escH(u.id)}"><b>@${escH(u.username || '?')}</b><small>${inf ? 'Kalıcı' : 'Bitiş: ' + new Date(end).toLocaleString('tr', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) + ' · ' + leftTxt(end) + ' kaldı'}</small></span><button class="abtn ok" data-pen="${kind}" data-u="${escH(u.id)}" data-n="${escH(u.username || '')}">Kaldır</button></div>`; };
+  $('admBody').innerHTML = `<div class="kpis"><div class="kpi"><b>${ban.length}</b><small>Engelli hesap</small></div><div class="kpi"><b>${mute.length}</b><small>Susturulmuş hesap</small></div></div>` +
+    box('⛔ Engelliler', ban.length ? ban.map(u => row(u, 'ban')).join('') : '<p class="s-note">Engelli hesap yok.</p>') +
+    box('🔇 Her yerde susturulanlar', mute.length ? mute.map(u => row(u, 'mute')).join('') : '<p class="s-note">Susturulmuş hesap yok.</p>') +
+    '<p class="s-note">İsme dokunarak kişinin kartını ve tüm yönetici araçlarını açabilirsin.</p>';
+  $('admBody').querySelectorAll('[data-pen]').forEach(b => b.onclick = async () => { const u = b.dataset.u, n = b.dataset.n, ban = b.dataset.pen === 'ban';
+    try { await F.updateDoc(F.doc(db, 'users', u), ban ? { bannedUntil:F.deleteField() } : { mutedUntil:F.deleteField() }); admInbox(u, ban ? 'unban' : 'unmute', {}, n); b.closest('.pen-row').remove(); toast('@' + n + ' · kaldırıldı'); } catch(_){ toast('Yapılamadı'); } });
+}
+
+/* İşlem kaydı */
+async function admLog(){
+  loading(); let L = [];
+  try { L = (await FB.F.getDocs(FB.F.query(FB.F.collection(FB.db, 'modlog'), FB.F.orderBy('at', 'desc'), FB.F.limit(150)))).docs.map(d => d.data()).sort((a, b) => b.at - a.at); } catch(e){ console.warn(e); }
+  if (admTab !== 'log') return;
+  $('admBody').innerHTML = box(`📜 Yönetici işlem kaydı (${L.length})`, L.length ? L.map(x => `<div class="log-row"><span class="grow">${x.targetName ? `<b data-prof="${escH(x.target)}">@${escH(x.targetName)}</b> · ` : ''}${escH(logLabel(x))}</span><small>${new Date(x.at).toLocaleString('tr', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</small></div>`).join('') : '<p class="s-note">Henüz kayıt yok.</p>');
+}
+
+/* Yasaklı kelimeler */
+let XW = [];
+async function loadWords(){ try { const d = await FB.F.getDoc(FB.F.doc(FB.db, 'config', 'words')); XW = d.exists() ? (d.data().list || []) : []; } catch(_){} }
+function admFlt(){
+  const render = () => {
+    $('admBody').innerHTML = box('🧹 Yasaklı kelimeler', `<p class="s-note" style="margin-bottom:8px">Bu kelimeler mesajlarda yıldızla gizlenir ve kullanıcı adında kullanılamaz. Hazır küfür listesine ek olarak çalışır.</p>
+      <div class="ainput"><input id="xwIn" placeholder="kelime ekle…" autocapitalize="off" autocomplete="off"><button class="abtn ok" id="xwAdd">Ekle</button></div>
+      <div class="seg mini" id="xwMode" style="margin:8px 0"><button data-v="e" class="on">Tam kelime</button><button data-v="p">İle başlayan</button></div>
+      <div class="xw-list">${XW.length ? XW.map((x, i) => `<span class="xw">${escH(x.w)}${x.m === 'p' ? '…' : ''}<button data-xd="${i}">×</button></span>`).join('') : '<p class="s-note">Henüz eklenmiş kelime yok.</p>'}</div>`) +
+      box('🧪 Dene', `<div class="ainput"><input id="xwT" placeholder="Bir cümle yaz, filtrelenmiş halini gör"><button class="abtn" id="xwTry">Dene</button></div><p class="s-note" id="xwOut" style="margin-top:8px"></p>`);
+    let mode = 'e'; $('xwMode').onclick = e => { const b = e.target.closest('button'); if (b){ mode = b.dataset.v; segSet('xwMode', mode); } };
+    const save = async () => { try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'words'), { list:XW }); toast('Kaydedildi'); } catch(_){ toast('Kaydedilemedi'); } render(); };
+    $('xwAdd').onclick = () => { const w = foldW(leetW($('xwIn').value.trim().toLocaleLowerCase('tr'))).replace(/[^\p{L}]/gu, '').replace(/(.)\1+/g, '$1'); if (w.length < 2) return; if (!XW.some(x => x.w === w)) XW.push({ w, m:mode }); save(); };
+    $('admBody').querySelectorAll('[data-xd]').forEach(b => b.onclick = () => { XW.splice(+b.dataset.xd, 1); save(); });
+    $('xwTry').onclick = () => { $('xwOut').textContent = cleanTxt($('xwT').value) || '—'; };
+  };
+  render();
+}
+
+/* Bakım modu */
+let APPCFG = {};
+function watchAppCfg(){ if (OL.appSub || !FB) return; OL.appSub = FB.F.onSnapshot(FB.F.doc(FB.db, 'config', 'app'), d => { APPCFG = d.exists() ? d.data() : {}; applyMaint(); }, () => {}); }
+let maintLocalOk = false;
+function maintOn(){ return !!APPCFG.maint && !isAdminUser; }
+function applyMaint(){
+  const on = maintOn(); $('maintT').textContent = ot('mtT'); $('maintP').textContent = APPCFG.maintMsg || ot('mtP'); $('maintLocal').textContent = '📱 ' + ot('mtLocal');
+  $('maintBox').hidden = !on || maintLocalOk;
+  if (on && OL.room && typeof leaveRoom === 'function'){ try { leaveRoom(); } catch(_){} }
+  if (on) ['onlinePage', 'msgPage', 'friendsPage', 'chatPage', 'roomPage'].forEach(id => { try { if (isOpen(id)) closePage(id); } catch(_){} });
+}
+function maintBlock(){ if (!maintOn()) return false; maintLocalOk = false; applyMaint(); return true; }
+$('maintLocal').onclick = () => { maintLocalOk = true; $('maintBox').hidden = true; try { hideHome(); } catch(_){} };
+
+/* Etkinlikler ve turnuvalar */
+OL.events = [];
+async function loadEvents(){
+  if (!FB || !me) return;
+  try { OL.events = (await FB.F.getDocs(FB.F.query(FB.F.collection(FB.db, 'events'), FB.F.orderBy('startAt', 'desc'), FB.F.limit(30)))).docs.map(d => ({ id:d.id, ...d.data() })); } catch(e){ console.warn(e); }
+  renderEvents();
+}
+function evState(e){ const n = Date.now(); return n < e.startAt ? 'soon' : n <= e.endAt ? 'live' : 'past'; }
+function cdTxt(ms){ const m = Math.max(0, Math.round(ms / 60e3)), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60; return d ? ot('cdDH', d, h) : h ? ot('cdHM', h, mm) : ot('cdM', mm); }
+function evCard(e){ const st = evState(e);
+  return `<button class="ev-card k-${e.type || 'ev'} st-${st}" data-ev="${escH(e.id)}"><span class="ev-ic">${e.type === 'tour' ? '🏆' : '🎉'}</span><span class="grow"><small>${ot(e.type === 'tour' ? 'evTour' : 'evEvent')} · ${st === 'live' ? '🔴 ' + ot('evLive') : st === 'soon' ? '⏳ ' + ot('evIn', cdTxt(e.startAt - Date.now())) : ot('evDone')}</small><b>${escH(e.title)}</b>
+    ${e.prize ? `<small>🎁 ${escH(e.prize)}</small>` : ''}${e.winnerName ? `<small>🥇 ${ot('evWinner')}: @${escH(e.winnerName)}</small>` : ''}</span><span class="chev">›</span></button>`; }
+function renderEvents(){
+  const el = $('olEvents'); if (!el) return;
+  const L = OL.events.filter(e => e.endAt > Date.now() - 3 * 864e5).sort((a, b) => a.startAt - b.startAt);
+  el.innerHTML = L.length ? `<h3 class="ev-h">🎉 ${ot('evTitle')}</h3>${L.map(evCard).join('')}` : '';
+}
+function evRange(e){ const o = { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' }; return new Date(e.startAt).toLocaleString(LOC(), o) + ' – ' + new Date(e.endAt).toLocaleString(LOC(), o); }
+document.addEventListener('click', ev => { const b = ev.target.closest('[data-ev]'); if (!b) return; const e = (OL.events.concat(ADM.events || [])).find(x => x.id === b.dataset.ev); if (!e) return;
+  $('evBody').innerHTML = `<div class="ev-big">${e.type === 'tour' ? '🏆' : '🎉'}</div><b class="up-t">${escH(e.title)}</b><p class="s-note">${ot(e.type === 'tour' ? 'evTour' : 'evEvent')} · ${escH(evRange(e))}</p>
+    ${e.desc ? `<p class="ev-desc">${escH(e.desc)}</p>` : ''}${e.prize ? `<p class="ev-prize">🎁 ${escH(e.prize)}</p>` : ''}${e.winnerName ? `<p class="ev-prize">🥇 ${ot('evWinner')}: <b>@${escH(e.winnerName)}</b></p>` : ''}
+    <p class="s-note" style="margin-top:10px">${evState(e) === 'soon' ? '⏳ ' + ot('evIn', cdTxt(e.startAt - Date.now())) : evState(e) === 'live' ? '🔴 ' + ot('evLive') : ot('evDone')}</p>`;
+  $('evBox').classList.add('show'); });
+$('evBox').addEventListener('click', e => { if (e.target === $('evBox') || e.target.closest('[data-evx]')) $('evBox').classList.remove('show'); });
+const dtl = ms => { if (!ms) return ''; const d = new Date(ms - new Date().getTimezoneOffset() * 60e3); return d.toISOString().slice(0, 16); };
+async function admEv(edit){
+  loading(); try { ADM.events = (await FB.F.getDocs(FB.F.query(FB.F.collection(FB.db, 'events'), FB.F.orderBy('startAt', 'desc'), FB.F.limit(50)))).docs.map(d => ({ id:d.id, ...d.data() })); } catch(e){ console.warn(e); ADM.events = []; }
+  if (admTab !== 'ev') return;
+  const e = edit ? ADM.events.find(x => x.id === edit) || {} : {};
+  $('admBody').innerHTML = box(edit ? '✏️ Etkinliği düzenle' : '➕ Yeni etkinlik / turnuva', `
+      <div class="seg mini" id="evType" style="margin-bottom:8px"><button data-v="tour" class="${e.type !== 'ev' ? 'on' : ''}">🏆 Turnuva</button><button data-v="ev" class="${e.type === 'ev' ? 'on' : ''}">🎉 Etkinlik</button></div>
+      <input class="atext" id="evT" maxlength="70" placeholder="Başlık — örn: Cumartesi Gecesi Turnuvası" value="${escH(e.title || '')}">
+      <textarea class="atext" id="evD" rows="4" maxlength="600" placeholder="Açıklama: kurallar, nasıl katılınır…" style="margin-top:8px">${escH(e.desc || '')}</textarea>
+      <div class="ev-dates"><label>Başlangıç<input type="datetime-local" id="evS" value="${dtl(e.startAt)}"></label><label>Bitiş<input type="datetime-local" id="evE" value="${dtl(e.endAt)}"></label></div>
+      <input class="atext" id="evP" maxlength="80" placeholder="Ödül (isteğe bağlı) — örn: Özel turnuva kupası" value="${escH(e.prize || '')}" style="margin-top:8px">
+      ${edit ? '' : `<label class="tg" style="margin-top:6px"><span><b>Herkese bildirim de gönder</b><small>Duyuru olarak herkesin telefonuna gider</small></span><input type="checkbox" id="evN" checked><i></i></label>`}
+      <button class="btn spin sm" id="evSave" style="width:100%;margin-top:10px">${edit ? 'Kaydet' : '🎉 Yayınla'}</button>${edit ? '<button class="btn ghost sm" id="evCancel" style="width:100%;margin-top:6px">Vazgeç</button>' : ''}<p class="s-note" id="evRes"></p>`) +
+    box(`Etkinlikler (${ADM.events.length})`, ADM.events.length ? ADM.events.map(x => `<div class="ev-adm">${evCard(x)}<div class="adm-row c3"><button class="abtn" data-eved="${escH(x.id)}">✏️ Düzenle</button><button class="abtn ok" data-evwin="${escH(x.id)}">🥇 Kazanan</button><button class="abtn no" data-evdel="${escH(x.id)}">Sil</button></div><div class="evw-box"></div></div>`).join('') : '<p class="s-note">Henüz etkinlik yok.</p>');
+  let type = e.type === 'ev' ? 'ev' : 'tour'; $('evType').onclick = x => { const b = x.target.closest('button'); if (b){ type = b.dataset.v; segSet('evType', type); } };
+  if ($('evCancel')) $('evCancel').onclick = () => admEv();
+  $('evSave').onclick = async () => {
+    const title = $('evT').value.trim(), desc = $('evD').value.trim(), prize = $('evP').value.trim(), startAt = new Date($('evS').value).getTime(), endAt = new Date($('evE').value).getTime();
+    if (!title || !startAt || !endAt || endAt <= startAt){ toast('Başlık, başlangıç ve bitiş gerekli (bitiş başlangıçtan sonra olmalı)'); return; }
+    const data = { type, title, desc, prize, startAt, endAt };
+    try {
+      if (edit){ await FB.F.updateDoc(FB.F.doc(FB.db, 'events', edit), data); toast('Kaydedildi'); admEv(); return; }
+      await FB.F.addDoc(FB.F.collection(FB.db, 'events'), { ...data, createdAt:Date.now(), by:me.uid });
+      if ($('evN') && $('evN').checked){ $('evRes').textContent = 'Bildirim gönderiliyor…';
+        const ref = await FB.F.addDoc(FB.F.collection(FB.db, 'announcements'), { title:(type === 'tour' ? '🏆 ' : '🎉 ') + title, text:(desc ? desc.slice(0, 300) + '\n' : '') + '📅 ' + new Date(startAt).toLocaleString('tr', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' }) + (prize ? '\n🎁 ' + prize : ''), at:Date.now(), by:me.uid, byName:profile.username });
+        let cur = '', sent = 0, loops = 0; if (PUSH.url) do { const r = await notify('broadcast', 'announcements/' + ref.id, true, { cursor:cur }); if (!r || !r.ok) break; sent += r.sent || 0; cur = r.next || ''; } while (cur && ++loops < 200);
+        FB.F.updateDoc(ref, { sent }).catch(() => {}); }
+      toast('🎉 Yayınlandı'); admEv();
+    } catch(err){ console.warn(err); toast('Kaydedilemedi'); }
+  };
+  $('admBody').querySelectorAll('[data-eved]').forEach(b => b.onclick = () => admEv(b.dataset.eved));
+  $('admBody').querySelectorAll('[data-evdel]').forEach(b => b.onclick = async () => { if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = 'Emin?'; return; } try { await FB.F.deleteDoc(FB.F.doc(FB.db, 'events', b.dataset.evdel)); admEv(); } catch(_){ toast('Silinemedi'); } });
+  $('admBody').querySelectorAll('[data-evwin]').forEach(b => b.onclick = () => { const bx = b.closest('.ev-adm').querySelector('.evw-box'), ev = ADM.events.find(x => x.id === b.dataset.evwin);
+    bx.innerHTML = `<div class="ainput" style="margin-top:8px"><input placeholder="kazananın kullanıcı adı" autocapitalize="off"><button class="abtn ok">Kaydet</button></div>`;
+    bx.querySelector('button').onclick = async () => { const key = bx.querySelector('input').value.trim().replace(/^@/, '').toLocaleLowerCase('tr');
+      try { const u = await FB.F.getDoc(FB.F.doc(FB.db, 'usernames', key)); if (!u.exists()){ toast('Bu kullanıcı bulunamadı'); return; }
+        const uid = u.data().uid, ud = await FB.F.getDoc(FB.F.doc(FB.db, 'users', uid)), nm = ud.exists() ? ud.data().username : key;
+        await FB.F.updateDoc(FB.F.doc(FB.db, 'events', ev.id), { winner:uid, winnerName:nm }); admInbox(uid, 'evwin', { title:ev.title }, nm); toast('🥇 @' + nm + ' kazanan yapıldı'); admEv(); } catch(_){ toast('Kaydedilemedi'); } }; });
+}
+/* ---------- Bildirimler: yönetici duyuruları + kişiye özel yönetici işlemleri ---------- */
+OL.inbox = []; OL.ann = [];
+const ntFmt = ms => new Date(ms).toLocaleString(LOC(), { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' });
+function ntText(x){
+  const p = x.p || {};
+  switch (x.type){
+    case 'kick': return ot('ntKick', p.room || '');
+    case 'ban': return p.until ? ot('ntBan', ntFmt(p.until)) : ot('ntBanInf');
+    case 'unban': return ot('ntUnban');
+    case 'mute': return ot('ntMute', ntFmt(p.until));
+    case 'rmute': return ot('ntRmute', p.room || '');
+    case 'unmute': return ot('ntUnmute');
+    case 'nophoto': return ot('ntNoPhoto');
+    case 'rename': return ot('ntRename', p.name || '');
+    case 'warn': return ot('ntWarn', p.text || '');
+    case 'repdone': return ot('ntRepDone', p.name || '');
+    case 'evwin': return ot('ntEvWin', p.title || '');
+    default: return x.text || '';
+  }
+}
+async function logMod(action, target, targetName, p){
+  try { await FB.F.addDoc(FB.F.collection(FB.db, 'modlog'), { action, target:target || '', targetName:targetName || '', p:p || {}, by:me.uid, at:Date.now() }); } catch(e){ console.warn('log', e); }
+}
+async function admInbox(uid, type, p, name){
+  if (type !== 'repdone') logMod(type, uid, name || (UP.uid === uid && UP.u ? UP.u.username : '') || '', p);
+  try { const r = await FB.F.addDoc(FB.F.collection(FB.db, 'users', uid, 'inbox'), { type, p:p || {}, at:Date.now(), read:false });
+    notify('inbox', 'users/' + uid + '/inbox/' + r.id); } catch(e){ console.warn('inbox', e); }
+}
+function ntSeenAnn(){ try { return +localStorage.getItem('iz-ann-seen') || 0; } catch(_){ return 0; } }
+function ntUnread(){ return OL.inbox.filter(x => !x.read).length + OL.ann.filter(x => x.at > ntSeenAnn() && x.by !== (me && me.uid)).length; }
+function ntBadges(){ const n = ntUnread() || ''; if ($('bellN')) $('bellN').textContent = n; if ($('setNtN')) $('setNtN').textContent = n; }
+function watchNt(){
+  if (OL.ntSubs || !FB || !me) return; const { F, db } = FB; OL.ntSubs = [];
+  let first1 = true, first2 = true;
+  OL.ntSubs.push(F.onSnapshot(F.query(F.collection(db, 'users', me.uid, 'inbox'), F.orderBy('at', 'desc'), F.limit(40)), s => {
+    const prev = new Set(OL.inbox.map(x => x.id));
+    OL.inbox = s.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => b.at - a.at); ntBadges(); if ($('ntBox').classList.contains('show')) renderNt();
+    const fresh = OL.inbox.find(x => !x.read && !prev.has(x.id) && (first1 ? Date.now() - x.at < 7 * 864e5 : true));
+    if (fresh) ntPopup('me', fresh); first1 = false;
+  }, e => console.warn('inbox', e)));
+  OL.ntSubs.push(F.onSnapshot(F.query(F.collection(db, 'announcements'), F.orderBy('at', 'desc'), F.limit(20)), s => {
+    OL.ann = s.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => b.at - a.at); ntBadges(); if ($('ntBox').classList.contains('show')) renderNt();
+    const a = OL.ann[0], key = 'iz-ann-pop';
+    let shown = 0; try { shown = +localStorage.getItem(key) || 0; } catch(_){}
+    if (a && a.by !== me.uid && a.at > shown && a.at > ntSeenAnn() && Date.now() - a.at < 7 * 864e5){ try { localStorage.setItem(key, a.at); } catch(_){} ntPopup('ann', a); }
+    first2 = false;
+  }, e => console.warn('ann', e)));
+}
+function ntCard(kind, x){
+  const adm = `<span class="adm-b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.3l3.2 3.2L17 8.7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>${escH(ot('admB'))}</span>`;
+  return kind === 'ann'
+    ? `<div class="nt-card nt-ann"><div class="nt-h"><span class="nt-ic">📣</span><span class="grow"><b>${escH(x.title || ot('ntAnnT'))}</b>${adm}</span></div><p>${escH(x.text)}</p><small>${ntFmt(x.at)}</small></div>`
+    : `<div class="nt-card nt-me${x.read ? '' : ' unread'}"><div class="nt-h"><span class="nt-ic">🛡</span><span class="grow"><b>${escH(ot('ntMeT'))}</b>${adm}</span></div><p>${escH(ntText(x))}</p><small>${ntFmt(x.at)}</small></div>`;
+}
+function ntPopup(kind, x){
+  if (!x) return; $('ntPopB').innerHTML = ntCard(kind, x); $('ntPop').classList.add('show'); $('ntPop').dataset.k = kind; $('ntPop').dataset.id = x.id; $('ntPop').dataset.at = x.at;
+  if (navigator.vibrate) try { navigator.vibrate([100, 60, 100]); } catch(_){}
+}
+$('ntPop').addEventListener('click', e => { if (!e.target.closest('[data-ntpok]')) return; const d = $('ntPop').dataset; $('ntPop').classList.remove('show');
+  if (d.k === 'me') ntMarkRead([d.id]); else { try { if (+d.at > ntSeenAnn()) localStorage.setItem('iz-ann-seen', d.at); } catch(_){} ntBadges(); } });
+function ntMarkRead(ids){ ids.forEach(id => FB.F.updateDoc(FB.F.doc(FB.db, 'users', me.uid, 'inbox', id), { read:true }).catch(() => {})); OL.inbox.forEach(x => { if (ids.includes(x.id)) x.read = true; }); ntBadges(); }
+function openNt(){ renderNt(); $('ntBox').classList.add('show');
+  setTimeout(() => { ntMarkRead(OL.inbox.filter(x => !x.read).map(x => x.id)); if (OL.ann[0]) try { localStorage.setItem('iz-ann-seen', OL.ann[0].at); } catch(_){} ntBadges(); }, 1500); }
+function renderNt(){
+  const all = [...OL.ann.map(x => ({ k:'ann', x })), ...OL.inbox.map(x => ({ k:'me', x }))].sort((a, b) => b.x.at - a.x.at);
+  $('ntBody').innerHTML = `<b class="up-t">🔔 ${ot('ntT')}</b><p class="s-note" style="margin-bottom:10px">${ot('ntNote')}</p>` +
+    (all.length ? `<div class="nt-list">${all.map(o => ntCard(o.k, o.x)).join('')}</div>` : `<p class="s-note" style="padding:20px 0">${ot('ntEmpty')}</p>`);
+}
+$('ntBox').addEventListener('click', e => { if (e.target === $('ntBox') || e.target.closest('[data-ntx]')) $('ntBox').classList.remove('show'); });
+$('homeBell').onclick = () => openNt();
+/* ---------- Susturma: odada (kurucu/yönetici) ve her yerde (yönetici) ---------- */
+const tsMs = v => v && v.toMillis ? v.toMillis() : (v || 0);
+const muteEnd = u => { const m = tsMs(u && u.mutedUntil); return m > Date.now() ? m : 0; };
+function roomMuteOf(r, uid){ const m = r && (r.muted || {})[uid]; return m && r.players && r.players[uid] && m.at === r.players[uid].at ? m : null; }
+function globalMuteText(){ const e = muteEnd(profile); return e ? ot('mutedG', new Date(e).toLocaleString(LOC())) : ''; }
+function myMuteText(){ const g = globalMuteText(); if (g) return g; const m = me && roomMuteOf(OL.room, me.uid); return m ? ot(m.by === 'admin' ? 'mutedRoomAdm' : 'mutedRoomHost') : ''; }
+async function roomMute(code, uid, on, by){
+  const { F, db } = FB, ref = F.doc(db, 'rooms', code);
+  try { await F.runTransaction(db, async tx => {
+      const s = await tx.get(ref); if (!s.exists()) throw new Error('none');
+      const r = s.data(); if (!r.players || !r.players[uid]) throw new Error('none');
+      tx.update(ref, { ['muted.' + uid]:on ? { at:r.players[uid].at, by } : F.deleteField() });
+    }); return true; }
+  catch(e){ console.warn('mute', e); toast(t('netErr')); return false; }
+}
+function hostToolsHtml(uid){
+  const r = OL.room; if (!r || !r.players || !r.players[uid] || !me) return '';
+  if (r.host !== me.uid && !isAdminUser) return '';
+  const muted = roomMuteOf(r, uid);
+  return `<div class="adm-tools host-tools"><b class="adm-h">🎮 ${ot('hostTools')}</b><div class="adm-row c2">
+    ${muted ? `<button class="abtn ok" data-up="h-unmute">🔊 ${ot('unmuteBtn')}</button>` : `<button class="abtn no" data-up="h-mute">🔇 ${ot('muteBtn')}</button>`}
+    <button class="abtn no" data-up="h-kick">🚪 ${ot('kickBtn')}</button></div>
+    ${muted ? `<p class="s-note" style="margin-top:6px">${ot('muteInfo')}</p>` : ''}</div>`;
+}
+let muteSeen = { room:'', g:0 };
+function muteWatch(){
+  const m = me && roomMuteOf(OL.room, me.uid), key = m ? OL.code + ':' + m.at : '';
+  if (key && muteSeen.room !== key){ muteSeen.room = key; muteAlert(ot(m.by === 'admin' ? 'mutedRoomAdm' : 'mutedRoomHost')); }
+  if (!key) muteSeen.room = '';
+  const g = muteEnd(profile); if (g && muteSeen.g !== g){ muteSeen.g = g; muteAlert(globalMuteText()); } if (!g) muteSeen.g = 0;
+  if (MSG.rcUnsub && $('rcMute')) renderRoomChat();
+}
+function muteAlert(txt){ $('muteT').textContent = txt; $('muteBox').classList.add('show'); if (navigator.vibrate) try { navigator.vibrate([120, 60, 120]); } catch(_){} }
+function watchMe(){
+  if (OL.meSub || !FB || !me) return;
+  OL.meSub = FB.F.onSnapshot(FB.F.doc(FB.db, 'users', me.uid), d => { if (!d.exists() || !profile) return; const x = d.data();
+    profile.mutedUntil = x.mutedUntil; profile.bannedUntil = x.bannedUntil; muteWatch(); }, () => {});
+}
 /* ---------- Yönetici rozeti + yönetici araçları ---------- */
 const RESERVED = /(harfcarki|harf_carki|harf\.carki|admin|yonetici|yonetim|destek|resmi|official|moderator|moderat)/;
 let STAFF = new Set();
@@ -2588,13 +3014,18 @@ function admToolsHtml(uid, u){
   const inRoom = u.inRoom && (u.inRoomAt || 0) > Date.now() - 3 * 60e3 ? u.inRoom : '', bn = banEnd(u);
   return `<div class="adm-tools"><b class="adm-h">🛡 ${ot('admTools')}</b>
     ${bn ? `<p class="adm-ban">⛔ ${bn >= FOREVER ? ot('admBanForever') : ot('admBanUntil', new Date(bn).toLocaleString(LOC()))}</p>` : ''}
+    ${muteEnd(u) ? `<p class="adm-ban">🔇 ${ot('mutedUntilT', new Date(muteEnd(u)).toLocaleString(LOC()))}</p>` : ''}
     <div class="adm-g">
-      <button class="abtn" data-up="adm-detail">📋 ${ot('admDetail')}</button>
-      ${inRoom ? `<button class="abtn no" data-up="adm-kick" data-room="${escH(inRoom)}">🚪 ${ot('admKick', inRoom)}</button>` : ''}
-      <button class="abtn no" data-up="adm-b7">⛔ ${ot('admBan7')}</button><button class="abtn no" data-up="adm-b30">⛔ ${ot('admBan30')}</button><button class="abtn no" data-up="adm-binf">⛔ ${ot('admBanInf')}</button>
-      ${bn ? `<button class="abtn ok" data-up="adm-unban">✓ ${ot('admUnban')}</button>` : ''}
-      ${u.photo && u.photo !== 'none' ? `<button class="abtn no" data-up="adm-nophoto">🖼 ${ot('admNoPhoto')}</button>` : ''}
-      <button class="abtn" data-up="adm-ren">✏️ ${ot('admRen')}</button>
+      <div class="adm-row c1"><button class="abtn" data-up="adm-detail">📋 ${ot('admDetail')}</button></div>
+      ${inRoom && !(OL.room && OL.code === inRoom) ? `<small class="adm-lbl">🎮 ${ot('admInRoom', inRoom)}</small><div class="adm-row c2"><button class="abtn no" data-up="adm-kick" data-room="${escH(inRoom)}">🚪 ${ot('kickBtn')}</button><button class="abtn no" data-up="adm-rmute" data-room="${escH(inRoom)}">🔇 ${ot('muteBtn')}</button></div>` : ''}
+      <div class="adm-row c2"><button class="abtn no" data-up="adm-warn">⚠️ ${ot('admWarn')}</button><button class="abtn no" data-up="adm-delmsgs">🗑 ${ot('admDelMsgs')}</button></div>
+      <div id="admWarnBox"></div>
+      <small class="adm-lbl">🔇 ${ot('admMuteAll')}</small>
+      ${muteEnd(u) ? `<div class="adm-row c1"><button class="abtn ok" data-up="adm-gunmute">🔊 ${ot('admGUnmute')}</button></div>` : `<div class="adm-row c3"><button class="abtn no" data-up="adm-g1">${ot('h1')}</button><button class="abtn no" data-up="adm-g24">${ot('h24')}</button><button class="abtn no" data-up="adm-g7">${ot('d7')}</button></div>`}
+      <small class="adm-lbl">⛔ ${ot('admBanAll')}</small>
+      ${bn ? `<div class="adm-row c1"><button class="abtn ok" data-up="adm-unban">✓ ${ot('admUnban')}</button></div>` : `<div class="adm-row c3"><button class="abtn no" data-up="adm-b7">${ot('d7')}</button><button class="abtn no" data-up="adm-b30">${ot('d30')}</button><button class="abtn no" data-up="adm-binf">${ot('dInf')}</button></div>`}
+      <small class="adm-lbl">👤 ${ot('admProfile')}</small>
+      <div class="adm-row c2"><button class="abtn no" data-up="adm-nophoto"${u.photo && u.photo !== 'none' ? '' : ' disabled'}>🖼 ${ot('admNoPhoto')}</button><button class="abtn" data-up="adm-ren">✏️ ${ot('admRen')}</button></div>
     </div><div id="admRenBox"></div></div>`;
 }
 async function admTool(a, btn){
@@ -2602,14 +3033,27 @@ async function admTool(a, btn){
   const sure = () => { if (btn.dataset.sure) return true; btn.dataset.sure = 1; btn.dataset.txt = btn.textContent; btn.textContent = ot('sure'); setTimeout(() => { if (btn.isConnected){ delete btn.dataset.sure; btn.textContent = btn.dataset.txt; } }, 3000); return false; };
   try {
     if (a === 'detail'){ openAdmDetail(uid); return; }
-    if (a === 'kick'){ if (!sure()) return; const ok = await removeFromGame(uid, true, btn.dataset.room); toast(ok ? ot('admKicked', nm) : t('netErr')); }
+    if (a === 'warn'){
+      $('admWarnBox').innerHTML = `<div class="warn-box"><div class="warn-pre">${['wp1','wp2','wp3','wp4'].map(k => `<button class="abtn" data-wp="${escH(ot(k))}">${ot(k)}</button>`).join('')}</div>
+        <textarea id="admWarnTx" rows="3" maxlength="300" placeholder="${escH(ot('admWarnPh'))}"></textarea><button class="btn spin sm" id="admWarnGo" style="width:100%;margin-top:6px">⚠️ ${ot('admWarnSend')}</button></div>`;
+      $('admWarnBox').querySelectorAll('[data-wp]').forEach(x => x.onclick = () => { $('admWarnTx').value = x.dataset.wp; });
+      $('admWarnGo').onclick = async () => { const tx = $('admWarnTx').value.trim(); if (!tx){ toast(ot('admWarnPh')); return; }
+        await admInbox(uid, 'warn', { text:tx }, nm); toast(ot('admWarned', nm)); $('admWarnBox').innerHTML = ''; };
+      return;
+    }
+    if (a === 'delmsgs'){ if (!sure()) return; const sn = await F.getDocs(F.query(F.collection(db, 'global'), F.where('from', '==', uid)));
+      for (const d of sn.docs) await F.deleteDoc(d.ref); logMod('delmsgs', uid, nm, { n:sn.docs.length }); toast(ot('admMsgsDeleted', sn.docs.length)); return; }
+    if (a === 'kick'){ if (!sure()) return; const ok = await removeFromGame(uid, true, btn.dataset.room); toast(ok ? ot('admKicked', nm) : t('netErr')); if (ok) admInbox(uid, 'kick', { room:btn.dataset.room }); }
     else if (a === 'b7' || a === 'b30' || a === 'binf'){ if (!sure()) return;
       const until = a === 'binf' ? FOREVER : new Date(Date.now() + (a === 'b7' ? 7 : 30) * 864e5);
       await F.updateDoc(ref, { bannedUntil:F.Timestamp.fromDate(until) });
       if (u.inRoom && (u.inRoomAt || 0) > Date.now() - 3 * 60e3) await removeFromGame(uid, true, u.inRoom);
-      toast(ot('admBanned', nm)); }
-    else if (a === 'unban'){ await F.updateDoc(ref, { bannedUntil:F.deleteField() }); toast(ot('admUnbanned', nm)); }
-    else if (a === 'nophoto'){ if (!sure()) return; await F.updateDoc(ref, { photo:'none' }); F.deleteDoc(F.doc(db, 'avatars', uid)).catch(() => {}); toast(ot('admPhotoDone')); }
+      toast(ot('admBanned', nm)); admInbox(uid, 'ban', { until:a === 'binf' ? 0 : until.getTime() }); }
+    else if (a === 'rmute'){ if (await roomMute(btn.dataset.room, uid, true, 'admin')){ toast(ot('muteDone', nm)); admInbox(uid, 'rmute', { room:btn.dataset.room }); } }
+    else if (a === 'g1' || a === 'g24' || a === 'g7'){ const h = a === 'g1' ? 1 : a === 'g24' ? 24 : 168, until = Date.now() + h * 3600e3; await F.updateDoc(ref, { mutedUntil:F.Timestamp.fromDate(new Date(until)) }); toast(ot('muteDone', nm)); admInbox(uid, 'mute', { until }); }
+    else if (a === 'gunmute'){ await F.updateDoc(ref, { mutedUntil:F.deleteField() }); toast(ot('unmuteDone', nm)); admInbox(uid, 'unmute', {}); }
+    else if (a === 'unban'){ await F.updateDoc(ref, { bannedUntil:F.deleteField() }); toast(ot('admUnbanned', nm)); admInbox(uid, 'unban', {}); }
+    else if (a === 'nophoto'){ if (!sure()) return; await F.updateDoc(ref, { photo:'none' }); F.deleteDoc(F.doc(db, 'avatars', uid)).catch(() => {}); toast(ot('admPhotoDone')); admInbox(uid, 'nophoto', {}); }
     else if (a === 'ren'){
       $('admRenBox').innerHTML = `<div class="ainput" style="margin-top:8px"><input id="admRenIn" value="${escH(nm)}" autocapitalize="off" autocomplete="off"><button class="abtn ok" id="admRenGo">${ot('admSave')}</button></div>`;
       $('admRenIn').focus();
@@ -2622,7 +3066,7 @@ async function admTool(a, btn){
             if (u.unameLower && u.unameLower !== key) tx.delete(F.doc(db, 'usernames', u.unameLower));
             if (!ex.exists()) tx.set(nref, { uid });
             tx.update(ref, { username:nu, unameLower:key, updatedAt:F.serverTimestamp() });
-          }); toast(`@${nm} → @${nu}`); }
+          }); toast(`@${nm} → @${nu}`); admInbox(uid, 'rename', { name:nu }); }
         catch(e){ toast(e.message === 'taken' ? t('unameTaken') : t('netErr')); return; }
         openUser(uid, UP.ctx);
       };
@@ -2659,7 +3103,10 @@ async function openAdmDetail(uid){
     <div class="dsec"><h4>🏆 ${ot('dRank')}</h4>${kv(ot('lbWeek'), rw ? `${rw.rank}. · ${ot('ptsN', rw.pts)}` : '—')}${kv(ot('lbMonth'), rm ? `${rm.rank}. · ${ot('ptsN', rm.pts)}` : '—')}
       ${(cups || []).length ? (cups || []).map(x => `<div class="cup-row">${trophy(x.kind, 26)}<span class="grow"><b>${ot(x.kind === 'w' ? 'chW' : 'chM')}</b><small>📅 ${escH(perLabel(x.kind, x.start, x.end))} · ${ot('ptsN', x.pts)}</small></span></div>`).join('') : `<p class="s-note">${ot('cupsNone')}</p>`}</div>
     <div class="dsec"><h4>🚩 ${ot('dReps', repList.length)}</h4>${repList.length ? repList.slice(0, 8).map(r => `<div class="rep-ctx"><small>${escH(RR[r.reason] || r.reason)} · @${escH(r.uname || '?')} · ${dt(r.at)}</small>${r.text ? escH(r.text) : ''}${r.ctx ? `<br><i>“${escH(r.ctx)}”</i>` : ''}</div>`).join('') : `<p class="s-note">${ot('dNoReps')}</p>`}</div>
+    <div class="dsec"><h4>📜 ${ot('dHist')}</h4><div id="dHist"><p class="s-note">…</p></div></div>
     <button class="btn ghost sm" style="margin-top:12px;width:100%" data-back="${escH(uid)}">‹ ${ot('dBack')}</button>`;
+  F.getDocs(F.query(F.collection(db, 'modlog'), F.where('target', '==', uid))).then(sn => { if (!$('dHist')) return; const L = sn.docs.map(d => d.data()).sort((a, b) => b.at - a.at);
+    $('dHist').innerHTML = L.length ? L.slice(0, 20).map(x => `<div class="dkv"><span>${escH(logLabel(x))}</span><b>${dt(x.at)}</b></div>`).join('') : `<p class="s-note">${ot('dNoHist')}</p>`; }).catch(() => { if ($('dHist')) $('dHist').innerHTML = '—'; });
   const bk = $('lbBody').querySelector('[data-back]'); if (bk) bk.onclick = () => { $('lbBox').classList.remove('show'); openUser(uid, ''); };
 }
 /* ---------- Haftanın / ayın şampiyonu ---------- */
@@ -2807,11 +3254,11 @@ async function admChamp(){
 /* ---------- Bildirim sunucusu (Cloudflare) ---------- */
 const PUSH = { url:'' };
 async function loadPushCfg(){ if (PUSH.loaded || !FB) return; PUSH.loaded = true; try { const d = await FB.F.getDoc(FB.F.doc(FB.db, 'config', 'push')); if (d.exists()) PUSH.url = d.data().url || ''; } catch(_){} }
-async function notify(kind, path, wait){
+async function notify(kind, path, wait, extra){
   if (!PUSH.url || !me) return null;
   const go = async () => { try {
     const tok = await me.getIdToken();
-    const r = await fetch(PUSH.url, { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:'Bearer ' + tok }, body:JSON.stringify({ kind, path }), keepalive:true });
+    const r = await fetch(PUSH.url, { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:'Bearer ' + tok }, body:JSON.stringify({ kind, path, ...(extra || {}) }), keepalive:true });
     return await r.json().catch(() => ({ ok:r.ok }));
   } catch(e){ console.warn('notify', e); return { ok:false, err:String(e.message || e) }; } };
   return wait ? go() : (go(), null);
@@ -2883,8 +3330,8 @@ function renderUser(){
   else main = `<button class="btn mic" data-up="add">➕ ${ot('upAdd')}</button>`;
   $('upBody').innerHTML = `<div class="up-av">${avOf(nm, u.photo)}</div><b class="up-t" data-badge="${escH(uid)}">@${escH(nm)}</b><div class="up-st">${st}</div><div class="up-cups" id="upCups"></div>
     <div class="up-btns">${main}</div>
-    <div class="up-sub">${blk ? '' : `<button class="linkbtn" data-up="blk">🚫 ${ot('blk')}</button>`}<button class="linkbtn" data-up="rep">⚠️ ${ot('rep')}</button></div>
-    ${isAdminUser ? admToolsHtml(uid, u) : ''}`;
+    ${isAdminUser ? '' : `<div class="up-sub">${blk ? '' : `<button class="linkbtn" data-up="blk">🚫 ${ot('blk')}</button>`}<button class="linkbtn" data-up="rep">⚠️ ${ot('rep')}</button></div>`}
+    ${hostToolsHtml(uid)}${isAdminUser ? admToolsHtml(uid, u) : ''}`;
   cupsOf(uid).then(l => { if (UP.uid !== uid || !$('upCups')) return; $('upCups').innerHTML = cupLine(l, uid, nm); });
 }
 $('upX').onclick = () => $('upBox').classList.remove('show');
@@ -2900,6 +3347,8 @@ $('upBox').addEventListener('click', async e => {
   else if (a === 'unblk'){ if (await unblockUser(uid, nm)) setTimeout(renderUser, 300); }
   else if (a === 'rep'){ UP.rep = true; renderUser(); }
   else if (a.startsWith('adm-')) admTool(a.slice(4), b);
+  else if (a === 'h-kick'){ if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = ot('sure'); return; } if (await removeFromGame(uid, true)){ toast(ot('admKicked', nm)); $('upBox').classList.remove('show'); if (isAdminUser) admInbox(uid, 'kick', { room:OL.code }); } else toast(t('netErr')); }
+  else if (a === 'h-mute' || a === 'h-unmute'){ if (await roomMute(OL.code, uid, a === 'h-mute', OL.room.host === me.uid ? 'host' : 'admin')){ toast(ot(a === 'h-mute' ? 'muteDone' : 'unmuteDone', nm)); setTimeout(renderUser, 400); } }
 });
 
 /* ---------- Gizlilik: sadece arkadaşlar davet etsin + engellenenler ---------- */
@@ -2923,25 +3372,35 @@ async function loadRepCount(){ if (!$('repCnt')) return; try { const c = await F
 const RR = { abuse:'Küfür / hakaret', photo:'Uygunsuz fotoğraf', spam:'Spam / rahatsız etme', cheat:'Hile', other:'Diğer' };
 async function admRep(){
   loading(); const { F, db } = FB; let rows = [];
-  try { const s = await F.getDocs(F.query(F.collection(db, 'reports'), F.orderBy('at', 'desc'), F.limit(80))); rows = s.docs.map(d => ({ id:d.id, ...d.data() })); }
+  try { const sn = await F.getDocs(F.query(F.collection(db, 'reports'), F.orderBy('at', 'desc'), F.limit(400))); rows = sn.docs.map(d => ({ id:d.id, ...d.data() })); }
   catch(e){ console.warn(e); $('admBody').innerHTML = `<p class="s-note">Şikayetler alınamadı.</p>`; return; }
   if (admTab !== 'rep') return;
-  const cnt = {}; rows.forEach(r => cnt[r.target] = (cnt[r.target] || 0) + 1);
-  $('admBody').innerHTML = box(`Şikayetler (${rows.length})`, rows.length ? rows.map(r => `<div class="urow rep-row${r.status === 'new' ? ' new' : ''}" data-rid="${r.id}">
-    <div class="top2"><span class="grow"><b>@${escH(r.targetName || '?')}</b> <span class="ban">${escH(RR[r.reason] || r.reason)}</span>${cnt[r.target] > 1 ? ` <small style="color:var(--red);font-weight:700">· ${cnt[r.target]} şikayet</small>` : ''}
-      <small style="display:block;color:var(--muted);font-size:12px">Şikayet eden: @${escH(r.uname || '?')} · ${new Date(r.at).toLocaleString('tr')}</small></span></div>
-    ${r.text ? `<p style="margin:6px 0;font-size:14px">${escH(r.text)}</p>` : ''}${r.ctx ? `<div class="rep-ctx"><small>Mesaj:</small>“${escH(r.ctx)}”</div>` : ''}
-    <div class="ubtns"><button class="abtn" data-ra="see">👤 Profili gör</button><button class="abtn no" data-ra="nophoto">🖼 Fotoğrafı kaldır</button><button class="abtn no" data-ra="7">7 gün engelle</button><button class="abtn no" data-ra="inf">Kalıcı engelle</button><button class="abtn ok" data-ra="done">✓ Çözüldü</button></div></div>`).join('') : `<p class="s-note">Şikayet yok 🎉</p>`);
+  const M30 = Date.now() - 30 * 864e5, G = new Map();
+  rows.forEach(r => { const g = G.get(r.target) || { uid:r.target, name:r.targetName || '?', all:[], m:0, open:0, who:new Set(), rs:{}, last:0 };
+    g.all.push(r); if ((r.at || 0) > M30){ g.m++; g.who.add(r.uid); g.rs[r.reason] = (g.rs[r.reason] || 0) + 1; } if (r.status === 'new') g.open++; g.last = Math.max(g.last, r.at || 0); G.set(r.target, g); });
+  const list = [...G.values()].filter(g => g.open || g.m).sort((a, b) => (b.m - a.m) || (b.open - a.open) || (b.last - a.last));
+  const hot = list.filter(g => g.m >= 5).length;
+  ADM.repG = G;
+  $('admBody').innerHTML = `<div class="kpis"><div class="kpi"><b>${list.length}</b><small>Şikayet edilen kişi</small></div><div class="kpi${hot ? ' hot' : ''}"><b>${hot}</b><small>Son 30 günde 5+ şikayet</small></div></div>
+    <p class="s-note" style="margin:4px 0 12px">Son 30 günde en çok şikayet edilen en üstte. 5 ve üzeri şikayet alanlar kırmızı işaretlenir.</p>` +
+    (list.length ? list.map((g, i) => `<section class="rg${g.m >= 5 ? ' hot' : ''}" data-rg="${escH(g.uid)}">
+      <div class="rg-head"><span class="rg-n">${i + 1}</span><span class="grow"><b class="rg-name" data-prof="${escH(g.uid)}">@${escH(g.name)}</b>${g.m >= 5 ? '<span class="rg-hot">⚠️ Dikkat · 5+ şikayet</span>' : ''}</span></div>
+      <div class="rg-stats"><div><b>${g.m}</b><small>son 30 gün</small></div><div><b>${g.who.size}</b><small>farklı kişi</small></div><div><b>${g.open}</b><small>açık</small></div><div><b>${g.all.length}</b><small>toplam</small></div></div>
+      ${Object.keys(g.rs).length ? `<div class="rg-sec"><small class="adm-lbl">Sebepler</small><div class="rg-rs">${Object.entries(g.rs).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<span>${escH(RR[k] || k)} <b>×${v}</b></span>`).join('')}</div></div>` : ''}
+      <div class="rg-sec rg-meta"><span>🕒 Son şikayet: <b>${new Date(g.last).toLocaleString('tr', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' })}</b></span>${g.who.size === 1 && g.m > 1 ? '<span class="rg-same">ℹ️ Hepsi aynı kişiden geldi</span>' : ''}</div>
+      <div class="adm-row c3 rg-btns"><button class="abtn" data-ra="see">👤 Profil</button><button class="abtn" data-ra="list">📄 Liste (${g.all.length})</button><button class="abtn ok" data-ra="doneAll"${g.open ? '' : ' disabled'}>✓ Çözüldü</button></div>
+      <div class="rg-list" hidden></div></section>`).join('') : `<p class="s-note">Şikayet yok 🎉</p>`);
   $('admBody').querySelectorAll('[data-ra]').forEach(b => b.onclick = async () => {
-    const r = rows.find(x => x.id === b.closest('[data-rid]').dataset.rid), a = b.dataset.ra, uref = F.doc(db, 'users', r.target);
-    try {
-      if (a === 'see'){ openUser(r.target, r.ctx); return; }
-      if (a === 'nophoto'){ await F.updateDoc(uref, { photo:'none' }); F.deleteDoc(F.doc(db, 'avatars', r.target)).catch(() => {}); toast('Fotoğraf kaldırıldı'); }
-      else if (a === '7' || a === 'inf'){ if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = 'Emin misin? Tekrar bas'; return; }
-        await F.updateDoc(uref, { bannedUntil:F.Timestamp.fromDate(a === 'inf' ? FOREVER : new Date(Date.now() + 7 * 864e5)) }); toast(`@${r.targetName} engellendi`); await F.updateDoc(F.doc(db, 'reports', r.id), { status:'done' }); admRep(); }
-      else if (a === 'done'){ await F.deleteDoc(F.doc(db, 'reports', r.id)); b.closest('[data-rid]').remove(); toast('Çözüldü ✓'); }
-      loadRepCount();
-    } catch(e){ console.warn(e); toast('İşlem yapılamadı'); }
+    const sec = b.closest('[data-rg]'), g = G.get(sec.dataset.rg), a = b.dataset.ra;
+    if (a === 'see'){ openUser(g.uid, (g.all.find(x => x.ctx) || {}).ctx || ''); return; }
+    if (a === 'list'){ const L = sec.querySelector('.rg-list'); L.hidden = !L.hidden;
+      b.textContent = L.hidden ? `📄 Liste (${g.all.length})` : '▲ Gizle';
+      L.innerHTML = g.all.map(r => `<div class="rl-item${r.status === 'new' ? ' new' : ''}"><div class="rl-top"><span class="rl-reason">${escH(RR[r.reason] || r.reason)}</span><span class="rl-st">${r.status === 'new' ? 'Açık' : 'Çözüldü'}</span></div>
+        <small>Şikayet eden <b>@${escH(r.uname || '?')}</b> · ${new Date(r.at).toLocaleString('tr', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' })}</small>
+        ${r.text ? `<p class="rl-txt">💬 ${escH(r.text)}</p>` : ''}${r.ctx ? `<p class="rl-ctx"><small>Şikayet edilen mesaj</small>“${escH(r.ctx)}”</p>` : ''}</div>`).join(''); return; }
+    if (a === 'doneAll'){ try { const open = g.all.filter(r => r.status === 'new'); for (const r of open) await F.updateDoc(F.doc(db, 'reports', r.id), { status:'done' });
+      const who = [...new Set(open.map(r => r.uid).filter(Boolean))]; for (const w of who) admInbox(w, 'repdone', { name:g.name });
+      logMod('repdone', g.uid, g.name, { n:open.length }); toast(`@${g.name}: ${open.length} şikayet çözüldü · ${who.length} kişiye bilgi verildi`); loadRepCount(); admRep(); } catch(e){ toast('İşlem yapılamadı'); } }
   });
 }
 /* ---------- Kötü söz filtresi ---------- */
@@ -2954,7 +3413,7 @@ const foldW = w => w.replace(/ı/g,'i').replace(/ş/g,'s').replace(/ç/g,'c').re
 function isBadW(w){
   const b = leetW(w.toLocaleLowerCase('tr')).replace(/[^\p{L}]/gu, '').replace(/(.)\1+/g, '$1'); if (b.length < 2) return false;
   const a = foldW(b);
-  return BAD_A.has(a) || BAD_AP.some(x => a.startsWith(x)) || BAD_B.has(b) || BAD_BP.some(x => b.startsWith(x));
+  return BAD_A.has(a) || BAD_AP.some(x => a.startsWith(x)) || BAD_B.has(b) || BAD_BP.some(x => b.startsWith(x)) || (typeof XW !== 'undefined' && XW.some(x => x.m === 'p' ? a.startsWith(x.w) : a === x.w));
 }
 function cleanTxt(t){ return String(t || '').replace(/[\p{L}\p{N}@$]+/gu, w => isBadW(w) ? w[0] + '*'.repeat(Math.max(2, w.length - 1)) : w); }
 const hasBad = t => cleanTxt(String(t).replace(/[_.]/g, ' ')) !== String(t).replace(/[_.]/g, ' ');
@@ -3014,6 +3473,66 @@ $('phSave').onclick = async () => {
 };
 $('phDel').onclick = async () => { if (await savePhoto('none')){ $('phBox').classList.remove('show'); toast(ot('phDelDone')); } };
 
+/* ---------- İnternet bağlantısı: zayıf / kesildi / yeniden bağlanıyor / bağlandı ---------- */
+const NET = { st:'ok', offAt:0, tries:0, t:null, weak:false, busy:false };
+const NET_KICK_MS = 90e3;   // bu kadar süre bağlantısız kalan oyundan çıkarılır
+function netPill(kind, txt){
+  const el = $('netPill'); el.className = 'net-pill show k-' + kind; el.innerHTML = `<i></i><span>${escH(txt)}</span>`;
+  clearTimeout(NET.t); if (kind === 'ok') NET.t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+async function netPing(){
+  const t0 = performance.now(), ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 6000);
+  try { await fetch('https://www.gstatic.com/generate_204?n=' + Date.now(), { mode:'no-cors', cache:'no-store', signal:ctl.signal }); return performance.now() - t0; }
+  catch(_){ return -1; } finally { clearTimeout(to); }
+}
+function netDown(){
+  if (NET.st === 'down' || NET.st === 'retry') return;
+  NET.st = 'down'; NET.offAt = Date.now(); NET.tries = 0; NET.weak = false; netPill('down', ot('netDown'));
+  if (navigator.vibrate) try { navigator.vibrate(120); } catch(_){}
+  setTimeout(netRetry, 2000);
+}
+async function netRetry(){
+  if (NET.st === 'ok' || NET.st === 'weak' || NET.busy) return; NET.busy = true;
+  NET.st = 'retry'; NET.tries++; netPill('retry', ot('netRetry', NET.tries));
+  const ms = navigator.onLine ? await netPing() : -1; NET.busy = false;
+  if (ms >= 0) netUp(); else setTimeout(netRetry, Math.min(8000, 2000 + NET.tries * 1000));
+}
+function netUp(){
+  if (NET.st === 'ok' || NET.st === 'weak') return;
+  NET.st = 'ok'; NET.tries = 0; netPill('ok', ot('netUp'));
+  try { pingOnline(); if (OL.room) setTimeout(() => { renderRoom(); netBeat(true); }, 800); } catch(_){}
+}
+async function netCheck(){
+  if (document.hidden || NET.st === 'down' || NET.st === 'retry' || NET.busy) return;
+  NET.busy = true; const ms = await netPing(); NET.busy = false;
+  if (ms < 0){ netDown(); return; }
+  const c = navigator.connection, weak = ms > 1800 || !!(c && (c.effectiveType === 'slow-2g' || c.effectiveType === '2g' || (c.rtt && c.rtt > 1500)));
+  if (weak && !NET.weak){ NET.weak = true; NET.st = 'weak'; netPill('weak', ot('netWeak')); }
+  else if (!weak && NET.weak){ NET.weak = false; NET.st = 'ok'; netPill('ok', ot('netGood')); }
+}
+window.addEventListener('offline', netDown);
+window.addEventListener('online', () => { if (NET.st === 'down' || NET.st === 'retry') netRetry(); else netCheck(); });
+if (navigator.connection && navigator.connection.addEventListener) navigator.connection.addEventListener('change', () => netCheck());
+setInterval(() => { if (inPlay() || OL.room || NET.weak) netCheck(); }, 15e3);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(netCheck, 500); });
+
+/* Oyunda kalp atışı: bağlantısı uzun süre kopan oyuncu oyundan çıkarılır */
+let beatAt = 0;
+async function netBeat(force){
+  if (!inPlay() || NET.st === 'down' || NET.st === 'retry') return;
+  if (!force && Date.now() - beatAt < 20e3) return; beatAt = Date.now();
+  try { await FB.F.updateDoc(roomRef(), { ['players.' + me.uid + '.hb']:srvNow() }); } catch(_){}
+}
+function netReferee(){
+  const r = OL.room; if (!inPlay() || NET.st === 'down' || NET.st === 'retry' || r.phase === 'end') return;
+  const now = srvNow(), base = r.startAt || now, hbOf = u => (r.players[u] || {}).hb || base;
+  const ps = presentOrder(r); if (ps.length < 2) return;
+  const fresh = ps.filter(u => now - hbOf(u) < NET_KICK_MS);
+  const ref = fresh.includes(r.host) ? r.host : fresh.slice().sort()[0];
+  if (ref !== me.uid) return;
+  ps.filter(u => u !== me.uid && now - hbOf(u) >= NET_KICK_MS).forEach(u => removeFromGame(u, false, null, 'conn'));
+}
+setInterval(() => { netBeat(); netReferee(); }, 5e3);
 /* ---------- Kaç kişi çevrimiçi + tüm odalar (isimsiz) ---------- */
 async function countOnline(){
   if (!FB || !me || !profile || document.hidden) return;
@@ -3116,6 +3635,7 @@ async function refreshFStats(){
 /* ---------- Bekleme odası ---------- */
 function renderRoom(){
   const r = OL.room; if (!r || !$('rmBody')) return;
+  try { muteWatch(); } catch(_){}
   $('rmH').textContent = r.status === 'play' ? ot('ogTitle') : ot('rmTitle');
   $('roomPage').classList.toggle('playing', r.status === 'play');
   if (r.status === 'play'){ ONL = true; renderGame(); return; }
@@ -3192,19 +3712,6 @@ function tryLinkJoin(){
 function hideHomeIfNeeded(){}
 
 applyI18n();
-/* ---------- Yönetici: odalar ---------- */
-admRooms = async function(){
-  loading();
-  const { F, db } = FB; let rows = [];
-  try { const s = await F.getDocs(F.query(F.collection(db, 'rooms'), F.orderBy('createdAt', 'desc'), F.limit(40))); rows = s.docs.map(d => ({ id:d.id, ...d.data() })); }
-  catch(e){ $('admBody').innerHTML = `<p class="s-note">Odalar alınamadı.</p>`; return; }
-  if (admTab !== 'rooms') return;
-  const st = r => r.status === 'wait' ? ((r.hostSeen || 0) > Date.now() - 3 * 60e3 ? '🟢 Bekliyor' : '⚪ Terk edilmiş') : r.status === 'play' ? '🎮 Oyunda' : '🏁 Bitti';
-  $('admBody').innerHTML = box(`Odalar (${rows.length})`, rows.length ? rows.map(r => `<div class="arow"><span class="grow"><b>${escH(r.id)}</b> · @${escH(r.hostName)}<small>${st(r)} · ${Object.values(r.players || {}).map(p => '@' + escH(p.name)).join(', ')}</small></span><button class="abtn no" data-close-room="${escH(r.id)}">Kapat</button></div>`).join('') : '<p class="s-note">Hiç oda yok.</p>');
-  $('admBody').querySelectorAll('[data-close-room]').forEach(b => b.onclick = async () => {
-    if (!b.dataset.sure){ b.dataset.sure = 1; b.textContent = 'Emin misin?'; return; }
-    try { await F.deleteDoc(F.doc(db, 'rooms', b.dataset.closeRoom)); toast('Oda kapatıldı'); admRooms(); } catch(e){ toast('Kapatılamadı'); } });
-};
 
 /* ===================== ONLINE: CANLI OYUN ===================== */
 let ONL = false;                       // online oyun sürerken true: ses tanıma isimleri odaya gönderir
@@ -3237,7 +3744,7 @@ async function doSpin(){
       const r = s.data(); if (r.status !== 'play' || r.phase !== 'spin') return;
       const L = olLetters(r), pool = L.filter(ch => !(r.used || []).includes(ch));
       const alive = presentOrder(r);
-      if (!pool.length || alive.length < 2){ tx.update(roomRef(), { phase:'end', phaseAt:srvNow() }); return; }
+      if (!pool.length || alive.length < 2){ tx.update(roomRef(), { phase:'end', phaseAt:srvNow(), muted:{} }); return; }
       const pick = pool[Math.floor(Math.random() * pool.length)], seg = 360 / L.length, i = L.indexOf(pick);
       const center = i * seg + seg / 2 + (Math.random() - .5) * seg * .5, cur = r.rot || 0;
       let target = cur - (cur % 360) + 360 * 6 + (360 - center); if (target - cur < 360 * 5) target += 360;
@@ -3308,6 +3815,7 @@ function roundEndUpd(r, alive, upd, F){
   const left = olLetters(r).filter(ch => !(r.used || []).includes(ch)).length;
   const present = presentOrder(r).filter(u => upd.players === undefined || true);
   const ended = (r.rounds && r.round >= r.rounds) || !left || present.length < 2;
+  if (ended) upd.muted = {};
   upd.phase = ended ? 'end' : 'spin'; upd.spinner = winner || r.host; upd.phaseAt = srvNow(); upd.turn = null;
   upd.last = { winner, round:r.round, letter:r.letter };
 }
@@ -3328,7 +3836,7 @@ async function eliminate(uid, why, expectTurnAt){
 }
 /* Oyun sırasında odadan tamamen ayrılma (geri tuşu ya da 3. kez uygulamadan çıkma) */
 async function quitGame(){ return removeFromGame(me.uid, false); }
-async function removeFromGame(uid, kick, code){
+async function removeFromGame(uid, kick, code, why){
   const { F, db } = FB, ref = code ? F.doc(db, 'rooms', code) : roomRef();
   try {
     await F.runTransaction(db, async tx => {
@@ -3337,7 +3845,7 @@ async function removeFromGame(uid, kick, code){
       if (kick) upd.kicked = F.arrayUnion(uid);
       const rest = presentOrder(r).filter(u => u !== uid);
       if (r.host === uid && rest.length) upd.host = rest[0], upd.hostName = pname2(r, rest[0]);
-      upd.names = [...(r.names || []), { by:uid, s:'out', why:kick ? 'kick' : 'quit', nm:pname2(r, uid) }].slice(-80);
+      upd.names = [...(r.names || []), { by:uid, s:'out', why:why || (kick ? 'kick' : 'quit'), nm:pname2(r, uid) }].slice(-80);
       if (r.phase === 'turn' && (r.alive || []).includes(uid)){
         const alive = r.alive.filter(x => x !== uid); upd.alive = alive;
         if (r.turn === uid){ upd.turn = nextIn(r.alive, uid); upd.turnAt = srvNow(); }
@@ -3412,7 +3920,7 @@ function renderGame(){
     return `<span class="og-p${cur ? ' cur' : ''}${out ? ' out' : ''}">${avOf(p.name, p.photo)}<b ${u !== me.uid ? `data-prof="${escH(u)}"` : `data-badge="${escH(u)}"`}>@${escH(p.name)}${u === me.uid ? ` (${ot('you')})` : ''}</b><i>${(r.scores || {})[u] || 0}</i>${r.host === me.uid && u !== me.uid ? `<button class="og-kick" data-gk="${escH(u)}" aria-label="${ot('kick')}">✕</button>` : ''}</span>`; }).join('');
   const names = r.names || [];
   $('ogList').innerHTML = names.map(n => n.s === 'out'
-    ? `<li class="og-out">${escH(ot(n.why === 'left' ? 'outLeft' : n.why === 'quit' ? 'outQuit' : n.why === 'kick' ? 'outKick' : 'outTime', n.nm || pname2(r, n.by)))}</li>`
+    ? `<li class="og-out">${escH(ot(n.why === 'left' ? 'outLeft' : n.why === 'quit' ? 'outQuit' : n.why === 'kick' ? 'outKick' : n.why === 'conn' ? 'outConn' : 'outTime', n.nm || pname2(r, n.by)))}</li>`
     : `<li class="${n.s === 'wrong' ? 'wrong' : n.s === 'rep' ? 'rep' : n.s === 'unk' ? 'unk' : ''}"><span class="t"><span class="by">@${escH(pname2(r, n.by))}</span>${escH(n.t)}</span>${n.s === 'ok' ? `<span class="np${(n.p || 1) > 1 ? ' hi' : ''}">+${n.p || 1}</span>` : ''}${n.s === 'wrong' ? `<span class="wt">${t('wrong', n.need)}</span>` : n.s === 'rep' ? `<span class="tag">${t('rep')}</span>` : n.s === 'unk' ? `<span class="ut">${t('unk')}</span>` : ''}</li>`).join('');
   $('ogEmpty').textContent = names.length ? '' : (r.phase === 'turn' ? ot('ogFirst', r.letter || '') : '');
   const ol = $('ogList'); ol.parentElement.scrollTop = ol.parentElement.scrollHeight;
@@ -3451,7 +3959,7 @@ function renderGame(){
   stageWatch(r);
 }
 async function playAgain(){
-  try { await FB.F.updateDoc(roomRef(), { status:'wait', phase:FB.F.deleteField(), names:[], alive:[], turn:null, used:[], round:0, last:null, hostSeen:Date.now() }); } catch(e){ toast(t('netErr')); }
+  try { await FB.F.updateDoc(roomRef(), { status:'wait', phase:FB.F.deleteField(), names:[], alive:[], turn:null, used:[], round:0, last:null, muted:{}, hostSeen:Date.now() }); } catch(e){ toast(t('netErr')); }
 }
 async function shareResult(r){
   const rank = Object.entries(r.scores || {}).sort((a, b) => b[1] - a[1]);
@@ -3548,7 +4056,7 @@ function handleNav(url){
   try {
     const q = new URL(url, location.href).searchParams;
     if (q.get('oda')){ linkRoom = q.get('oda').toUpperCase(); if (fbReady) tryLinkJoin(); return; }
-    if (q.get('arkadas')){ navWant = 'friends'; } else if (q.get('panel')){ navWant = 'panel'; } else if (q.get('mesaj')){ navWant = 'msg'; } else if (q.get('dm')){ navWant = 'dm:' + q.get('dm'); }
+    if (q.get('arkadas')){ navWant = 'friends'; } else if (q.get('panel')){ navWant = 'panel'; } else if (q.get('mesaj')){ navWant = 'msg'; } else if (q.get('dm')){ navWant = 'dm:' + q.get('dm'); } else if (q.get('bildirim')){ navWant = 'nt'; }
     runNavWant();
   } catch(_){}
 }
@@ -3558,13 +4066,14 @@ function runNavWant(){
   if (w === 'friends'){ openOnline(); renderFriends(); openPage('friendsPage'); }
   else if (w === 'msg'){ openSettings(); armBack(); setTimeout(() => { $('fbSec').scrollIntoView({ block:'center', behavior:'smooth' }); renderMyFb(); }, 400); }
   else if (w === 'panel'){ const go = () => { if (isAdminUser){ admTab = 'rep'; openAdmin(); } }; isAdminUser ? go() : setTimeout(go, 2500); }
+  else if (w === 'nt'){ setTimeout(openNt, 300); }
   else if (w.startsWith('dm:')){ const id = w.slice(3); openMsgs('dm'); setTimeout(() => openChat(id), 400); }
 }
-try { const q = new URLSearchParams(location.search); if (q.get('arkadas') || q.get('panel') || q.get('mesaj') || q.get('dm')){ navWant = q.get('arkadas') ? 'friends' : q.get('panel') ? 'panel' : q.get('dm') ? 'dm:' + q.get('dm') : 'msg'; history.replaceState(null, '', location.pathname); } } catch(_){}
+try { const q = new URLSearchParams(location.search); if (q.get('arkadas') || q.get('panel') || q.get('mesaj') || q.get('dm') || q.get('bildirim')){ navWant = q.get('arkadas') ? 'friends' : q.get('panel') ? 'panel' : q.get('dm') ? 'dm:' + q.get('dm') : q.get('bildirim') ? 'nt' : 'msg'; history.replaceState(null, '', location.pathname); } } catch(_){}
 if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.iz === 'nav') handleNav(e.data.url); });
 
 /* ---------- Arkadaşlar her yerden + uygulamayı paylaş ---------- */
-function openFriends(){ setTimeout(() => refreshPres(true), 0);
+function openFriends(){ if (maintBlock()) return; setTimeout(() => refreshPres(true), 0);
   if (!fbReady){ toast(navigator.onLine ? t('working') : t('netErr')); return; }
   if (!me){ toast(ot('frLogin')); openAuth(); return; }
   if (!profile || !profile.username){ openPage('unamePage'); return; }
@@ -3604,6 +4113,7 @@ $('delGo').onclick = async () => {
     fr.forEach(d => { ops.push(F.doc(db, 'users', uid, 'friends', d.id)); ops.push(F.doc(db, 'users', d.id, 'friends', uid)); });
     const tk = await F.getDocs(F.collection(db, 'users', uid, 'tokens')); tk.forEach(d => ops.push(d.ref));
     const bl = await F.getDocs(F.collection(db, 'users', uid, 'blocked')); bl.forEach(d => ops.push(d.ref));
+    try { (await F.getDocs(F.collection(db, 'users', uid, 'inbox'))).forEach(d => ops.push(d.ref)); } catch(_){}
     ops.push(F.doc(db, 'avatars', uid));
     try { const P = perInfo(); ops.push(F.doc(db, 'boards', P.w.key, 'u', uid), F.doc(db, 'boards', P.m.key, 'u', uid));
       (await F.getDocs(F.query(F.collection(db, 'champs'), F.where('uid', '==', uid)))).forEach(d => ops.push(d.ref));
@@ -3663,6 +4173,7 @@ document.addEventListener('submit', e => {
   const f = e.target.closest('.composer'); if (!f) return; e.preventDefault();
   const inp = $(f.dataset.c), v = (inp.value || '').trim(); if (!v) return;
   if (isBanned()){ toast(t('bannedMsg', banText(banEnd(profile)))); return; }
+  { const mm = f.dataset.c === 'rcIn' ? myMuteText() : globalMuteText(); if (mm){ toast(mm); return; } }
   inp.value = '';
   ({ dmIn:sendDm, wallIn:sendWall, rcIn:sendRoomChat, allIn:sendAll })[f.dataset.c](cleanTxt(v.slice(0, 500)));
 });
@@ -3710,7 +4221,7 @@ function msgBadges(){
 }
 
 /* --- Mesajlar sayfası --- */
-function openMsgs(tab){ setTimeout(() => refreshPres(true), 0);
+function openMsgs(tab){ if (maintBlock()) return; setTimeout(() => refreshPres(true), 0);
   if (!fbReady){ toast(navigator.onLine ? t('working') : t('netErr')); return; }
   if (!me){ toast(ot('msgLogin')); openAuth(); return; }
   if (!profile || !profile.username){ openPage('unamePage'); return; }
@@ -3794,7 +4305,7 @@ function startRoomChat(code){
   stopRoomChat(); MSG.rc = []; MSG.rcSeen = Date.now();
   const { F, db } = FB;
   MSG.rcUnsub = F.onSnapshot(F.query(F.collection(db, 'rooms', code, 'chat'), F.orderBy('at', 'desc'), F.limit(60)), s => {
-    MSG.rc = s.docs.map(d => d.data()).filter(x => !isBlk(x.from)).sort((a, b) => a.at - b.at); renderRoomChat();
+    MSG.rc = s.docs.map(d => ({ id:d.id, ...d.data() })).filter(x => !isBlk(x.from)).sort((a, b) => a.at - b.at); renderRoomChat();
   }, e => console.warn('roomchat', e));
   renderRoomChat();
 }
@@ -3805,14 +4316,15 @@ function renderRoomChat(){
   const un = MSG.rc.filter(m => m.from !== me.uid && m.at > MSG.rcSeen).length;
   if (!box.querySelector('.rc')){
     box.innerHTML = `<section class="s-sec rc"><button class="rc-head" id="rcHead" type="button">💬 <b>${ot('rcTitle')}</b><span class="n-badge in" id="rcN"></span><span class="chev" id="rcChev"></span></button>
-      <div class="rc-in"><div class="bubbles" id="rcList"></div>${composer('rcIn', ot('msgPh'), ot('sendName'))}</div></section>`;
+      <div class="rc-in"><div class="bubbles" id="rcList"></div><p class="mute-note" id="rcMute"></p>${composer('rcIn', ot('msgPh'), ot('sendName'))}</div></section>`;
     $('rcHead').onclick = () => { MSG.rcOpen = !MSG.rcOpen; renderRoomChat(); if (MSG.rcOpen) setTimeout(() => { const l = $('rcList'); if (l) l.scrollTop = l.scrollHeight; }, 30); };
   }
   box.querySelector('.rc').classList.toggle('open', MSG.rcOpen);
+  { const mm = myMuteText(); box.querySelector('.rc').classList.toggle('muted', !!mm); $('rcMute').textContent = mm || ''; }
   $('rcN').textContent = MSG.rcOpen ? '' : (un || '');
   $('rcChev').textContent = MSG.rcOpen ? '▾' : '▸';
   const r = OL.room || {};
-  $('rcList').innerHTML = MSG.rc.length ? MSG.rc.map(m => `<div class="bub${m.from === me.uid ? ' me' : ''}">${m.from === me.uid ? '' : `<b data-prof="${escH(m.from)}" data-ctx="${escH(String(m.text || '').slice(0, 200))}" style="cursor:pointer">@${escH(m.fromName || pname2(r, m.from))}</b>`}<span>${msgTxt(m.text)}</span><small>${fmtT(m.at)}</small></div>`).join('') : `<p class="s-note" style="text-align:center">${ot('rcEmpty')}</p>`;
+  $('rcList').innerHTML = MSG.rc.length ? MSG.rc.map(m => `<div class="bub${m.from === me.uid ? ' me' : ''}">${m.from === me.uid ? '' : `<b data-prof="${escH(m.from)}" data-ctx="${escH(String(m.text || '').slice(0, 200))}" style="cursor:pointer">@${escH(m.fromName || pname2(r, m.from))}</b>`}<span>${msgTxt(m.text)}</span><small>${fmtT(m.at)}${isAdminUser && m.id ? ` · <a class="del" data-rcdel="${escH(m.id)}">${ot('del')}</a>` : ''}</small></div>`).join('') : `<p class="s-note" style="text-align:center">${ot('rcEmpty')}</p>`;
   const l = $('rcList'); l.scrollTop = l.scrollHeight;
 }
 async function sendRoomChat(text){
@@ -3967,15 +4479,16 @@ function renderAcct(){
   let home, set;
   if (me && profile && profile.username){
     const bn = banEnd(profile);
-    const who = `${avHtml()}<span class="who"><b>@${esc(profile.username)}</b><small>${bn ? `<span style="color:var(--red)">${esc(t('bannedMsg', banText(bn)))}</span>` : esc(me.email)}</small></span>`;
+    const who = `${avHtml()}<span class="who" data-badge="${me.uid}"><b>@${esc(profile.username)}</b><small>${bn ? `<span style="color:var(--red)">${esc(t('bannedMsg', banText(bn)))}</span>` : esc(me.email)}</small></span>`;
     home = who;
-    set = `<div class="acct-pro">${avHtml()}<div class="who2"><div class="nm-line"><b>@${esc(profile.username)}</b><button class="pen" id="setUname" title="${t('changeUname')}" aria-label="${t('changeUname')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></div><small>${bn ? `<span style="color:var(--red)">${esc(t('bannedMsg', banText(bn)))}</span>` : esc(me.email)}</small></div><button class="icon-btn out-btn" id="setOut" title="${t('signOut')}" aria-label="${t('signOut')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button></div>` + `<div class="menu">${isAdminUser ? `<button class="mrow" id="setAdmin"><span class="mi" style="--mc:#e8b630">🛠</span><span class="mt">Yönetici paneli<small>İstatistik, öneriler, kullanıcılar, duyuru</small></span><span class="chev">›</span></button>` : ''}`
+    set = `<div class="acct-pro">${avHtml()}<div class="who2"><div class="nm-line" data-badge="${me.uid}"><b>@${esc(profile.username)}</b><button class="pen" id="setUname" title="${t('changeUname')}" aria-label="${t('changeUname')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></div><small>${bn ? `<span style="color:var(--red)">${esc(t('bannedMsg', banText(bn)))}</span>` : esc(me.email)}</small></div><button class="icon-btn out-btn" id="setOut" title="${t('signOut')}" aria-label="${t('signOut')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button></div>` + `<div class="menu">${isAdminUser ? `<button class="mrow" id="setAdmin"><span class="mi" style="--mc:#e8b630">🛠</span><span class="mt">Yönetici paneli<small>İstatistik, öneriler, kullanıcılar, duyuru</small></span><span class="chev">›</span></button>` : ''}`
       + `<button class="mrow" id="setFriends"><span class="mi">👥</span><span class="mt">${t('frTitle')}<small>${t('frMenuS')}</small></span><span class="n-badge" id="setFrN">${(typeof OL !== 'undefined' && OL.inReqs.length) || ''}</span><span class="chev">›</span></button>`
+      + `<button class="mrow" id="setNt"><span class="mi" style="--mc:#e08a00">🔔</span><span class="mt">${ot('ntT')}<small>${ot('ntS')}</small></span><span class="n-badge" id="setNtN"></span><span class="chev">›</span></button>`
       + `<button class="mrow" id="setMsgs"><span class="mi" style="--mc:#7c5ea8">💬</span><span class="mt">${t('msgTitle')}<small>${t('msgMenuS')}</small></span><span class="n-badge" id="setMsgN"></span><span class="chev">›</span></button>`
       + `<button class="mrow" id="setShare"><span class="mi" style="--mc:#1f6fd1">📤</span><span class="mt">${t('shareApp')}<small>${t('shareMenuS')}</small></span><span class="chev">›</span></button>`
-      + `<button class="mrow" id="setCups"><span class="mi" style="--mc:#c8860b">🏆</span><span class="mt">${ot('cupsT')}<small>${ot('cupsS')}</small></span><span class="n-badge in" id="setCupN"></span><span class="chev">›</span></button>`
-      + `<button class="mrow" id="setPv"><span class="mi" style="--mc:#5b6b7a">🛡</span><span class="mt">${ot('pvT')}<small>${ot('pvS')}</small></span><span class="chev">›</span></button>`
-      + `<button class="mrow danger" id="setDel"><span class="mi" style="--mc:#d64541">🗑</span><span class="mt">${t('delAcc')}<small>${t('delAccS')}</small></span><span class="chev">›</span></button></div>`;
+      + (isAdminUser ? '' : `<button class="mrow" id="setCups"><span class="mi" style="--mc:#c8860b">🏆</span><span class="mt">${ot('cupsT')}<small>${ot('cupsS')}</small></span><span class="n-badge in" id="setCupN"></span><span class="chev">›</span></button>`)
+      + (isAdminUser ? '' : `<button class="mrow" id="setPv"><span class="mi" style="--mc:#5b6b7a">🛡</span><span class="mt">${ot('pvT')}<small>${ot('pvS')}</small></span><span class="chev">›</span></button>`)
+      + (isAdminUser ? '</div>' : `<button class="mrow danger" id="setDel"><span class="mi" style="--mc:#d64541">🗑</span><span class="mt">${t('delAcc')}<small>${t('delAccS')}</small></span><span class="chev">›</span></button></div>`);
   } else if (me){
     const who = `${avHtml()}<span class="who"><b>${esc(me.email)}</b><small>${t('pickUname')}</small></span>`;
     home = who + `<button class="btn spin" id="homeUname">${t('pickUname')}</button>`;
@@ -3986,8 +4499,9 @@ function renderAcct(){
     set = `<div class="acct">${who}</div><div class="row"><button class="btn spin sm" id="setSign">${t('signIn')}</button></div><div class="menu"><button class="mrow" id="setShare"><span class="mi" style="--mc:#1f6fd1">📤</span><span class="mt">${t('shareApp')}<small>${t('shareMenuS')}</small></span><span class="chev">›</span></button></div>`;
   }
   $('acctCard').innerHTML = home; $('setAcct').innerHTML = set;
+  if ($('homeBell')) $('homeBell').hidden = !(me && profile && profile.username);
   const on = (id, fn) => { const el = $(id); if (el) el.onclick = fn; };
-  on('setAdmin', () => openAdmin()); on('setMsgs', () => openMsgs()); if (typeof msgBadges === 'function' && me) setTimeout(msgBadges, 0); on('setDel', () => openDel()); on('setPv', () => openPv()); on('setCups', () => openCups(me.uid, profile.username, true)); if (me && profile) myCupCount(); on('setFriends', () => openFriends()); on('setShare', () => shareApp()); on('homeSign', () => openAuth()); on('setSign', () => openAuth());
+  on('setAdmin', () => openAdmin()); on('setMsgs', () => openMsgs()); if (typeof msgBadges === 'function' && me) setTimeout(msgBadges, 0); on('setDel', () => openDel()); on('setPv', () => openPv()); on('setNt', () => openNt()); if (typeof ntBadges === 'function') setTimeout(ntBadges, 0); on('setCups', () => openCups(me.uid, profile.username, true)); if (me && profile) myCupCount(); on('setFriends', () => openFriends()); on('setShare', () => shareApp()); on('homeSign', () => openAuth()); on('setSign', () => openAuth());
   on('homeUname', () => openPage('unamePage')); on('setUname', () => { $('uName').value = profile && profile.username || ''; openPage('unamePage'); });
   on('setOut', async () => { const b = $('setOut'); if (!b.dataset.sure){ b.dataset.sure = 1; b.classList.add('warn'); toast(t('outQ')); setTimeout(() => { delete b.dataset.sure; b.classList.remove('warn'); }, 3000); return; } try { await FB.U.signOut(FB.auth); toast(t('signOut')); } catch(_){} });
   if (isOpen('onlinePage')) $('onlineMe').innerHTML = `${avHtml()}<span><b>@${esc(profile && profile.username)}</b><small>${esc(me && me.email)}</small></span>`;
@@ -3997,7 +4511,7 @@ function openAuth(){
   if (!FB){ toast(navigator.onLine ? t('working') : t('netErr')); return; }
   $('aMsg').textContent = ''; openPage('authPage');
 }
-function openOnline(){ openPage('onlinePage'); renderAcct(); setTimeout(() => { countOnline(); loadAllRooms(); loadChamps(); }, 0); if (!OL.subs.length) startLobby(); renderLobby(); if (FB) pushInit();
+function openOnline(){ if (maintBlock()) return; openPage('onlinePage'); renderAcct(); setTimeout(() => { countOnline(); loadAllRooms(); loadChamps(); loadEvents(); }, 0); if (!OL.subs.length) startLobby(); renderLobby(); if (FB) pushInit();
   if (linkRoom){ const c = linkRoom; linkRoom = null; joinRoom(c); } }
 $('goLocal').onclick = () => { hideHome(); armBack(); };
 $('goOnline').onclick = () => {
