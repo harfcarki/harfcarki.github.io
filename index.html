@@ -530,7 +530,7 @@
   .ih-t{font-size:18px;margin:6px 0 10px} .ih-l{text-align:left;margin:0 0 16px;display:flex;flex-direction:column;gap:10px;font-size:14.5px;line-height:1.45} .ih-i{display:flex;gap:10px;align-items:flex-start} .ih-i span{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center} .ih-i p{margin:0} .ih-l b{display:inline!important;font-size:inherit!important;margin:0!important}
   .inst-ann{margin-bottom:10px;align-items:center} .inst-ann .abtn{flex:none}
   .nm-view{display:flex;justify-content:flex-end;margin:8px 0 4px}
-  .nm-wrap{position:relative} .nm-wrap .nm-list.has-rail{padding-right:32px!important} .nm-letters{position:absolute;top:0;right:0;bottom:0;width:26px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:2px 0;background:none;border:none;touch-action:none;user-select:none;-webkit-user-select:none;z-index:2} .nm-letters:empty{display:none} .nm-letters button{transition:transform .12s ease, color .12s} .nm-letters button.on{transform:translateX(-14px) scale(2.1);color:var(--accent);font-weight:500;position:relative;z-index:3}
+  .nm-wrap{position:relative} .nm-wrap .nm-list.has-rail{padding-right:32px!important} .nm-letters{position:absolute;top:0;right:0;bottom:0;width:26px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:2px 0;background:none;border:none;touch-action:none;user-select:none;-webkit-user-select:none;z-index:2} .nm-letters:empty{display:none} .nm-letters button{transition:transform .12s ease, color .12s} .nm-letters button{position:relative;display:flex;align-items:center;justify-content:center} .nm-letters button.on{color:#fff;font-weight:500} .nm-drop{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible} .nm-drop path{fill:var(--accent)} .nm-big{position:absolute;left:0;top:0;width:50px;height:50px;margin:-25px 0 0 -25px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px;font-weight:300;line-height:1;pointer-events:none;z-index:4;opacity:0;will-change:transform}
   .nm-bubble{position:absolute;right:38px;width:52px;height:52px;border-radius:50%;background:var(--accent);color:#fff;font-weight:900;font-size:24px;display:none;align-items:center;justify-content:center;pointer-events:none;z-index:3;transform:translateY(-50%)} .nm-bubble.on{display:flex}
   .nm-letters button{flex:1 1 0;min-height:0;width:100%;padding:0;border:none;background:none;color:var(--accent);font:inherit;font-weight:300;font-size:11px;line-height:1;cursor:pointer;color:var(--muted)}
   .nm-list{max-height:62dvh;overflow-y:auto}
@@ -759,6 +759,15 @@
     .s-body{padding-left:clamp(18px, 3vw, 36px);padding-right:clamp(18px, 3vw, 36px)}
   }
   @media (min-width: 600px) and (max-width: 819px){ .app{max-width:100%} }
+
+  /* Tablet (dikey): oyun düğmeleri ve listeyi %25 daralt */
+  @media (min-width: 600px) and (max-width: 819px), (min-width: 820px) and (orientation: portrait){
+    .stage .row,.stage .off-acts,.stage .timer,.stage .msg,.app > .list-card{width:75%;max-width:75%;align-self:center;margin-left:auto;margin-right:auto;box-sizing:border-box}
+    #roomPage .og > *:not(.og-wheel):not(.og-top):not(.og-count){width:75%;max-width:75%;align-self:center;margin-left:auto;margin-right:auto;box-sizing:border-box}
+  }
+  @media (min-width: 820px) and (orientation: landscape){
+    .stage .row,.stage .off-acts,.stage .timer,.stage .msg{width:min(75%, 420px)}
+  }
   /* Online oyun: geniş yatay ekranda iki sütun */
   @media (min-width: 900px) and (orientation: landscape){
     #roomPage .s-wrap.narrow{max-width:min(100%, 1280px)}
@@ -2126,13 +2135,44 @@ function nmAsk(txt, yes){
   d.onclick = e => { if (e.target === d || e.target.closest('.no')) close(); else if (e.target.closest('.del')){ close(); yes(); } };
 }
 function nmJump(c){ const h = $('nmList').querySelector(`.nm-h[data-l="${c}"]`); if (h) $('nmList').scrollTop = h.offsetTop; }
-(() => { const rail = $('nmLetters'); let bub = null, on = false;
-  const pick = ev => { const r = rail.getBoundingClientRect(), bs = rail.querySelectorAll('[data-jump]'); if (!bs.length) return;
-    const y = Math.min(Math.max(ev.clientY, r.top), r.bottom - 1), i = Math.min(bs.length - 1, Math.floor((y - r.top) / r.height * bs.length)), c = bs[i].dataset.jump;
-    bs.forEach((b, j) => b.classList.toggle('on', j === i)); nmJump(c); };
+(() => { const rail = $('nmLetters'), wrap = rail.parentNode; let on = false, cur = -1;
+  /* Su damlası: küçük harften büyüyüp ince bir boyunla bağlı kalan büyüteç baloncuğu */
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'nm-drop'); const path = document.createElementNS(NS, 'path'); svg.appendChild(path); wrap.appendChild(svg);
+  const big = document.createElement('div'); big.className = 'nm-big'; wrap.appendChild(big);
+  const S = { t:0, tt:0, by:0, sy:0, sx:0, raf:0 };   // t: büyüme (0-1), by: baloncuk y, sy/sx: küçük harf merkezi
+  const R = 25, r = 9, D = 52;
+  const circ = (x, y, rr) => `M${x - rr},${y}a${rr},${rr} 0 1,0 ${2 * rr},0a${rr},${rr} 0 1,0 ${-2 * rr},0Z`;
+  function draw(){
+    const e = S.t < .5 ? 2 * S.t * S.t : 1 - Math.pow(-2 * S.t + 2, 2) / 2;   // yumuşak geçiş
+    const Rt = Math.max(.1, R * (.35 + .65 * e)), ax = S.sx - D * e, ay = S.by * e + S.sy * (1 - e);
+    const dx = S.sx - ax, dy = S.sy - ay, d = Math.hypot(dx, dy) || 1, ux = dx / d, uy = dy / d, nx = -uy, ny = ux;
+    const a = 52 * Math.PI / 180, b = 62 * Math.PI / 180, neck = Math.max(1.4, 3.2 - 1.6 * e);
+    const P = (cx, cy, rr, ph, side) => [cx + rr * (Math.cos(ph) * ux + side * Math.sin(ph) * nx), cy + rr * (Math.cos(ph) * uy + side * Math.sin(ph) * ny)];
+    const mx = (ax + Rt * ux + S.sx - r * ux) / 2, my = (ay + Rt * uy + S.sy - r * uy) / 2;
+    const p1 = P(ax, ay, Rt, a, 1), p2 = P(S.sx, S.sy, r, Math.PI - b, 1), q2 = P(S.sx, S.sy, r, Math.PI - b, -1), q1 = P(ax, ay, Rt, a, -1);
+    const neckP = `M${p1}Q${mx + neck * nx},${my + neck * ny} ${p2}L${q2}Q${mx - neck * nx},${my - neck * ny} ${q1}Z`;
+    path.setAttribute('d', S.t > .01 ? circ(ax, ay, Rt) + circ(S.sx, S.sy, r) + (d > Rt + r - 2 ? neckP : '') : '');
+    big.style.opacity = Math.min(1, e * 1.6);
+    big.style.transform = `translate(${ax}px,${ay + 1.6 * (Rt / R)}px) scale(${Rt / R})`;
+  }
+  function loop(){
+    S.t += (S.tt - S.t) * .28; if (Math.abs(S.tt - S.t) < .004) S.t = S.tt;
+    const ty = S.sy; S.by += (ty - S.by) * .35;
+    draw();
+    if (S.t !== S.tt || Math.abs(ty - S.by) > .3) S.raf = requestAnimationFrame(loop); else S.raf = 0;
+  }
+  const kick = () => { if (!S.raf) S.raf = requestAnimationFrame(loop); };
+  const pick = ev => { const rr = rail.getBoundingClientRect(), bs = rail.querySelectorAll('[data-jump]'); if (!bs.length) return;
+    const y = Math.min(Math.max(ev.clientY, rr.top), rr.bottom - 1), i = Math.min(bs.length - 1, Math.floor((y - rr.top) / rr.height * bs.length)), c = bs[i].dataset.jump;
+    const br = bs[i].getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+    S.sx = br.left + br.width / 2 - wr.left; S.sy = br.top + br.height / 2 - wr.top;
+    if (S.t < .02) S.by = S.sy;
+    if (i !== cur){ cur = i; bs.forEach((b, j) => b.classList.toggle('on', j === i)); big.textContent = c; nmJump(c); }
+    S.tt = 1; kick(); };
   rail.addEventListener('pointerdown', e => { on = true; rail.classList.add('drag'); try { rail.setPointerCapture(e.pointerId); } catch(_){} pick(e); e.preventDefault(); });
   rail.addEventListener('pointermove', e => { if (on) pick(e); });
-  const end = () => { on = false; rail.classList.remove('drag'); setTimeout(() => rail.querySelectorAll('.on').forEach(b => b.classList.remove('on')), 300); };
+  const end = () => { on = false; cur = -1; rail.classList.remove('drag'); S.tt = 0; kick(); setTimeout(() => { if (!on) rail.querySelectorAll('.on').forEach(b => b.classList.remove('on')); }, 260); };
   rail.addEventListener('pointerup', end); rail.addEventListener('pointercancel', end);
 })();
 $('nmList').onclick = e => {
@@ -2410,16 +2450,11 @@ async function admSummary(){
     try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'app'), { maint:on, maintMsg:$('mtMsg').value.trim(), at:Date.now() }, { merge:true }); logMod('maint', '', '', { on }); toast(on ? '🔧 Bakım modu açıldı' : 'Bakım modu kapatıldı'); admSummary(); }
     catch(_){ toast('Kaydedilemedi'); $('mtOn').checked = !on; } };
   sumMore();
-  $('admBody').insertAdjacentHTML('beforeend', box('🔔 Bildirim sunucusu', `<p class="s-note" style="margin-bottom:8px">Cloudflare'de kurduğun sunucunun adresini buraya yapıştır. Uygulama kapalıyken de bildirim gider.</p>
-    <div class="ainput"><input id="pushUrl" placeholder="https://....workers.dev" value="${escH(PUSH.url || '')}" autocomplete="off" autocapitalize="off"><button class="abtn ok" id="pushSave">Kaydet</button></div>
-    <button class="btn ghost sm" id="pushTest" style="margin-top:8px">📲 Kendime deneme bildirimi gönder</button><p class="s-note" id="pushRes" style="margin-top:6px"></p>`));
+  $('admBody').insertAdjacentHTML('beforeend', box('🔔 Bildirim sunucusu', `<div class="arow"><span class="grow">${PUSH.url ? '✅ Bağlı, telefon bildirimleri çalışıyor' : '⚠️ Adres girilmemiş, telefon bildirimleri gitmiyor'}</span><button class="abtn" id="pushEdit">Adresi değiştir</button></div>
+    <div id="pushBox" ${PUSH.url ? 'hidden' : ''} style="margin-top:8px"><div class="ainput"><input id="pushUrl" placeholder="https://....workers.dev" value="${escH(PUSH.url || '')}" autocomplete="off" autocapitalize="off"><button class="abtn ok" id="pushSave">Kaydet</button></div></div>`));
+  $('pushEdit').onclick = () => { $('pushBox').hidden = !$('pushBox').hidden; };
   $('pushSave').onclick = async () => { const v = $('pushUrl').value.trim().replace(/\/+$/, ''); if (v && !/^https:\/\//.test(v)){ toast('Adres https:// ile başlamalı'); return; }
-    try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'push'), { url:v }); PUSH.url = v; toast('Kaydedildi ✓'); } catch(e){ toast('Kaydedilemedi'); } };
-  $('pushTest').onclick = async () => {
-    if (Notification.permission !== 'granted'){ toast('Önce bildirim iznini aç (Online oyna → Bildirimleri aç)'); return; }
-    await pushToken(); $('pushRes').textContent = 'Gönderiliyor…';
-    const r = await notify('test', 'users/' + me.uid, true); $('pushRes').textContent = r && r.ok ? `✅ Gönderildi (${r.sent || 0} cihaz). Bildirim birkaç saniye içinde gelir.` : '❌ ' + ((r && r.err) || 'Sunucuya ulaşılamadı');
-  };
+    try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'push'), { url:v }); PUSH.url = v; toast('Kaydedildi ✓'); admSummary(); } catch(e){ toast('Kaydedilemedi'); } };
   $('admLang').onclick = e => { const b = e.target.closest('button'); if (b){ admLang = b.dataset.v; admSummary(); } };
   $('admBody').querySelectorAll('[data-add]').forEach(b => b.onclick = () => { addCustom(admLang, b.dataset.add); b.disabled = true; b.textContent = 'Eklendi ✓'; toast(`"${cap(b.dataset.add, admLang)}" eklendi`); });
 }
@@ -2621,7 +2656,7 @@ const AZX = {
  'Oyunlar, oyuncu giriş yapmışken oynandığında sayılır.':'Oyunlar oyunçu daxil olmuş halda oynadıqda sayılır.',
  'En çok söylenen isimler':'Ən çox deyilən adlar', 'Henüz veri yok.':'Hələ məlumat yoxdur.', '"Listede yok" denilenler':'"Siyahıda yoxdur" deyilənlər',
  'Listede olmayan isim söylenmemiş.':'Siyahıda olmayan ad deyilməyib.', '+ Listeye ekle':'+ Siyahıya əlavə et', 'Eklendi ✓':'Əlavə edildi ✓',
- '🔔 Bildirim sunucusu':'🔔 Bildiriş serveri', "Cloudflare'de kurduğun sunucunun adresini buraya yapıştır. Uygulama kapalıyken de bildirim gider.":'Cloudflare-də qurduğun serverin ünvanını bura yapışdır. Tətbiq bağlı olanda da bildiriş gedir.',
+ '🔔 Bildirim sunucusu':'🔔 Bildiriş serveri', '✅ Bağlı, telefon bildirimleri çalışıyor':'✅ Qoşulub, telefon bildirişləri işləyir', '⚠️ Adres girilmemiş, telefon bildirimleri gitmiyor':'⚠️ Ünvan yazılmayıb, telefon bildirişləri getmir', 'Adresi değiştir':'Ünvanı dəyiş', "Cloudflare'de kurduğun sunucunun adresini buraya yapıştır. Uygulama kapalıyken de bildirim gider.":'Cloudflare-də qurduğun serverin ünvanını bura yapışdır. Tətbiq bağlı olanda da bildiriş gedir.',
  'Kaydet':'Yadda saxla', '📲 Kendime deneme bildirimi gönder':'📲 Özümə sınaq bildirişi göndər', 'Adres https:// ile başlamalı':'Ünvan https:// ilə başlamalıdır',
  'Önce bildirim iznini aç (Online oyna → Bildirimleri aç)':'Əvvəlcə bildiriş icazəsini aç (Onlayn oyna → Bildirişləri aç)',
  'Gönderiliyor…':'Göndərilir…', 'Kaydediliyor…':'Yadda saxlanılır…', 'Sunucuya ulaşılamadı':'Serverə qoşulmaq olmadı', 'Kaydedildi ✓':'Yadda saxlanıldı ✓', 'Kaydedildi':'Yadda saxlanıldı', 'Kaydedilemedi':'Yadda saxlanılmadı',
