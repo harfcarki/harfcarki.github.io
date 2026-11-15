@@ -299,7 +299,7 @@
   .chipn.mine{border-color:#d4892a;background:rgba(232,160,60,.16);color:#b86e10} [data-theme="dark"] .chipn.mine,[data-theme="dark"] .nm-mine-h{color:#f0b462!important}
   .nm-mine-h.nm-h{color:#b86e10;font-size:13.5px;line-height:1.35;display:flex;align-items:center;gap:8px;padding:8px 10px;margin:2px 0 4px;border-radius:12px;background:rgba(232,160,60,.12);border:1px dashed #d4892a;font-weight:800} .nm-mine-h i{width:12px;height:12px;border-radius:4px;background:#e8a03c;flex:none}
   .nm-list.as-list .chipn.mine{border:none!important;border-left:4px solid #e8a03c!important;background:rgba(232,160,60,.1)}
-  .mic-diag .dg-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px;text-align:left} .mic-diag .dg-row b{text-align:right} .mic-diag p{margin:10px 0 0!important} .mic-diag .dg-say{color:var(--accent);font-weight:700} .mic-diag button.again{background:var(--accent);border-color:var(--accent);color:#fff} .mic-diag small{display:block;color:var(--muted);font-size:11.5px;margin-top:8px;word-break:break-word}
+  .mic-diag .dg-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px;text-align:left} .mic-diag .dg-row b{text-align:right} .mic-diag p{margin:10px 0 0!important} .mic-diag .dg-say{color:var(--accent);font-weight:700} .mic-diag button.again{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important} .mic-diag small{display:block;color:var(--muted);font-size:11.5px;margin-top:8px;word-break:break-word}
   .nm-ask{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:24px} .nm-ask>div{background:var(--card);border-radius:20px;padding:20px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3)} .nm-ask p{margin:0 0 16px;font-size:16px;line-height:1.45} .nm-ask .row2{display:flex;gap:10px} .nm-ask button{flex:1;height:46px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:700;font-size:15px;cursor:pointer} .nm-ask button.del{background:#d64545;border-color:#d64545;color:#fff}
   .chipn button{border:none;background:transparent;color:var(--muted);font-size:16px;line-height:1;width:20px;height:20px;border-radius:50%;cursor:pointer}
   .chipn button:hover{background:var(--line);color:var(--red)}
@@ -1408,7 +1408,7 @@ const I18N = {
       score:['🏆','Puanlar','Her geçerli isim <b>1 puan</b>, turu kazanan <b>+2 puan</b> alır. Online oyunda sona doğru puan artar: 🔥 yarı finalde (4 kişi) <b>2</b>, son 3’te <b>3</b>, ⚔️ finalde <b>5 puan</b>; tur birincisi <b>+5 bonus</b>. Tur sonunda özet çıkar, istersen resim olarak paylaşırsın. İyi eğlenceler!']
     },
     sugBtn:'Öner', sugSent:'Önerildi ✓', sugNeedLogin:'İsim önermek için giriş yap', sugDone:x=>`"${x}" yöneticiye önerildi`, bannedMsg:d=>d?`Hesabın ${d} tarihine kadar engellendi`:'Hesabın kalıcı olarak engellendi', bannedS:'Engelli hesap',
-    micFix:'Mikrofonu kontrol et', srvNA:'Bu telefonda Google ses tanıma hizmeti kapalı ya da yok. Yazı kutusuna dokunup klavyedeki 🎤 tuşuyla söyleyebilir ya da yazabilirsin.', kbHint:'Bu telefonda uygulama içi ses tanıma çalışmıyor. Yazı kutusuna dokun, klavyedeki 🎤 tuşuyla ismi söyle.', diagT:'🎤 Mikrofon testi', diagSay:'Şimdi bir isim söyle…', diagSR:'Ses tanıma', diagPerm:'Mikrofon izni', diagLang:'Tanıma dili', diagHeard:'Duyulan', diagNone:'Hiçbir şey duyulmadı', diagYes:'var', diagNo:'yok', diagShot:'Sorun devam ederse bu ekranın görüntüsünü gönder.', diagClose:'Kapat', diagAgain:'Tekrar dene', diagOk:'✅ Mikrofon çalışıyor', diagBad:'⚠️ Ses tanıma çalışmadı', micChecking:'Mikrofon kontrol ediliyor…', micOk:'🎤 Mikrofon hazır', wpTitle:'Duvar kağıdı', wpNames:{none:'Yok', paris:'Paris', newyork:'New York', istanbul:'İstanbul', baku:'Bakü', forest:'Orman', waterfall:'Şelale', rainbow:'Gökkuşağı', cappadocia:'Kapadokya', aurora:'Kuzey ışıkları', lake:'Dağ gölü'}, wpCred:'Fotoğraflar: Unsplash · İlk açılışta internet gerekir, sonra telefona kaydedilir.',
+    micFix:'Mikrofonu kontrol et', srCloud:'Telefonun kendi ses tanıması çalışmadığı için sunucu ile tanımaya geçildi. Tekrar basılı tutup söyle.', cloudNone:'Ses anlaşılamadı, biraz daha yüksek sesle tekrar söyle.', cloudErr:'Ses sunucuya gönderilemedi. İnterneti kontrol et ya da ismi yaz.', cloudOff:'Sunucuda ses tanıma henüz açılmamış. Şimdilik ismi yazabilirsin.', diagCloud:'Sunucu ile tanıma', diagCloudSay:'Sunucu testi: şimdi bir isim söyle…', diagMode:'Kullanılan yöntem', diagModeWeb:'Telefonun ses tanıması', diagModeCloud:'Sunucu ile tanıma', srvNA:'Bu telefonda Google ses tanıma hizmeti kapalı ya da yok. Yazı kutusuna dokunup klavyedeki 🎤 tuşuyla söyleyebilir ya da yazabilirsin.', kbHint:'Bu telefonda uygulama içi ses tanıma çalışmıyor. Yazı kutusuna dokun, klavyedeki 🎤 tuşuyla ismi söyle.', diagT:'🎤 Mikrofon testi', diagSay:'Şimdi bir isim söyle…', diagSR:'Ses tanıma', diagPerm:'Mikrofon izni', diagLang:'Tanıma dili', diagHeard:'Duyulan', diagNone:'Hiçbir şey duyulmadı', diagYes:'var', diagNo:'yok', diagShot:'Sorun devam ederse bu ekranın görüntüsünü gönder.', diagClose:'Kapat', diagAgain:'Tekrar dene', diagOk:'✅ Mikrofon çalışıyor', diagBad:'⚠️ Ses tanıma çalışmadı', micChecking:'Mikrofon kontrol ediliyor…', micOk:'🎤 Mikrofon hazır', wpTitle:'Duvar kağıdı', wpNames:{none:'Yok', paris:'Paris', newyork:'New York', istanbul:'İstanbul', baku:'Bakü', forest:'Orman', waterfall:'Şelale', rainbow:'Gökkuşağı', cappadocia:'Kapadokya', aurora:'Kuzey ışıkları', lake:'Dağ gölü'}, wpCred:'Fotoğraflar: Unsplash · İlk açılışta internet gerekir, sonra telefona kaydedilir.',
     adminBadge:'YÖNETİCİ', bulkHint:'Toplu ekle: her satıra bir isim yaz (virgülle de ayırabilirsin).', bulkAdd:'Toplu ekle', bulkDone:(a,b)=>`${a} isim eklendi${b?` · ${b} tanesi zaten vardı`:''}`, syncing:'Kaydediliyor…', synced:'✓ Herkes için kaydedildi', syncErr:'⚠ Kaydedilemedi, interneti kontrol et',
     playOnline:'Online oyna', playOnlineS:'Arkadaşlarınla, herkes kendi telefonundan', playLocal:'Aynı telefonda oyna', playLocalS:'İnternetsiz, tek telefonda sırayla',
     signIn:'Giriş yap', signUp:'Hesap oluştur', signOut:'Çıkış yap', withGoogle:'Google ile devam et', or:'veya e-posta ile', email:'E-posta', password:'Şifre', password2:'Şifre (tekrar)',
@@ -1461,7 +1461,7 @@ const I18N = {
       score:['🏆','Xallar','Hər düzgün ad <b>1 xal</b>, raundu qazanan <b>+2 xal</b> alır. Onlayn oyunda sona doğru xal artır: 🔥 yarımfinalda (4 nəfər) <b>2</b>, son 3-də <b>3</b>, ⚔️ finalda <b>5 xal</b>; raund birincisi <b>+5 bonus</b>. Raund sonunda xülasə çıxır, istəsən şəkil kimi paylaşırsan. Uğurlar!']
     },
     sugBtn:'Təklif et', sugSent:'Təklif olundu ✓', sugNeedLogin:'Ad təklif etmək üçün daxil ol', sugDone:x=>`"${x}" idarəçiyə təklif olundu`, bannedMsg:d=>d?`Hesabın ${d} tarixinədək bloklanıb`:'Hesabın həmişəlik bloklanıb', bannedS:'Bloklanmış hesab',
-    micFix:'Mikrofonu yoxla', srvNA:'Bu telefonda Google səs tanıma xidməti bağlıdır və ya yoxdur. Yazı xanasına toxunub klaviaturadakı 🎤 düyməsi ilə deyə və ya yaza bilərsən.', kbHint:'Bu telefonda tətbiq daxilində səs tanıma işləmir. Yazı xanasına toxun, klaviaturadakı 🎤 düyməsi ilə adı de.', diagT:'🎤 Mikrofon testi', diagSay:'İndi bir ad de…', diagSR:'Səs tanıma', diagPerm:'Mikrofon icazəsi', diagLang:'Tanıma dili', diagHeard:'Eşidilən', diagNone:'Heç nə eşidilmədi', diagYes:'var', diagNo:'yoxdur', diagShot:'Problem davam etsə, bu ekranın şəklini göndər.', diagClose:'Bağla', diagAgain:'Yenidən yoxla', diagOk:'✅ Mikrofon işləyir', diagBad:'⚠️ Səs tanıma işləmədi', micChecking:'Mikrofon yoxlanılır…', micOk:'🎤 Mikrofon hazırdır', wpTitle:'Divar kağızı', wpNames:{none:'Yoxdur', paris:'Paris', newyork:'Nyu-York', istanbul:'İstanbul', baku:'Bakı', forest:'Meşə', waterfall:'Şəlalə', rainbow:'Göy qurşağı', cappadocia:'Kapadokya', aurora:'Qütb parıltısı', lake:'Dağ gölü'}, wpCred:'Fotoşəkillər: Unsplash · İlk açılışda internet lazımdır, sonra telefonda saxlanılır.',
+    micFix:'Mikrofonu yoxla', srCloud:'Telefonun öz səs tanıması işləmədiyi üçün server ilə tanımaya keçildi. Yenidən basılı saxlayıb de.', cloudNone:'Səs anlaşılmadı, bir az daha ucadan yenidən de.', cloudErr:'Səs serverə göndərilmədi. İnterneti yoxla və ya adı yaz.', cloudOff:'Serverdə səs tanıma hələ açılmayıb. Hələlik adı yaza bilərsən.', diagCloud:'Server ilə tanıma', diagCloudSay:'Server testi: indi bir ad de…', diagMode:'İstifadə olunan üsul', diagModeWeb:'Telefonun səs tanıması', diagModeCloud:'Server ilə tanıma', srvNA:'Bu telefonda Google səs tanıma xidməti bağlıdır və ya yoxdur. Yazı xanasına toxunub klaviaturadakı 🎤 düyməsi ilə deyə və ya yaza bilərsən.', kbHint:'Bu telefonda tətbiq daxilində səs tanıma işləmir. Yazı xanasına toxun, klaviaturadakı 🎤 düyməsi ilə adı de.', diagT:'🎤 Mikrofon testi', diagSay:'İndi bir ad de…', diagSR:'Səs tanıma', diagPerm:'Mikrofon icazəsi', diagLang:'Tanıma dili', diagHeard:'Eşidilən', diagNone:'Heç nə eşidilmədi', diagYes:'var', diagNo:'yoxdur', diagShot:'Problem davam etsə, bu ekranın şəklini göndər.', diagClose:'Bağla', diagAgain:'Yenidən yoxla', diagOk:'✅ Mikrofon işləyir', diagBad:'⚠️ Səs tanıma işləmədi', micChecking:'Mikrofon yoxlanılır…', micOk:'🎤 Mikrofon hazırdır', wpTitle:'Divar kağızı', wpNames:{none:'Yoxdur', paris:'Paris', newyork:'Nyu-York', istanbul:'İstanbul', baku:'Bakı', forest:'Meşə', waterfall:'Şəlalə', rainbow:'Göy qurşağı', cappadocia:'Kapadokya', aurora:'Qütb parıltısı', lake:'Dağ gölü'}, wpCred:'Fotoşəkillər: Unsplash · İlk açılışda internet lazımdır, sonra telefonda saxlanılır.',
     adminBadge:'İDARƏÇİ', bulkHint:'Toplu əlavə: hər sətirə bir ad yaz (vergüllə də ayıra bilərsən).', bulkAdd:'Toplu əlavə et', bulkDone:(a,b)=>`${a} ad əlavə olundu${b?` · ${b} ad artıq var idi`:''}`, syncing:'Yadda saxlanılır…', synced:'✓ Hamı üçün yadda saxlanıldı', syncErr:'⚠ Yadda saxlanılmadı, interneti yoxla',
     playOnline:'Onlayn oyna', playOnlineS:'Dostlarınla, hər kəs öz telefonundan', playLocal:'Eyni telefonda oyna', playLocalS:'İnternetsiz, bir telefonda növbə ilə',
     signIn:'Daxil ol', signUp:'Hesab yarat', signOut:'Çıxış', withGoogle:'Google ilə davam et', or:'və ya e-poçt ilə', email:'E-poçt', password:'Şifrə', password2:'Şifrə (təkrar)',
@@ -1938,13 +1938,14 @@ const IS_ANDROID = /Android/i.test(navigator.userAgent);
 const speechLangOf = l => (l === 'az' && settings.azSR === 'tr') ? 'tr-TR' : LANGS[l].speech;
 function micLabel(){
   if (!$('micLabel')) return;
-  $('micLabel').textContent = webFin ? '⏳ ' + ot('pttWait') : listening ? (engine === 'web' && !webReady ? '🎙 ' + ot('pttPrep') : '🔴 ' + ot('pttLive')) : '🎤 ' + ot('pttHold');
+  $('micLabel').textContent = webFin ? '⏳ ' + ot('pttWait') : listening ? ((engine === 'web' || engine === 'cloud') && !webReady ? '🎙 ' + ot('pttPrep') : '🔴 ' + ot('pttLive')) : '🎤 ' + ot('pttHold');
   if (typeof GR !== 'undefined' && OL.room) try { renderGame(); } catch(_){}
 }
 function finishWeb(){
   if (!webFin) return; webFin = false; clearTimeout(webFinT); clearTimeout(webIdleT);
   const it = $('interim').textContent.trim();
   if (!webGot && it && !webIgnore) pend.push(it);
+  if (!webGot && !it && pressAt && Date.now() - pressAt > 1300){ if (++webEmpty >= 2) useCloud(true); } else if (webGot || it) webEmpty = 0;
   flushPhrase(); listening = false; try { if (rec){ rec.onend = null; rec.abort(); } } catch(_){}
   setListening(false);
 }
@@ -1993,7 +1994,7 @@ function startWebSpeech(){
     const er = e.error;
     if (er === 'no-speech' || er === 'aborted') return;
     if (er === 'not-allowed'){ webFin = false; setListening(false); $('msg').textContent = t('micDenied'); toast(t('micDenied')); }
-    else if (er === 'service-not-allowed'){ webFin = false; setListening(false); kbFallback(t('srvNA')); }
+    else if (er === 'service-not-allowed'){ webFin = false; setListening(false); if (useCloud(true)) return; kbFallback(t('srvNA')); }
     else if (er === 'language-not-supported' && sl !== 'tr-TR'){
       settings.azSR = 'tr'; saveSettings(); toast(ot('azSRFallback'));
       const keep = listening; try { rec.onend = null; rec.abort(); } catch(_){} if (keep){ listening = false; setTimeout(() => { try { startWebSpeech(); } catch(_){} }, 150); }
@@ -2005,13 +2006,67 @@ function startWebSpeech(){
     clearTimeout(webIdleT); webLast = ''; webIgnore = false;
     if (webFin){ finishWeb(); return; }
     if (listening && engine === 'web') {
-      if (!webReady && ++srFails >= 4){ webFin = false; setListening(false); kbFallback(t('kbHint')); return; }   // ses hiç açılamıyor: klavye mikrofonuna yönlendir
+      if (!webReady && ++srFails >= 4){ webFin = false; setListening(false); if (useCloud(true)) return; kbFallback(t('kbHint')); return; }   // ses hiç açılamıyor: klavye mikrofonuna yönlendir
       webReady = false; micLabel(); setTimeout(() => { if (listening && engine === 'web') try { rec.start(); } catch(_){} }, IS_ANDROID ? 120 : 0); }
   };
   webIgnore = false;
   rec.start(); engine = 'web'; micLang = sl === 'tr-TR' ? 'tr' : LANGS[lang].locale; setListening(true);
 }
 
+/* ---------- Sunucu ile ses tanıma: telefonun kendi ses tanıması çalışmazsa (Xiaomi, Honor, iPhone uygulaması vb.)
+   ses doğrudan mikrofondan kaydedilir, sunucuya gönderilir, yazıya çevrilip geri gelir ---------- */
+let pressAt = 0, webEmpty = 0;
+const CL = { stream:null, ctx:null, src:null, proc:null, chunks:[], on:false, starting:null, keepT:null, rate:48000 };
+const cloudReady = () => !!(typeof PUSH !== 'undefined' && PUSH.url && navigator.onLine !== false && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext));
+function useCloud(why){
+  if (settings.srMode === 'cloud' || !cloudReady()) return false;
+  settings.srMode = 'cloud'; saveSettings(); if (why) toast(t('srCloud')); return true;
+}
+async function cloudStart(){
+  engine = 'cloud'; webReady = false; webFin = false; setListening(true);
+  CL.starting = (async () => {
+    clearTimeout(CL.keepT);
+    if (!CL.stream || !CL.stream.active) CL.stream = await navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1 } });
+    CL.ctx = CL.ctx || new (window.AudioContext || window.webkitAudioContext)(); if (CL.ctx.state !== 'running') await CL.ctx.resume();
+    CL.rate = CL.ctx.sampleRate; CL.chunks = [];
+    CL.src = CL.ctx.createMediaStreamSource(CL.stream); CL.proc = CL.ctx.createScriptProcessor(4096, 1, 1);
+    CL.proc.onaudioprocess = e => { if (CL.on) CL.chunks.push(new Float32Array(e.inputBuffer.getChannelData(0))); };
+    CL.src.connect(CL.proc); CL.proc.connect(CL.ctx.destination);
+    CL.on = true; webReady = true; if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){} micLabel();
+  })();
+  try { await CL.starting; } catch(e){ CL.starting = null; setListening(false); const m = e && e.name === 'NotAllowedError' ? t('micDenied') : ot('micBusy'); $('msg').textContent = m; toast(m); }
+}
+function cloudRelease(){ try { CL.on = false; if (CL.proc){ CL.proc.disconnect(); CL.proc.onaudioprocess = null; } if (CL.src) CL.src.disconnect(); } catch(_){} CL.proc = CL.src = null;
+  clearTimeout(CL.keepT); CL.keepT = setTimeout(() => { try { CL.stream && CL.stream.getTracks().forEach(x => x.stop()); } catch(_){} CL.stream = null; }, 20000); }
+function toWav(chunks, rate){
+  const n = chunks.reduce((a, c) => a + c.length, 0), all = new Float32Array(n); let o = 0; chunks.forEach(c => { all.set(c, o); o += c.length; });
+  const R = 16000, ratio = rate / R, m = Math.floor(n / ratio), pcm = new Int16Array(m);
+  let peak = 0; for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(all[i]));
+  const g = peak > 0.02 && peak < 0.5 ? 0.9 / peak : 1;            // sessiz kayıtları biraz yükselt
+  for (let i = 0; i < m; i++){ const a = Math.floor(i * ratio), b = Math.min(n, Math.floor((i + 1) * ratio)); let s = 0; for (let j = a; j < b; j++) s += all[j]; const v = Math.max(-1, Math.min(1, (s / Math.max(1, b - a)) * g)); pcm[i] = v < 0 ? v * 0x8000 : v * 0x7fff; }
+  const buf = new ArrayBuffer(44 + pcm.length * 2), dv = new DataView(buf), w = (p, str) => { for (let i = 0; i < str.length; i++) dv.setUint8(p + i, str.charCodeAt(i)); };
+  w(0, 'RIFF'); dv.setUint32(4, 36 + pcm.length * 2, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+  dv.setUint32(24, R, true); dv.setUint32(28, R * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); w(36, 'data'); dv.setUint32(40, pcm.length * 2, true);
+  new Int16Array(buf, 44).set(pcm); return { blob:new Blob([buf], { type:'audio/wav' }), secs:m / R, peak };
+}
+async function cloudSend(wav, l){
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 15000);
+  try { const r = await fetch(PUSH.url.replace(/\/+$/, '') + '/stt?lang=' + l, { method:'POST', body:wav.blob, headers:{ 'Content-Type':'audio/wav' }, signal:ctl.signal });
+    const j = await r.json(); if (!j.ok) throw new Error(j.err || 'stt'); return j.text || ''; }
+  finally { clearTimeout(to); }
+}
+async function cloudStop(){
+  try { if (CL.starting) await CL.starting; } catch(_){}
+  const chunks = CL.chunks; CL.chunks = []; cloudRelease();
+  if (!listening || engine !== 'cloud'){ return; }
+  webFin = true; micLabel();
+  const wav = chunks.length ? toWav(chunks, CL.rate) : null;
+  if (!wav || wav.secs < 0.35 || wav.peak < 0.01){ webFin = false; setListening(false); if (wav && wav.secs >= 0.35){ $('msg').textContent = t('cloudNone'); } return; }
+  try { const txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').trim();
+    if (txt){ pend.push(txt); flushPhrase(); } else { $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); }
+  } catch(e){ const m = String(e && e.message) === 'no-ai' ? t('cloudOff') : t('cloudErr'); $('msg').textContent = m; toast(m); if (String(e && e.message) === 'no-ai'){ delete settings.srMode; saveSettings(); } }
+  webFin = false; setListening(false);
+}
 function startListening(){
   $('msg').textContent = '';
   if (inClaude && dict){
@@ -2033,7 +2088,9 @@ function startListening(){
     });
     return;
   }
+  if (settings.srMode === 'cloud' && cloudReady()){ cloudStart(); return; }
   if (SR && !inClaude){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
+  if (cloudReady()){ cloudStart(); return; }
   kbFallback(t('kbHint'));
 }
 function stopListening(){
@@ -2041,6 +2098,7 @@ function stopListening(){
   if (!listening) return;
   if (engine === 'web' && rec){ listening = false; webFin = false; clearTimeout(webFinT); clearTimeout(webIdleT); try { rec.onend = null; rec.abort(); } catch(_){} }
   if (engine === 'dict' && dict){ dict.stop().catch(()=>{}); }
+  if (engine === 'cloud'){ CL.chunks = []; cloudRelease(); }
   setListening(false);
 }
 
@@ -2073,8 +2131,29 @@ async function micFix(){
   try {
     trec = new SR(); trec.lang = sl; trec.continuous = false; trec.interimResults = true; trec.maxAlternatives = 3;
     let got = '', fin = false;
-    const done = () => { if (fin) return; fin = true; say.textContent = ''; res.textContent = got ? t('diagOk') : t('diagBad');
-      heard.innerHTML = `${t('diagHeard')}: <b>${escH(got || t('diagNone'))}</b>`; d.querySelector('.dg-note').textContent = (got ? '' : t('diagShot') + ' ') + '[' + log.join(' › ') + ']'; };
+    const done = () => { if (fin) return; fin = true; say.textContent = '';
+      heard.innerHTML = `${t('diagHeard')}: <b>${escH(got || t('diagNone'))}</b>`;
+      if (got){ res.textContent = t('diagOk'); if (settings.srMode){ delete settings.srMode; saveSettings(); } row(t('diagMode'), t('diagModeWeb')); d.querySelector('.dg-note').textContent = '[' + log.join(' › ') + ']'; return; }
+      if (!cloudReady()){ res.textContent = t('diagBad'); d.querySelector('.dg-note').textContent = t('diagShot') + ' [' + log.join(' › ') + ']'; return; }
+      cloudTest(); };
+    const cloudTest = async () => {
+      say.textContent = '🎙 ' + t('diagCloudSay'); res.textContent = '';
+      try {
+        const st = await navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1 } });
+        const ctx = new (window.AudioContext || window.webkitAudioContext)(); await ctx.resume();
+        const src = ctx.createMediaStreamSource(st), pr = ctx.createScriptProcessor(4096, 1, 1), ch = [];
+        pr.onaudioprocess = e => ch.push(new Float32Array(e.inputBuffer.getChannelData(0))); src.connect(pr); pr.connect(ctx.destination);
+        say.textContent = '🔴 ' + t('diagCloudSay'); if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){}
+        await new Promise(r => setTimeout(r, 4000));
+        pr.disconnect(); src.disconnect(); st.getTracks().forEach(x => x.stop()); const rate = ctx.sampleRate; try { ctx.close(); } catch(_){}
+        say.textContent = '⏳ ' + ot('pttWait');
+        const wav = toWav(ch, rate), txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').trim();
+        say.textContent = ''; heard.innerHTML = `${t('diagHeard')} (${t('diagCloud')}): <b>${escH(txt || t('diagNone'))}</b>`;
+        if (txt){ settings.srMode = 'cloud'; saveSettings(); res.textContent = t('diagOk'); row(t('diagMode'), t('diagModeCloud')); }
+        else res.textContent = t('cloudNone');
+        d.querySelector('.dg-note').textContent = '[' + log.join(' › ') + ' | cloud ' + wav.secs.toFixed(1) + 's ' + wav.peak.toFixed(2) + ']';
+      } catch(e){ say.textContent = ''; res.textContent = String(e && e.message) === 'no-ai' ? t('cloudOff') : t('cloudErr'); d.querySelector('.dg-note').textContent = t('diagShot') + ' [' + log.join(' › ') + ' | ' + (e && (e.name || e.message)) + ']'; }
+    };
     ['start','audiostart','soundstart','speechstart','speechend','audioend'].forEach(ev => trec.addEventListener(ev, () => { log.push(ev.replace('start','↑').replace('end','↓')); if (ev === 'audiostart'){ say.textContent = '🔴 ' + t('diagSay'); if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){} } }));
     trec.onresult = e => { got = [...e.results].map(r => r[0].transcript).join(' ').trim(); heard.innerHTML = `${t('diagHeard')}: <b>${escH(got)}</b>`; };
     trec.onerror = e => { log.push('err:' + e.error); if (e.error === 'service-not-allowed') res.textContent = t('srvNA'); };
@@ -4311,7 +4390,7 @@ function renderGame(){
     if ($('ogAgain')) $('ogAgain').onclick = playAgain;
     if ($('ogShare')) $('ogShare').onclick = () => shareResult(r);
   }
-  const mb = $('ogMic'); if (mb){ mb.classList.toggle('live', listening); const lb = webFin ? '⏳ ' + ot('pttWait') : listening ? (engine === 'web' && !webReady ? '🎙 ' + ot('pttPrep') : '🔴 ' + ot('pttLive')) : '🎤 ' + ot('pttHold'); if (mb.textContent !== lb) mb.textContent = lb; }
+  const mb = $('ogMic'); if (mb){ mb.classList.toggle('live', listening); const lb = webFin ? '⏳ ' + ot('pttWait') : listening ? ((engine === 'web' || engine === 'cloud') && !webReady ? '🎙 ' + ot('pttPrep') : '🔴 ' + ot('pttLive')) : '🎤 ' + ot('pttHold'); if (mb.textContent !== lb) mb.textContent = lb; }
   syncMic(r);
   stageWatch(r);
 }
@@ -4331,7 +4410,7 @@ function syncMic(r){
 }
 /* Bas-konuş: basılı tuttukça dinler, bırakınca son duyulanı gönderip kapanır */
 function pttBind(btn){
-  const down = e => { e.preventDefault(); if (GR.ptt) return; GR.ptt = true; clearTimeout(GR.pttT);
+  const down = e => { e.preventDefault(); if (GR.ptt) return; GR.ptt = true; clearTimeout(GR.pttT); pressAt = Date.now();
     if (webFin){ webFin = false; clearTimeout(webFinT); micLabel(); }   // bitirirken tekrar basıldı: dinlemeye devam
     ensureAudio(); if (!listening) startListening(); if (navigator.vibrate) navigator.vibrate(30); };
   btn.addEventListener('pointerdown', down);
@@ -4341,6 +4420,7 @@ function pttBind(btn){
 function pttUp(){
   if (!GR.ptt) return; GR.ptt = false;
   clearTimeout(GR.pttT);
+  if (engine === 'cloud' && listening){ webFin = true; micLabel(); GR.pttT = setTimeout(cloudStop, 280); return; }
   if (engine === 'web' && rec && listening){
     // Bırakınca hemen kesme: son heceyi al, sonra tanımayı nazikçe bitir ve sonucu bekle (bazı telefonlar sonucu ancak bitince verir)
     webFin = true; micLabel();
