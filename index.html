@@ -2515,7 +2515,7 @@ function addName(words){
   const pretty = k.split(' ').map(p => p.charAt(0).toLocaleUpperCase(loc) + p.slice(1)).join(' ');
   const heard = keyOf(heardText) !== k ? heardText : null;
   if (ONL){ onlineSay(k, pretty); return; }
-  const fast = !!tStart && tRaf && performance.now() - tStart <= FAST_MS;
+  const fast = !!tStart && tRaf && performance.now() - SAY_LAG - tStart <= FAST_MS;
   names.push({ text: pretty, key: k, heard, by: P() ? turn : -1, fast });
   recompute();
   const n = names[names.length-1];
@@ -2830,6 +2830,7 @@ let pressAt = 0, webEmpty = 0;
    Mikrofon oyun boyunca sıcak tutulur, basmadan önceki 0,3 sn de kaydedilir (ilk hece kaçmaz),
    baştaki/sondaki sessizlik kesilip gönderilir, hata olursa 1 kez yeniden denenir,
    sunucu üst üste 2 kez yanıt vermezse 2 dakikalığına telefonun kendi tanımasına geçilir. ===== */
+let SAY_LAG = 0;   // sunucudan cevap gelene kadar geçen süre (hız bonusu bundan etkilenmesin)
 const STT_DEF = 'https://harfcarki-bildirim.harfcarki-app.workers.dev';
 const sttUrl = () => ((typeof PUSH !== 'undefined' && PUSH.url) || STT_DEF).replace(/\/+$/, '');
 const CL = { stream:null, ctx:null, src:null, proc:null, chunks:[], pre:[], on:false, starting:null, keepT:null, rate:48000, fails:0, downUntil:0 };
@@ -2847,10 +2848,23 @@ async function clArm(){
   CL.ctx = CL.ctx || new (window.AudioContext || window.webkitAudioContext)();
   CL.rate = CL.ctx.sampleRate;
   CL.src = CL.ctx.createMediaStreamSource(CL.stream); CL.proc = CL.ctx.createScriptProcessor(4096, 1, 1);
-  CL.proc.onaudioprocess = e => { const d = new Float32Array(e.inputBuffer.getChannelData(0)); if (CL.on) CL.chunks.push(d); else { CL.pre.push(d); if (CL.pre.length > 5) CL.pre.shift(); } };
+  CL.proc.onaudioprocess = e => { const d = new Float32Array(e.inputBuffer.getChannelData(0));
+    let q = 0; for (let i = 0; i < d.length; i += 4) q += d[i] * d[i]; const lv = Math.sqrt(q / (d.length / 4));
+    if (CL.on){ CL.chunks.push(d); clVad(lv, d.length / CL.rate); }
+    else { CL.pre.push(d); if (CL.pre.length > 5) CL.pre.shift(); CL.noise = CL.noise ? CL.noise * 0.9 + lv * 0.1 : lv; } };
   CL.src.connect(CL.proc); CL.proc.connect(CL.ctx.destination);
   try { CL.stream.getTracks()[0].onended = () => clTeardown(true); } catch(_){}
 }
+/* Konuşma bitti mi? Ses kesildikten 0,5 sn sonra parmağı beklemeden gönder (bırakmayı beklemek gecikme yaratıyordu) */
+function clVad(lv, dt){
+  const thr = Math.max(0.012, (CL.noise || 0) * 3);
+  if (lv > thr){ CL.voiced += dt; CL.quiet = 0; } else if (CL.voiced > 0) CL.quiet += dt;
+  if (CL.voiced >= 0.22 && CL.quiet >= 0.5 && !CL.sending && listening && engine === 'cloud' && !webFin){ CL.auto = true; setTimeout(cloudStop, 0); }
+  else if (CL.voiced === 0 && CL.chunks.length * dt > 6){ CL.auto = true; setTimeout(cloudStop, 0); }       // 6 sn hiç ses yoksa kapat
+}
+/* Sunucuya giden yolu sıcak tut (ilk istek yavaş olmasın) */
+let clWarmAt = 0;
+function clWarm(){ if (Date.now() - clWarmAt < 50000) return; clWarmAt = Date.now(); try { fetch(sttUrl() + '/', { mode:'no-cors', cache:'no-store' }).catch(() => {}); } catch(_){} }
 function clTeardown(keepCtx){
   clearTimeout(CL.keepT); CL.on = false; CL.pre = [];
   try { if (CL.proc){ CL.proc.disconnect(); CL.proc.onaudioprocess = null; } if (CL.src) CL.src.disconnect(); } catch(_){}
@@ -2865,7 +2879,7 @@ async function cloudStart(){
     clearTimeout(CL.keepT);
     await clArm();
     if (CL.ctx.state !== 'running') await CL.ctx.resume();
-    CL.chunks = CL.pre.slice(-4); CL.pre = []; CL.on = true;          // basmadan hemen önceki ~0,3 sn de dahil
+    CL.chunks = CL.pre.slice(-4); CL.pre = []; CL.voiced = 0; CL.quiet = 0; CL.auto = false; CL.on = true; clWarm();          // basmadan hemen önceki ~0,3 sn de dahil
     webReady = true; if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){} micLabel();
   })();
   try { await CL.starting; }
@@ -2908,18 +2922,21 @@ async function cloudSend(wav, l){
   throw last;
 }
 async function cloudStop(){
+  if (CL.sending) return;
   try { if (CL.starting) await CL.starting; } catch(_){}
+  if (CL.sending) return;
   const chunks = CL.chunks; CL.chunks = []; cloudRelease();
   if (!listening || engine !== 'cloud'){ return; }
-  webFin = true; micLabel();
+  CL.sending = true; const t0 = performance.now();
+  webFin = true; micLabel(); if (navigator.vibrate && CL.auto) try { navigator.vibrate(15); } catch(_){}
   const wav = chunks.length ? toWav(chunks, CL.rate) : null;
-  if (!wav || wav.voiced < 0.12 || wav.peak < 0.02){ webFin = false; setListening(false); if (wav && chunks.length > 8){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); } return; }
+  if (!wav || wav.voiced < 0.12 || wav.peak < 0.02){ CL.sending = false; webFin = false; setListening(false); if (wav && chunks.length > 8){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); } return; }
   try { let txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').replace(/\s+/g, ' ').trim();
     CL.fails = 0;
     // Whisper sessizlikte bilinen uydurma cümleler üretir: bunları at; kısa isim cevabında 4 kelimeden uzun cümleyi de kabul etme
     txt = txt.replace(/^(isim|ad|şehir|şəhər|ülke|ölkə|isimler|adlar|şehirler|şəhərlər|ülkeler|ölkələr)\s+/i, '');
     if (/altyaz|abone ol|izlediğiniz|teşekkür|takip et|M\s*K\b|subtit|amara|thank you|музыка|beğen/i.test(txt) || txt.split(/\s+/).length > 4) txt = '';
-    if (txt){ pend.push(txt); flushPhrase(); } else { $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); }
+    if (txt){ SAY_LAG = performance.now() - t0; pend.push(txt); flushPhrase(); SAY_LAG = 0; } else { $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); }
   } catch(e){
     let m;
     if (navigator.onLine === false) m = t('netErr');
@@ -2928,7 +2945,7 @@ async function cloudStop(){
     else m = ot('srRetry');
     $('msg').textContent = m; toast(m);
   }
-  webFin = false; setListening(false);
+  CL.sending = false; webFin = false; setListening(false);
 }
 function startListening(){
   $('msg').textContent = '';
@@ -5149,6 +5166,7 @@ async function doSpin(){
 
 /* --- Söylenen isim (sadece sırası gelen oyuncunun telefonu gönderir) --- */
 async function onlineSay(k, pretty){
+  const lag = SAY_LAG;
   const r0 = OL.room; if (!r0 || r0.phase !== 'turn' || r0.turn !== me.uid) return;
   const { F, db } = FB;
   try {
@@ -5157,7 +5175,7 @@ async function onlineSay(k, pretty){
       const r = s.data(); if (r.phase !== 'turn' || r.turn !== me.uid || srvNow() < r.turnAt - 800) return;
       const seen = new Set((r.names || []).filter(n => n.s === 'ok').map(n => fold(n.k)));
       const st = firstChar(k) !== r.need ? 'wrong' : !isKnown(k) ? 'unk' : seen.has(fold(k)) ? 'rep' : 'ok';
-      const fast = st === 'ok' && srvNow() - r.turnAt <= FAST_MS, pv = ptsOf(r) + (fast ? 1 : 0);
+      const fast = st === 'ok' && srvNow() - lag - r.turnAt <= FAST_MS, pv = ptsOf(r) + (fast ? 1 : 0);
       const names = [...(r.names || []), { k, t:pretty, by:me.uid, s:st, need:r.need, ...(st === 'ok' ? { p:pv } : {}), ...(fast ? { fast:1 } : {}) }].slice(-80);
       const upd = { names };
       if (st === 'ok'){ upd['scores.' + me.uid] = F.increment(pv); upd.need = lastLetter(k); upd.turn = nextIn(r.alive, me.uid); upd.turnAt = srvNow(); }
@@ -5401,7 +5419,7 @@ function syncMic(r){
 }
 /* Bas-konuş: basılı tuttukça dinler, bırakınca son duyulanı gönderip kapanır */
 function pttBind(btn){
-  const down = e => { e.preventDefault(); if (GR.ptt) return; GR.ptt = true; clearTimeout(GR.pttT); pressAt = Date.now();
+  const down = e => { e.preventDefault(); if (GR.ptt || (typeof CL !== 'undefined' && CL.sending)) return; GR.ptt = true; clearTimeout(GR.pttT); pressAt = Date.now();
     if (webFin){ webFin = false; clearTimeout(webFinT); micLabel(); }   // bitirirken tekrar basıldı: dinlemeye devam
     ensureAudio(); if (!listening) startListening(); if (navigator.vibrate) navigator.vibrate(30); };
   btn.addEventListener('pointerdown', down);
@@ -5411,7 +5429,7 @@ function pttBind(btn){
 function pttUp(){
   if (!GR.ptt) return; GR.ptt = false;
   clearTimeout(GR.pttT);
-  if (engine === 'cloud' && listening){ webFin = true; micLabel(); GR.pttT = setTimeout(cloudStop, 280); return; }
+  if (engine === 'cloud' && listening){ if (CL.sending || webFin) return; webFin = true; micLabel(); GR.pttT = setTimeout(cloudStop, 160); return; }
   if (engine === 'web' && rec && listening){
     // Bırakınca hemen kesme: son heceyi al, sonra tanımayı nazikçe bitir ve sonucu bekle (bazı telefonlar sonucu ancak bitince verir)
     webFin = true; micLabel();
