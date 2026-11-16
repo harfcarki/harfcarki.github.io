@@ -2423,6 +2423,7 @@ const I18N = {
 };
 let settings = { wp:'', theme:'auto', ui:'tr', players:[], time:15, hardOff:false, sound:true, excl:null };
 try { Object.assign(settings, JSON.parse(localStorage.getItem('iz-settings')||'{}')); } catch(_){}
+settings.players = [];   // uygulama her açılışta oyuncu listesi boş başlar
 if (![15,20,30,40].includes(+settings.time)) settings.time = 15;
 try { applyLite(); } catch(_){}
 function saveSettings(){ try { localStorage.setItem('iz-settings', JSON.stringify(settings)); } catch(_){} }
@@ -6535,16 +6536,18 @@ $('setBtn').onclick = () => { openSettings(); armBack(); };
 $('brandHome').onclick = () => askCloseGame();
 /* Tek telefon: oyunu kapat (çarpı, geri tuşu, logo) */
 function offGameOn(){ return !!(current || roundNo > 0 || names.length); }
+/* Tek telefon oyuncu isimleri oyun kapanınca silinir (sonraki oyun boş başlar) */
+function clearOffPlayers(){ if (!(settings.players || []).length) return; settings.players = []; saveSettings(); try { resetPlayers(); renderPbar(); } catch(_){} }
 function askCloseGame(){
   if (ONL) { showHome(); return; }
-  if (!offGameOn()){ showHome(); return; }
+  if (!offGameOn()){ clearOffPlayers(); showHome(); return; }
   $('cbT').textContent = ot('cbT'); $('cbP').textContent = ot('cbP'); $('cbNo').textContent = ot('cbNo'); $('cbYes').textContent = ot('cbYes');
   stopListening(); $('closeBox').classList.add('show');
 }
 $('offClose').onclick = askCloseGame;
 $('cbNo').onclick = () => $('closeBox').classList.remove('show');
 $('closeBox').onclick = e => { if (e.target.id === 'closeBox') $('closeBox').classList.remove('show'); };
-$('cbYes').onclick = () => { $('closeBox').classList.remove('show'); $('timeout').classList.remove('show'); $('sumModal').classList.remove('show'); resetSession(); showHome(); };
+$('cbYes').onclick = () => { $('closeBox').classList.remove('show'); $('timeout').classList.remove('show'); $('sumModal').classList.remove('show'); resetSession(); clearOffPlayers(); showHome(); };
 
 /* ---------- Giriş / hesap oluştur ---------- */
 let authMode = 'in';
