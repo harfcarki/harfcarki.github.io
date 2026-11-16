@@ -1453,7 +1453,7 @@
   .inv-h{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px}
   .isel{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);background:var(--bg);color:#fff;font-size:14px;font-weight:900;display:grid;place-items:center;padding:0;cursor:pointer}
   .isel.on{background:var(--accent);border-color:var(--accent)}
-  .inv-row.sel{background:color-mix(in srgb, var(--accent) 10%, transparent);border-radius:12px}
+  .inv-row.sel{background:none}
   #invPick{z-index:50}
   #invPick .prows{max-height:60dvh;overflow-y:auto;display:block}
   #roomPage:not(.playing) #rmInv{display:none}
@@ -1613,6 +1613,42 @@
   @media (max-width:599px){ #roomPage.playing .og-ps.pcol.dense .og-p .av{display:none!important} #roomPage.playing .og-ps.pcol.dense .og-p{padding-left:11px!important} }
   body.playing #offStatus,#roomPage.playing .og-status{flex:none!important;min-height:38px;overflow:visible!important}
   body.playing #offStatus:empty{min-height:0}
+  /* Telefonda mesaj kutusu ekrana tam otursun: 11 oyuncuda da yazma alanı kesilmesin */
+  @media (max-width:599px){
+    body.playing .wheel-area.has-pcol .pcol,#roomPage.playing .og-wheel.has-pcol .og-ps.pcol{max-height:calc(33dvh + 8px)!important}
+    .pcol .pchip,#roomPage.playing .og-ps.pcol .og-p{height:clamp(22px, calc((33dvh - (var(--n,1) - 1) * 4px) / var(--n,1)), 30px)!important}
+    .pcol.dense .pchip,#roomPage.playing .og-ps.pcol.dense .og-p{height:clamp(20px, calc((33dvh - (var(--n,1) - 1) * 3px) / var(--n,1)), 30px)!important}
+    body.playing .off-chat{min-height:104px!important;margin-bottom:calc(10px + env(safe-area-inset-bottom))!important}
+  }
+  #themeIco{min-width:19px;min-height:19px} #themeIco svg,#rmTheme svg{display:block}
+  @media (max-width:599px) and (max-height:700px){
+    .pcol.dense{gap:2px!important}
+    .pcol.dense .pchip,#roomPage.playing .og-ps.pcol.dense .og-p{height:clamp(17px, calc((33dvh - (var(--n,1) - 1) * 2px) / var(--n,1)), 30px)!important;font-size:11px!important}
+    .pcol.dense .pchip .pn,.pcol.dense .pchip > b,#roomPage.playing .og-ps.pcol.dense .og-p b,#roomPage.playing .og-ps.pcol.dense .og-p i{font-size:11px!important}
+    #roomPage.playing .og-ps.pcol.dense .og-kick{width:14px!important;height:14px!important;min-width:14px!important}
+  }
+  /* Saniye her zaman çarkın üstünde ortada (ibre saniyeyi örtmesin) */
+  body.playing .wheel-area{padding-top:6px!important}
+  body.playing .wheel-area .wcol > #tSec{margin-bottom:calc(var(--w) * .1 + 4px)!important}
+  /* Dikey tablette: kenarlarda yarım santim boşluk bırakıp her şeyi genişlet */
+  @media (min-width:600px) and (orientation:portrait){
+    body.playing .stage{padding-left:6px!important;padding-right:6px!important;box-sizing:border-box}
+    body.playing .stage > #offTop,body.playing .stage > .off-acts,body.playing .stage > .off-chat,body.playing .stage > #offStatus,body.playing .stage .off-chat,body.playing .stage .off-acts{width:100%!important;max-width:100%!important;align-self:stretch!important;box-sizing:border-box}
+    #roomPage .og > *:not(.og-wheel):not(.og-top):not(.og-count){width:100%!important;max-width:100%!important}
+  }
+  @media (min-width:600px) and (orientation:portrait){ #roomPage.playing .og-wheel.has-pcol{--pw:min(52vw, 33dvh, 420px, calc(100vw - min(38vw,180px) - 80px))!important} }
+  /* Dikey tablet: kenar boşlukları iki katı (~1 cm), söylenen isimler sağa (yaklaşık %65 hizasından başlar) */
+  @media (min-width:600px) and (orientation:portrait){
+    body.playing .stage{padding-left:26px!important;padding-right:26px!important}
+    #roomPage.playing .og{padding-left:24px!important;padding-right:24px!important;box-sizing:border-box}
+    body.playing .stage > #offTop,#roomPage.playing #ogTop{grid-template-columns:minmax(0,1fr) 34%!important}
+  }
+  /* Dikey tablet: oyuncu sütunu sol kenara yaslı (diğer öğelerle aynı hizada), çark kalan alanın ortasında */
+  @media (min-width:600px) and (orientation:portrait){
+    body.playing .wheel-area.has-pcol,#roomPage.playing .og-wheel.has-pcol{grid-template-columns:max-content minmax(0,1fr)!important;justify-content:stretch!important;column-gap:16px!important;padding-left:0!important;padding-right:0!important}
+    body.playing .wheel-area.has-pcol .pcol,#roomPage.playing .og-wheel.has-pcol .og-ps.pcol{justify-self:start!important;margin-left:0!important}
+    body.playing .wheel-area.has-pcol .wcol,#roomPage.playing .og-wheel.has-pcol .wcol{justify-self:center!important}
+  }
 </style>
 </head>
 <body>
@@ -2415,7 +2451,7 @@ function renderPbar(){
   if (pc){ el.classList.toggle('hasp', n > 0); wa.classList.toggle('has-pcol', n > 0);
     const st = alive[turn] !== false ? turn : nextAlive(turn), ord = n ? [...Array(n).keys()].map(k => (st + k) % n) : [];
     pcolFix(pc, () => pc.innerHTML = ord.map(i => `<button class="pchip${(i === turn && alive[i] !== false) ? ' on' : ''}${alive[i] === false ? ' out' : ''}" data-p="${i}"><span class="pn">${escH(settings.players[i])}</span><b>${(totals[i] || 0) + roundScore(i)}</b></button>`).join('')); }
-  alignProw();
+  alignProw(); requestAnimationFrame(() => { const o = $('offStatus'); if (o) pillCenter(o, o.querySelector('.og-pill')); });
 }
 /* Oyuncu sütunu: her güncellemede en üste kaydır (sırası gelen hep görünsün), sığmıyorsa altta solma */
 /* Düğme grubunu çarkın tam ortasına hizala (oyuncu sütunu varken çark sağa kayıyor) */
@@ -2428,6 +2464,7 @@ function alignProw(){ requestAnimationFrame(() => { const pr = document.querySel
   let dx = Math.round((a.left + a.width / 2) - (b.left + b.width / 2)); const kids = [...pr.children].filter(x => x.offsetWidth), gw = kids.reduce((t, x) => t + x.getBoundingClientRect().width, 0) + 12 * Math.max(0, kids.length - 1), lim = Math.max(0, (b.width - gw) / 2); dx = Math.max(-lim, Math.min(lim, dx));
   pr.style.paddingLeft = dx > 0 ? 2 * dx + 'px' : ''; pr.style.paddingRight = dx < 0 ? -2 * dx + 'px' : ''; }); }
 addEventListener('resize', alignProw);
+addEventListener('resize', () => { try { const o = $('offStatus'), q = $('ogStatus'); if (o) pillCenter(o, o.querySelector('.og-pill')); if (q) pillCenter(q, q.querySelector('.og-pill')); } catch(_){} });
 function pcolFix(pc, fill){ const h = pc.innerHTML; fill(); const n = pc.children.length; pc.style.setProperty('--n', Math.max(1, n)); pc.classList.toggle('dense', n >= 8); if (pc.innerHTML !== h) pc.scrollTop = 0; requestAnimationFrame(() => pc.classList.toggle('scr', pc.scrollHeight > pc.clientHeight + 2)); }
 function hardLetters(l){ return ['J'].filter(ch => LANGS[l].letters.includes(ch)); }
 function exclOf(l){
@@ -2443,11 +2480,17 @@ function renderEx(){
   $('exReset').style.visibility = ex.size ? 'visible' : 'hidden';
 }
 /* Durum kapsülü: %20 büyük; ekrana sığmazsa yazıyı kademeli küçült (kesilmesin) */
-function fitPill(box){ const p = box && box.querySelector('.og-pill'); if (!p) return; p.style.removeProperty('--pf'); p.classList.remove('cmp');
+function fitPill(box){ const p = box && box.querySelector('.og-pill'); if (!p) return; p.style.removeProperty('--pf'); p.classList.remove('cmp'); box.style.paddingLeft = box.style.paddingRight = '';
   requestAnimationFrame(() => { const over = () => p.scrollWidth > p.clientWidth + 1; let f = 15.6;
     while (over() && f > 14){ f -= .4; p.style.setProperty('--pf', f + 'px'); }
     if (over()) p.classList.add('cmp');                       // önce "🎤 Sıra:" ve "söyle" gizlenir, kategori hep görünür
-    while (over() && f > 11.5){ f -= .4; p.style.setProperty('--pf', f + 'px'); } }); }
+    while (over() && f > 11.5){ f -= .4; p.style.setProperty('--pf', f + 'px'); }
+    pillCenter(box, p); }); }
+/* Sıra kapsülünü çarkın merkezine hizala (oyuncu sütunu çarkı sağa kaydırınca) — taşmadan, iç boşlukla */
+function pillCenter(box, p){ try { const ww = box.id === 'ogStatus' ? document.querySelector('.og-wheel .wheel-wrap') : document.querySelector('.stage .wheel-wrap'); if (!ww || !p) return;
+  box.style.paddingLeft = box.style.paddingRight = ''; const a = ww.getBoundingClientRect(), b = box.getBoundingClientRect(); if (!a.width || !b.width) return;
+  const pw = p.getBoundingClientRect().width, lim = Math.max(0, (b.width - pw) / 2 - 2); let dx = Math.round((a.left + a.width / 2) - (b.left + b.width / 2)); dx = Math.max(-lim, Math.min(lim, dx));
+  if (dx > 0) box.style.paddingLeft = 2 * dx + 'px'; else if (dx < 0) box.style.paddingRight = -2 * dx + 'px'; } catch(_){} }
 addEventListener('resize', () => { fitPill($('offStatus')); fitPill($('ogStatus')); });
 function saidTitle(){ const k = kindOf(gameMode), az = settings.ui === 'az';
   return k === 's' ? (az ? 'Deyilən şəhərlər' : 'Söylenen şehirler') : k === 'u' ? (az ? 'Deyilən ölkələr' : 'Söylenen ülkeler') : k === 'k' ? (az ? 'Deyilənlər' : 'Söylenenler') : t('listTitle'); }
@@ -3451,7 +3494,7 @@ $('sumShare').onclick = async () => {
 $('sumNext').onclick = () => { $('sumModal').classList.remove('show'); spin(); };
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSettings(); });
 
-resetPlayers(); applyI18n(); updateThemeBtn();
+try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(e){ console.warn('i18n', e); } try { updateThemeBtn(); } catch(_){}
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 </script>
@@ -5857,7 +5900,7 @@ function dockWanted(){
   if (isOpen('msgPage') || isOpen('chatPage') || isOpen('authPage') || isOpen('unamePage')) return false;
   if (document.querySelector('.modal.show, .nm-ask, .tut.show, .imgview.show, .leftbox.show')) return false;
   const home = !$('home').classList.contains('hide'), sheet = document.querySelector('.sheet.open');
-  if (isOpen('roomPage')) return false;   // oda/oyun sayfasında kendi sohbet kutusu var
+  if (isOpen('roomPage')) return !$('roomPage').classList.contains('playing');   // bekleme odasında göster, oyunda gösterme (oyunun kendi sohbet kutusu var)
   if (!home && !sheet) return false;   // oyun ekranında kendi mesaj kutusu var
   return true;
 }
