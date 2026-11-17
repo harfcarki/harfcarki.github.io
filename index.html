@@ -1901,6 +1901,17 @@
   }
   /* Yeni logo: çark + AZ (svg kutuyu tamamen doldurur) */
   .logo svg.lw{width:100%!important;height:100%!important;display:block}
+  /* İsim satırlarında yönetici rozeti sadece yeşil tik; "Yönetici" yazısı yalnız profil ve hesap kartında */
+  .adm-b:has(.adm-tx){background:none!important;padding:0!important;gap:0;margin-left:4px}
+  .adm-b .adm-tx{display:none}
+  .adm-b:has(.adm-tx) svg{width:15px!important;height:15px!important;color:#2fbf71}
+  :root[data-theme="dark"] .adm-b:has(.adm-tx) svg{color:#3fd184}
+  .up-t .adm-b:has(.adm-tx),.acct .who-big .adm-b:has(.adm-tx),.who2 .adm-b:has(.adm-tx){padding:3px 10px 3px 5px!important;gap:3px;margin-left:5px}
+  .up-t .adm-b:has(.adm-tx){background:#e3efe9!important} .acct .who-big .adm-b:has(.adm-tx),.who2 .adm-b:has(.adm-tx){background:#e3efe9!important}
+  :root[data-theme="dark"] .up-t .adm-b:has(.adm-tx),:root[data-theme="dark"] .acct .who-big .adm-b:has(.adm-tx),:root[data-theme="dark"] .who2 .adm-b:has(.adm-tx){background:rgba(47,191,113,.16)!important}
+  .up-t .adm-b .adm-tx,.acct .who-big .adm-b .adm-tx,.who2 .adm-b .adm-tx{display:inline}
+  .up-t .adm-b:has(.adm-tx) svg,.acct .who-big .adm-b:has(.adm-tx) svg,.who2 .adm-b:has(.adm-tx) svg{color:currentColor}
+  .ch-card .adm-b:has(.adm-tx) svg{color:#fff}
 </style>
 </head>
 <body>
@@ -3908,7 +3919,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '173';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '175';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -4965,7 +4976,7 @@ let STAFF = new Set();
 async function loadStaff(){ try { const d = await FB.F.getDoc(FB.F.doc(FB.db, 'config', 'staff')); STAFF = new Set(d.exists() ? (d.data().uids || []) : []); badgeScan(true); } catch(_){} }
 async function staffJoin(){ STAFF.add(me.uid); badgeScan(true); try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'staff'), { uids:FB.F.arrayUnion(me.uid) }, { merge:true }); } catch(e){ console.warn('staff', e); } }
 const isStaff = uid => !!uid && STAFF.has(uid);
-const ADMB = () => `<span class="adm-b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.3l3.2 3.2L17 8.7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>${escH(ot('admB'))}</span>`;
+const ADMB = () => `<span class="adm-b" title="${escH(ot('admB'))}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.3l3.2 3.2L17 8.7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="adm-tx">${escH(ot('admB'))}</span></span>`;
 function badgeScan(all){
   document.querySelectorAll('[data-prof],[data-badge]').forEach(el => {
     const uid = el.dataset.prof || el.dataset.badge;
@@ -6743,7 +6754,7 @@ function closePage(id){ if (id === 'roomPage') sfxStop(); $(id).classList.remove
 /* ---------- Günün cümlesi: her gün farklı bir açılış (günde bir kez) ---------- */
 const DAY_LINES = {
   tr:{ days:['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
-    lines:['Akşamüstü serinliğinde güzel bir oyun, haftanın en tatlı vedasıdır.',
+    lines:['Pazar keyfi başladı. Sevdiklerinle bir oyun, haftanın en tatlı vedasıdır.',
       'Haftanın ilk sabahı. Hangi isimle başlarsan, hafta ona benzer.',
       'Her ismin ardında bir yüz, bir ses, bir hatıra vardır.',
       'Hafta yarılandı. Bir çay koy, çarkı sen çevir.',
@@ -6752,7 +6763,7 @@ const DAY_LINES = {
       'Acele yok bugün. İsimler de sen de dinlenmiş gelirsiniz.'],
     hi:h => h < 5 ? 'İyi geceler' : h < 11 ? 'Günaydın' : h < 17 ? 'İyi günler' : h < 22 ? 'İyi akşamlar' : 'İyi geceler' },
   az:{ days:['Bazar','Bazar ertəsi','Çərşənbə axşamı','Çərşənbə','Cümə axşamı','Cümə','Şənbə'],
-    lines:['Axşamüstü sərinliyində gözəl bir oyun, həftənin ən şirin vidasıdır.',
+    lines:['Bazar keyfi başladı. Sevdiklərinlə bir oyun, həftənin ən şirin vidasıdır.',
       'Həftənin ilk səhəri. Hansı adla başlasan, həftə ona bənzəyər.',
       'Hər adın arxasında bir üz, bir səs, bir xatirə var.',
       'Həftə yarı oldu. Bir çay dəmlə, çarxı sən fırlat.',
