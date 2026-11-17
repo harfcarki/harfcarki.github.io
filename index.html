@@ -1852,6 +1852,55 @@
   body.playing .home::before,body.playing .home::after,body.playing .hero-logo::before{animation-play-state:paused!important}
   .sheet .s-sec{content-visibility:auto;contain-intrinsic-size:auto 220px}
   .nm-wrap{content-visibility:auto;contain-intrinsic-size:auto 600px}
+  /* ===== Telefon: giriş ekranı tek sayfaya sığsın (kaydırma olmasın) ===== */
+  .home-in > #dayBox:empty,.home-in > #annBox:empty,.home-in > #instBox:empty{display:none}
+  @media (max-width: 599px){
+    .home{padding:10px 16px 12px}
+    .home-in{gap:10px;padding-bottom:16px;box-sizing:border-box;justify-content:center}
+    body.has-dock .home-in{padding-bottom:70px}
+    .hero{padding-top:6px}
+    .hero-logo .logo{width:62px;height:62px;border-radius:19px;margin-bottom:8px}
+    .hero-logo::before{inset:-8px;border-radius:26px}
+    .hero-t{font-size:29px;letter-spacing:-.8px}
+    .hero-s{font-size:13.5px;margin-top:0}
+    .home-bell,.home-set{width:38px!important;height:38px!important}
+    .day-card{margin:0;padding:9px 36px 9px 14px;border-radius:16px}
+    .day-card small{font-size:10.5px;margin-bottom:2px}
+    .day-card p{font-size:13.5px;line-height:1.4}
+    .day-card button{top:4px;right:4px}
+    .home .acct{padding:8px 12px;border-radius:18px}
+    .home-btns{gap:10px}
+    .home-btns .btn.big{min-height:118px;padding:12px 14px;border-radius:20px;gap:6px}
+    .home-btns .btn.big .ico{width:38px;height:38px;border-radius:12px}
+    .home-btns .btn.big .ico svg{width:20px;height:20px}
+    .home-btns .btn.big:not(#goAdmin) .ico{margin-bottom:8px}
+    .home-btns .btn.big b{font-size:16px}
+    .home-btns .btn.big small{font-size:11.5px;margin-top:1px}
+    .home-btns #goAdmin{min-height:0;padding:9px 14px;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px}
+    .home-btns #goAdmin .ico{margin:0}
+    #goOnline .onl-pill{top:10px;right:10px}
+    .home .menu{border-radius:18px}
+    .home .mrow{padding:8px 14px;gap:12px}
+    .home .mi{width:36px;height:36px;border-radius:11px;font-size:17px}
+    .home .mrow .mt small{font-size:11.5px}
+    .howbtn{padding:5px 14px;font-size:13.5px}
+    .home .acct .av{width:38px;height:38px;font-size:16px}
+    .home .acct b{font-size:19px}
+    .home-btns .btn.big small{line-height:1.25}
+    .day-card p{font-size:13px;line-height:1.35}
+  }
+  /* Kısa ekranlı telefonlar */
+  @media (max-width: 599px) and (max-height: 780px){
+    .hero-logo .logo{width:50px;height:50px;border-radius:16px;margin-bottom:6px}
+    .hero-t{font-size:25px} .hero-s{display:none}
+    .home-btns .btn.big{min-height:104px}
+    .home .mrow{padding:5px 14px}
+    .home-in{gap:8px}
+    .home-btns .btn.big{min-height:96px}
+    .day-card{padding-top:7px;padding-bottom:7px}
+  }
+  /* Yeni logo: çark + AZ (svg kutuyu tamamen doldurur) */
+  .logo svg.lw{width:100%!important;height:100%!important;display:block}
 </style>
 </head>
 <body>
@@ -1859,7 +1908,7 @@
   <section class="stage">
     <header class="top">
       <div class="brand" id="brandHome" role="button" tabindex="0">
-        <span class="logo"><svg viewBox="0 0 32 32"><g transform="rotate(8 11 11)"><rect x="3" y="3" width="15" height="15" rx="4" fill="#fff"/><text x="10.5" y="15.2" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#2f6f5e">A</text></g><g transform="rotate(-8 21 21)"><rect x="13.5" y="13.5" width="15" height="15" rx="4" fill="#f0be3c"/><text x="21" y="25.6" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#28241e">Z</text></g></svg></span>
+        <span class="logo"><svg class="lw" viewBox="0 0 100 100" aria-hidden="true"><path d="M50,53 L34.69,16.04 A40,40 0 0 1 65.31,16.04 Z" fill="#2f6f5e"/><path d="M50,53 L65.31,16.04 A40,40 0 0 1 86.96,37.69 Z" fill="#f0be3c"/><path d="M50,53 L86.96,37.69 A40,40 0 0 1 86.96,68.31 Z" fill="#4fae8f"/><path d="M50,53 L86.96,68.31 A40,40 0 0 1 65.31,89.96 Z" fill="#f6efe0"/><path d="M50,53 L65.31,89.96 A40,40 0 0 1 34.69,89.96 Z" fill="#2f6f5e"/><path d="M50,53 L34.69,89.96 A40,40 0 0 1 13.04,68.31 Z" fill="#f0be3c"/><path d="M50,53 L13.04,68.31 A40,40 0 0 1 13.04,37.69 Z" fill="#4fae8f"/><path d="M50,53 L13.04,37.69 A40,40 0 0 1 34.69,16.04 Z" fill="#f6efe0"/><circle cx="50" cy="53" r="40" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="50" cy="53" r="19" fill="#1c483c" stroke="#fff" stroke-width="2.5"/><text x="50" y="61" text-anchor="middle" font-family="Poppins,Inter,Arial,sans-serif" font-weight="800" font-size="20" fill="#fff">A<tspan fill="#f0be3c">Z</tspan></text><path d="M50 17 L57.5 5 L42.5 5 Z" fill="#f0be3c" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
         <div><h1>Harf Çarkı</h1><small data-i18n="sub">Son harften devam et</small></div>
       </div>
       <div class="tbtns">
@@ -1930,7 +1979,7 @@
     <button class="icon-btn home-bell" id="homeBell" aria-label="Bildirimler" hidden>🔔<span class="n-badge in" id="bellN"></span></button>
     <button class="icon-btn home-set" id="homeSet" aria-label="Ayarlar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <div class="hero">
-      <div class="hero-logo"><span class="logo"><svg viewBox="0 0 32 32"><g transform="rotate(8 11 11)"><rect x="3" y="3" width="15" height="15" rx="4" fill="#fff"/><text x="10.5" y="15.2" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#2f6f5e">A</text></g><g transform="rotate(-8 21 21)"><rect x="13.5" y="13.5" width="15" height="15" rx="4" fill="#f0be3c"/><text x="21" y="25.6" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#28241e">Z</text></g></svg></span></div>
+      <div class="hero-logo"><span class="logo"><svg class="lw" viewBox="0 0 100 100" aria-hidden="true"><path d="M50,53 L34.69,16.04 A40,40 0 0 1 65.31,16.04 Z" fill="#2f6f5e"/><path d="M50,53 L65.31,16.04 A40,40 0 0 1 86.96,37.69 Z" fill="#f0be3c"/><path d="M50,53 L86.96,37.69 A40,40 0 0 1 86.96,68.31 Z" fill="#4fae8f"/><path d="M50,53 L86.96,68.31 A40,40 0 0 1 65.31,89.96 Z" fill="#f6efe0"/><path d="M50,53 L65.31,89.96 A40,40 0 0 1 34.69,89.96 Z" fill="#2f6f5e"/><path d="M50,53 L34.69,89.96 A40,40 0 0 1 13.04,68.31 Z" fill="#f0be3c"/><path d="M50,53 L13.04,68.31 A40,40 0 0 1 13.04,37.69 Z" fill="#4fae8f"/><path d="M50,53 L13.04,37.69 A40,40 0 0 1 34.69,16.04 Z" fill="#f6efe0"/><circle cx="50" cy="53" r="40" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="50" cy="53" r="19" fill="#1c483c" stroke="#fff" stroke-width="2.5"/><text x="50" y="61" text-anchor="middle" font-family="Poppins,Inter,Arial,sans-serif" font-weight="800" font-size="20" fill="#fff">A<tspan fill="#f0be3c">Z</tspan></text><path d="M50 17 L57.5 5 L42.5 5 Z" fill="#f0be3c" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg></span></div>
       <h1 class="hero-t">Harf Çarkı</h1>
       <p class="hero-s" data-i18n="sub">Son harften devam et</p>
     </div>
@@ -2092,7 +2141,7 @@
       <section class="s-sec">
         <h3 data-i18n="about">Hakkında</h3>
         <div class="about">
-          <span class="logo"><svg viewBox="0 0 32 32"><g transform="rotate(8 11 11)"><rect x="3" y="3" width="15" height="15" rx="4" fill="#fff"/><text x="10.5" y="15.2" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#2f6f5e">A</text></g><g transform="rotate(-8 21 21)"><rect x="13.5" y="13.5" width="15" height="15" rx="4" fill="#f0be3c"/><text x="21" y="25.6" text-anchor="middle" font-family="Poppins,Inter,sans-serif" font-weight="800" font-size="12" fill="#28241e">Z</text></g></svg></span>
+          <span class="logo"><svg class="lw" viewBox="0 0 100 100" aria-hidden="true"><path d="M50,53 L34.69,16.04 A40,40 0 0 1 65.31,16.04 Z" fill="#2f6f5e"/><path d="M50,53 L65.31,16.04 A40,40 0 0 1 86.96,37.69 Z" fill="#f0be3c"/><path d="M50,53 L86.96,37.69 A40,40 0 0 1 86.96,68.31 Z" fill="#4fae8f"/><path d="M50,53 L86.96,68.31 A40,40 0 0 1 65.31,89.96 Z" fill="#f6efe0"/><path d="M50,53 L65.31,89.96 A40,40 0 0 1 34.69,89.96 Z" fill="#2f6f5e"/><path d="M50,53 L34.69,89.96 A40,40 0 0 1 13.04,68.31 Z" fill="#f0be3c"/><path d="M50,53 L13.04,68.31 A40,40 0 0 1 13.04,37.69 Z" fill="#4fae8f"/><path d="M50,53 L13.04,37.69 A40,40 0 0 1 34.69,16.04 Z" fill="#f6efe0"/><circle cx="50" cy="53" r="40" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="50" cy="53" r="19" fill="#1c483c" stroke="#fff" stroke-width="2.5"/><text x="50" y="61" text-anchor="middle" font-family="Poppins,Inter,Arial,sans-serif" font-weight="800" font-size="20" fill="#fff">A<tspan fill="#f0be3c">Z</tspan></text><path d="M50 17 L57.5 5 L42.5 5 Z" fill="#f0be3c" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
           <div>
             <p data-i18n="aboutText">Harf Çarkı, çocukken oynadığımız "son harften isim söyleme" oyununun sesli hâli. Çark ilk harfi seçer, isimleri söylersin, uygulama yazar ve kontrol eder.</p>
             <ul>
@@ -3859,7 +3908,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '171';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '173';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
