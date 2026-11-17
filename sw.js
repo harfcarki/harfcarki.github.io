@@ -1,6 +1,6 @@
 // İsim Zinciri: önce internetten yeni sürümü al, internet yoksa kayıtlı sürümü aç
-const C = 'isim-zinciri-v181', WPC = 'iz-duvar-v1';
-self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'].map(u => new Request(u, { cache:'reload' }))))); });
+const C = 'isim-zinciri-v182', WPC = 'iz-duvar-v1';
+self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './manifest.json', './logo2-192.png', './logo2-512.png', './logo2-maskable.png', './logo2-apple.png'].map(u => new Request(u, { cache:'reload' }))))); });
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
@@ -24,7 +24,7 @@ self.addEventListener('push', e => {
   if (!d.title) return;
   // Uygulama şu an ekranda açıksa (davet zaten uygulamanın içinde görünür) çift bildirim gösterme
   const show = () => self.registration.showNotification(d.title, {
-    body: d.body || '', icon: 'icon-192.png', badge: 'icon-192.png', tag: d.tag || d.type, renotify: true,
+    body: d.body || '', icon: 'logo2-192.png', badge: 'logo2-192.png', tag: d.tag || d.type, renotify: true,
     requireInteraction: d.type === 'invite', vibrate: [200, 100, 200], data: { url: d.url || './' },
     actions: d.a1 ? [{ action:'go', title:d.a1 }, { action:'no', title:d.a2 || '✕' }] : [] });
   e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {

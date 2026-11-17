@@ -8,8 +8,8 @@
 <meta name="application-name" content="Harf Çarkı">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2f6f5e">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-icon.png">
+<link rel="icon" href="logo2-192.png">
+<link rel="apple-touch-icon" href="logo2-apple.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -3961,7 +3961,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '181';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '182';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -5674,7 +5674,7 @@ function inviteAlert(x){
   try { if (settings.sound){ ensureAudio(); beep(880, .12); setTimeout(() => beep(1175, .15), 170); } } catch(_){}
   if (document.hidden && 'Notification' in window && Notification.permission === 'granted' && navigator.serviceWorker){
     navigator.serviceWorker.ready.then(reg => reg.showNotification('📩 ' + ot('invT', x.fromName), { body:ot('invB', x.room), tag:'inv-' + x.room, renotify:true, requireInteraction:true,
-      icon:'icon-192.png', badge:'icon-192.png', vibrate:[200, 100, 200], data:{ url:'./?oda=' + x.room },
+      icon:'logo2-192.png', badge:'logo2-192.png', vibrate:[200, 100, 200], data:{ url:'./?oda=' + x.room },
       actions:[{ action:'go', title:ot('invJoin') }, { action:'no', title:ot('invNo') }] })).catch(() => {});
   }
 }
