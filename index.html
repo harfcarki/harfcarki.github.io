@@ -2751,16 +2751,21 @@ function beep(f, d){
   if (!settings.sound || !actx) return;
   try { const o = actx.createOscillator(), g = actx.createGain(); o.frequency.value = f; o.type = 'sine';
     g.gain.setValueAtTime(.0001, actx.currentTime); g.gain.exponentialRampToValueAtTime(.25, actx.currentTime + .01);
-    g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + d); o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + d + .02); } catch(_){}
+    g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + d); o.connect(g).connect(sfxOut()); o.start(); o.stop(actx.currentTime + d + .02); } catch(_){}
 }
 
 /* ===== Ses efektleri (dosya yok, hepsi telefonda üretilir) ===== */
-function tone(f, d, o){ o = o || {}; if (!settings.sound || !actx) return;
+/* Oyun sesleri tek bir kanaldan çıkar: sayfadan çıkınca kanal kesilir, sıradaki sesler de susar */
+let sfxBus = null, sfxGen = 0;
+function sfxOut(){ if (!sfxBus || sfxBus.context !== actx){ sfxBus = actx.createGain(); sfxBus.connect(actx.destination); } return sfxBus; }
+const sfxActive = () => { const h = $('home'), rp = $('roomPage'); return (h && h.classList.contains('hide')) || (rp && rp.classList.contains('open')); };
+function sfxStop(){ sfxGen++; try { if (sfxBus){ sfxBus.gain.value = 0; sfxBus.disconnect(); } } catch(_){} sfxBus = null; }
+function tone(f, d, o){ o = o || {}; if (!settings.sound || !actx || !sfxActive()) return;
   try { const t0 = actx.currentTime + (o.at || 0), osc = actx.createOscillator(), g = actx.createGain(); osc.type = o.type || 'sine'; osc.frequency.setValueAtTime(f, t0);
     if (o.to) osc.frequency.exponentialRampToValueAtTime(o.to, t0 + d);
     const v = o.vol || .22; g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(v, t0 + (o.atk || .008)); g.gain.exponentialRampToValueAtTime(.0001, t0 + d);
-    osc.connect(g).connect(actx.destination); osc.start(t0); osc.stop(t0 + d + .03);
-    if (o.bell){ const o2 = actx.createOscillator(), g2 = actx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(f * 2.01, t0); g2.gain.setValueAtTime(.0001, t0); g2.gain.exponentialRampToValueAtTime(v * .35, t0 + .006); g2.gain.exponentialRampToValueAtTime(.0001, t0 + d * .7); o2.connect(g2).connect(actx.destination); o2.start(t0); o2.stop(t0 + d); } } catch(_){} }
+    osc.connect(g).connect(sfxOut()); osc.start(t0); osc.stop(t0 + d + .03);
+    if (o.bell){ const o2 = actx.createOscillator(), g2 = actx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(f * 2.01, t0); g2.gain.setValueAtTime(.0001, t0); g2.gain.exponentialRampToValueAtTime(v * .35, t0 + .006); g2.gain.exponentialRampToValueAtTime(.0001, t0 + d * .7); o2.connect(g2).connect(sfxOut()); o2.start(t0); o2.stop(t0 + d); } } catch(_){} }
 function sfx(name){
   if (!settings.sound) return; ensureAudio(); if (!actx) return;
   const S = {
@@ -2782,10 +2787,10 @@ function sfx(name){
 }
 /* Çark dönerken her harf diliminde tık sesi (yavaşladıkça seyrekleşir) */
 function spinTicks(el, n, ms){
-  if (!settings.sound || !el || !n) return; ensureAudio(); const seg = 360 / n, end = performance.now() + (ms || 4700);
+  if (!settings.sound || !el || !n) return; ensureAudio(); const seg = 360 / n, end = performance.now() + (ms || 4700), gen = sfxGen;
   const ang = () => { const m = getComputedStyle(el).transform; if (!m || m === 'none') return 0; const v = m.match(/matrix\(([^)]+)\)/); if (!v) return 0; const [a, b] = v[1].split(',').map(Number); return Math.atan2(b, a) * 180 / Math.PI; };
   let last = ang(), acc = 0, lastSeg = 0, lastT = 0;
-  const step = now => { if (now > end) return; const a = ang(); let d = a - last; if (d < -180) d += 360; if (d > 180) d -= 360; acc += Math.abs(d); last = a;
+  const step = now => { if (now > end || gen !== sfxGen || !sfxActive()) return; const a = ang(); let d = a - last; if (d < -180) d += 360; if (d > 180) d -= 360; acc += Math.abs(d); last = a;
     const sg = Math.floor(acc / seg); if (sg !== lastSeg && now - lastT > 38){ lastSeg = sg; lastT = now; sfx('tick'); } requestAnimationFrame(step); };
   requestAnimationFrame(step);
 }
@@ -2812,6 +2817,7 @@ function drawWheel(){
   $('info').textContent = t('left', left) + (listening && micLang ? ' · ' + t('listening', micLang) : '');
 }
 
+let spinT = null;
 function spin(){
   if (spinning) return;
   const L = activeLetters();
@@ -2830,7 +2836,7 @@ function spin(){
   if (target - rotation < 360*5) target += 360;
   rotation = target;
   wheel.style.transform = `rotate(${rotation}deg)`; spinTicks(wheel, L.length, 4600);
-  setTimeout(() => {
+  clearTimeout(spinT); spinT = setTimeout(() => {
     sfx('land'); spinning = false; current = pick; used.add(pick); roundNo++; try { micPrep('off' + roundNo); } catch(_){} if (!ONL) try { osRound(); } catch(_){}
     if (isMix(gameMode)){ lang = mixPick(gameMode, pick); toast(ot('mixCat', ot('cat_' + kindOf(lang)))); }
     hub.textContent = pick; hub.classList.add('pop'); setTimeout(()=>hub.classList.remove('pop'), 300);
@@ -3260,7 +3266,7 @@ let pressAt = 0, webEmpty = 0;
 let SAY_LAG = 0;   // sunucudan cevap gelene kadar geçen süre (hız bonusu bundan etkilenmesin)
 const STT_DEF = 'https://harfcarki-bildirim.harfcarki-app.workers.dev';
 const sttUrl = () => ((typeof PUSH !== 'undefined' && PUSH.url) || STT_DEF).replace(/\/+$/, '');
-const CL = { stream:null, ctx:null, src:null, proc:null, chunks:[], pre:[], on:false, starting:null, keepT:null, rate:48000, fails:0, downUntil:0 };
+const CL = { weak:0, stream:null, ctx:null, src:null, proc:null, chunks:[], pre:[], on:false, starting:null, keepT:null, rate:48000, fails:0, downUntil:0 };
 const cloudCap = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext));
 const cloudReady = () => cloudCap() && navigator.onLine !== false && settings.srMode !== 'web' && Date.now() > CL.downUntil;
 function useCloud(why){
@@ -3268,10 +3274,17 @@ function useCloud(why){
   if (settings.srMode === 'web'){ delete settings.srMode; saveSettings(); }
   CL.downUntil = 0; if (why) toast(t('srCloud')); return true;
 }
+/* Samsung tabletlerde yankı/gürültü engelleme açıkken mikrofon sesi neredeyse sıfır geliyor ("anlaşılmadı").
+   Tabletlerde ham mikrofon kullanılır; bir cihazda üst üste 2 kez anlaşılmazsa diğer moda kendiliğinden geçilir ve hatırlanır. */
+const IS_TAB = IS_ANDROID && !/Mobile/i.test(navigator.userAgent);
+const micRaw = () => settings.micRaw != null ? !!settings.micRaw : IS_TAB;
+function clMiss(){ if (++CL.weak >= 2){ CL.weak = 0; settings.micRaw = !micRaw(); saveSettings(); clTeardown(true); } }
 async function clArm(){
+  if (CL.stream && CL.stream.active && CL.proc && CL.raw !== micRaw()) clTeardown(true);
   if (CL.stream && CL.stream.active && CL.proc) return;
   clTeardown(true);
-  try { CL.stream = await navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1 } }); }
+  const raw = micRaw(); CL.raw = raw;
+  try { CL.stream = await navigator.mediaDevices.getUserMedia({ audio: raw ? { echoCancellation:false, noiseSuppression:false, autoGainControl:false, channelCount:1 } : { echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1 } }); }
   catch(e){ if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e; CL.stream = await navigator.mediaDevices.getUserMedia({ audio:true }); }   // bazı tabletler bu ayarları kabul etmiyor: sade haliyle dene
   CL.ctx = CL.ctx || new (window.AudioContext || window.webkitAudioContext)();
   CL.rate = CL.ctx.sampleRate;
@@ -3312,7 +3325,7 @@ function clTeardown(keepCtx){
   CL.proc = CL.src = CL.stream = null;
   if (!keepCtx && CL.ctx){ try { CL.ctx.suspend(); } catch(_){} }
 }
-document.addEventListener('visibilitychange', () => { if (document.hidden) clTeardown(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden){ clTeardown(); sfxStop(); } });
 async function cloudStart(){
   engine = 'cloud'; webReady = false; webFin = false; setListening(true);
   CL.starting = (async () => {
@@ -3346,7 +3359,7 @@ function toWav(chunks, rate){
   const cut = nf ? all.subarray(st, en) : all, cn = cut.length;
   const R = 16000, ratio = rate / R, m = Math.floor(cn / ratio), pcm = new Int16Array(m);
   let peak = 0; for (let i = 0; i < cn; i++) peak = Math.max(peak, Math.abs(cut[i]));
-  const g = peak > 0.01 && peak < 0.6 ? 0.9 / peak : 1;            // sessiz kayıtları yükselt
+  const g = peak > 0.004 && peak < 0.6 ? 0.9 / peak : 1;            // sessiz kayıtları yükselt
   for (let i = 0; i < m; i++){ const a = Math.floor(i * ratio), b = Math.min(cn, Math.floor((i + 1) * ratio)); let s = 0; for (let j = a; j < b; j++) s += cut[j]; const v = Math.max(-1, Math.min(1, (s / Math.max(1, b - a)) * g)); pcm[i] = v < 0 ? v * 0x8000 : v * 0x7fff; }
   const buf = new ArrayBuffer(44 + pcm.length * 2), dv = new DataView(buf), w = (p, str) => { for (let i = 0; i < str.length; i++) dv.setUint8(p + i, str.charCodeAt(i)); };
   w(0, 'RIFF'); dv.setUint32(4, 36 + pcm.length * 2, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
@@ -3377,14 +3390,15 @@ async function cloudStop(){
   CL.sending = true; const t0 = performance.now();
   webFin = true; micLabel(); if (navigator.vibrate && CL.auto) try { navigator.vibrate(15); } catch(_){}
   const wav = chunks.length ? toWav(chunks, CL.rate) : null;
-  if (!wav || wav.voiced < 0.12 || wav.peak < 0.008){ CL.sending = false; webFin = false; setListening(false); if (wav && chunks.length > 8){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); } return; }
+  const dbg = w => { if (typeof isAdminUser !== 'undefined' && isAdminUser) try { toast('🔧 ' + (CL.raw ? 'ham' : 'filtre') + ' · tepe ' + (w ? w.peak.toFixed(3) : '-') + ' · ses ' + (w ? w.voiced.toFixed(2) : '-') + 'sn · ' + CL.rate + 'Hz'); } catch(_){} };
+  if (!wav || wav.voiced < 0.12 || wav.peak < 0.008){ CL.sending = false; webFin = false; setListening(false); if (wav && chunks.length > 8){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); dbg(wav); clMiss(); } return; }
   try { let txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').replace(/\s+/g, ' ').trim();
     CL.fails = 0;
     // Whisper sessizlikte bilinen uydurma cümleler üretir: bunları at; kısa isim cevabında 4 kelimeden uzun cümleyi de kabul etme
     txt = txt.replace(/^(isim|ad|şehir|şəhər|ülke|ölkə|isimler|adlar|şehirler|şəhərlər|ülkeler|ölkələr)\s+/i, '');
     if (/altyaz|abone ol|izlediğiniz|teşekkür|takip et|M\s*K\b|subtit|amara|thank you|музыка|beğen/i.test(txt) || txt.split(/\s+/).length > 4) txt = '';
     if (typeof isAdminUser !== 'undefined' && isAdminUser) try { toast('⏱ ' + ((performance.now() - t0) / 1000).toFixed(1) + ' sn · ' + (txt || '—')); } catch(_){}
-    if (txt){ SAY_LAG = performance.now() - t0; pend.push(txt); flushPhrase(); SAY_LAG = 0; } else { $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); }
+    if (txt){ CL.weak = 0; SAY_LAG = performance.now() - t0; pend.push(txt); flushPhrase(); SAY_LAG = 0; } else { $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); dbg(wav); clMiss(); }
   } catch(e){
     let m;
     if (navigator.onLine === false) m = t('netErr');
@@ -6601,7 +6615,7 @@ function afterAuth(){
 /* ---------- Sayfa geçişleri ve geri tuşu ---------- */
 const isOpen = id => $(id).classList.contains('open');
 function openPage(id){ $(id).classList.add('open'); $(id).setAttribute('aria-hidden','false'); armBack(); if (id === 'roomPage') setTimeout(() => roomBeat(true), 50); }
-function closePage(id){ $(id).classList.remove('open'); $(id).setAttribute('aria-hidden','true'); if (id === 'roomPage') setTimeout(() => roomBeat(true), 50); }
+function closePage(id){ if (id === 'roomPage') sfxStop(); $(id).classList.remove('open'); $(id).setAttribute('aria-hidden','true'); if (id === 'roomPage') setTimeout(() => roomBeat(true), 50); }
 /* ---------- Günün cümlesi: her gün farklı bir açılış (günde bir kez) ---------- */
 const DAY_LINES = {
   tr:{ days:['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
@@ -6645,7 +6659,7 @@ function relang(){
   try { if ($('dayCard')) showDayCard(true); } catch(_){}
   try { if (isOpen('adminPage')){ ADM_STATIC(); admShow(admTab); } } catch(_){}
 }
-function showHome(){ statFlush(); stopListening(); timerStop(); $('home').classList.remove('hide'); renderAcct(); }
+function showHome(){ sfxStop(); if (spinning){ clearTimeout(spinT); spinning = false; $('spinBtn').disabled = false; $('micBtn').disabled = true; hub.textContent = '?'; } statFlush(); stopListening(); timerStop(); $('home').classList.remove('hide'); renderAcct(); }
 setTimeout(() => { try { $('home').classList.remove('intro'); } catch(_){} }, 1400);   // giriş animasyonu yalnız ilk açılışta (sayfa değişince titreme olmasın)
 function hideHome(){ $('home').classList.add('hide'); try { setPlaying(); } catch(_){} try { alignProw(); setTimeout(alignProw, 500); } catch(_){} }
 function navTop(){
