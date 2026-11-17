@@ -3179,7 +3179,7 @@ const IS_ANDROID = /Android/i.test(navigator.userAgent);
 const speechLangOf = l => (baseL(l) === 'az' && settings.azSR === 'tr') ? 'tr-TR' : LANGS[l].speech;
 function micLabel(){
   if (!$('micLabel')) return;
-  { const prep = listening && (engine === 'web' || engine === 'cloud') && !webReady, cmp = document.body.classList.contains('playing') && !ONL;
+  { const prep = listening && (engine === 'web' || engine === 'cloud' || engine === 'tab') && !webReady, cmp = document.body.classList.contains('playing') && !ONL;
     $('micLabel').textContent = cmp ? (webFin ? '⏳' : listening ? (prep ? '🎙' : '🔴') : '🎤') : (webFin ? '⏳ ' + ot('pttWait') : listening ? (prep ? '🎙 ' + ot('pttPrep') : '🔴 ' + ot('pttLive')) : '🎤 ' + ot('pttHold'));
     $('micBtn').classList.toggle('live', listening); $('micBtn').title = webFin ? ot('pttWait') : listening ? (prep ? ot('pttPrep') : ot('pttLive')) : ot('pttHold'); }
   if (typeof GR !== 'undefined' && OL.room) try { renderGame(); } catch(_){}
@@ -3313,7 +3313,7 @@ let clModelAt = 0, clPrepKey = '';
 async function micPrep(key){
   if (key && key === clPrepKey) return; clPrepKey = key || '';
   if (!cloudReady() || document.hidden) return;
-  try { const st = navigator.permissions && await navigator.permissions.query({ name:'microphone' }); if (st && st.state === 'granted') { await clArm(); CL.ctx && CL.ctx.state !== 'running' && CL.ctx.resume().catch(() => {}); clearTimeout(CL.keepT); CL.keepT = setTimeout(() => { if (!CL.on) clTeardown(); }, 45000); } } catch(_){}
+  try { const st = navigator.permissions && await navigator.permissions.query({ name:'microphone' }); if (st && st.state === 'granted' && !tabMode()) { await clArm(); CL.ctx && CL.ctx.state !== 'running' && CL.ctx.resume().catch(() => {}); clearTimeout(CL.keepT); CL.keepT = setTimeout(() => { if (!CL.on) clTeardown(); }, 45000); } } catch(_){}
   clWarm();
   if (Date.now() - clModelAt > 50000){ clModelAt = Date.now();      // 0,3 sn sessizlik gönder: sunucudaki ses modeli uyanır
     try { const n = 4800, buf = new ArrayBuffer(44 + n * 2), dv = new DataView(buf), w = (p, x) => { for (let i = 0; i < x.length; i++) dv.setUint8(p + i, x.charCodeAt(i)); };
@@ -3395,8 +3395,11 @@ async function cloudStop(){
   CL.sending = true; const t0 = performance.now();
   webFin = true; micLabel(); if (navigator.vibrate && CL.auto) try { navigator.vibrate(15); } catch(_){}
   const wav = chunks.length ? toWav(chunks, CL.rate) : null;
-  const dbg = w => { if (typeof isAdminUser !== 'undefined' && isAdminUser) try { const m = '🔧 v166 · ' + (CL.raw ? 'ham' : 'filtre') + ' · tepe ' + (w ? w.peak.toFixed(3) : '-') + ' · ses ' + (w ? w.voiced.toFixed(2) : '-') + 'sn · ' + CL.rate + 'Hz · kanal ' + (CL.ch > 0.5 ? 2 : 1) + ' · cevap: ' + (CL.lastTxt || '—'); $('msg').textContent = t('cloudNone') + '  ' + m; toast(m); } catch(_){} };
-  if (!wav || wav.voiced < 0.12 || wav.peak < 0.008){ CL.sending = false; webFin = false; setListening(false); if (wav && chunks.length > 8){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); dbg(wav); clMiss(); } return; }
+  return clDeliver(wav, t0, chunks.length > 8);
+}
+async function clDeliver(wav, t0, enough){
+  const dbg = w => { if (typeof isAdminUser !== 'undefined' && isAdminUser) try { const m = '🔧 v167 · ' + (CL.raw === 'tab' ? 'tablet' + (CL.decErr ? ' hata:' + CL.decErr : '') : CL.raw ? 'ham' : 'filtre') + ' · tepe ' + (w ? w.peak.toFixed(3) : '-') + ' · ses ' + (w ? w.voiced.toFixed(2) : '-') + 'sn · ' + CL.rate + 'Hz · kanal ' + (CL.ch > 0.5 ? 2 : 1) + ' · cevap: ' + (CL.lastTxt || '—'); $('msg').textContent = t('cloudNone') + '  ' + m; toast(m); } catch(_){} };
+  if (!wav || wav.voiced < 0.12 || wav.peak < 0.008){ CL.sending = false; webFin = false; setListening(false); if (wav && enough || !wav && CL.raw === 'tab'){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); dbg(wav); clMiss(); } return; }
   CL.lastTxt = '';
   try { let txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').replace(/\s+/g, ' ').trim();
     CL.fails = 0; CL.lastTxt = txt;
@@ -3413,6 +3416,45 @@ async function cloudStop(){
     $('msg').textContent = m; toast(m);
   }
   CL.sending = false; webFin = false; setListening(false);
+}
+/* ===== Tablet için ayrı kayıt yolu: canlı ses işleme yerine cihazın kendi kaydedicisi (MediaRecorder).
+   Basınca mikrofon açılır, bırakınca kayıt biter, kayıt çözülüp sunucuya gönderilir. ===== */
+const TB = { st:null, mr:null, parts:[], t:null, starting:null };
+const tabMode = () => IS_TAB && !!window.MediaRecorder && settings.micTab !== false;
+function tabKill(){ clearTimeout(TB.t); try { if (TB.mr && TB.mr.state !== 'inactive') TB.mr.stop(); } catch(_){} try { TB.st && TB.st.getTracks().forEach(x => x.stop()); } catch(_){} TB.mr = TB.st = null; }
+async function tabStart(){
+  engine = 'tab'; webReady = false; webFin = false; setListening(true); CL.raw = 'tab'; CL.decErr = '';
+  TB.starting = (async () => {
+    let st; try { st = await navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:true } }); }
+    catch(e){ if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e; st = await navigator.mediaDevices.getUserMedia({ audio:true }); }
+    if (!listening || engine !== 'tab'){ st.getTracks().forEach(x => x.stop()); return; }
+    TB.st = st; TB.parts = []; const mr = new MediaRecorder(st); TB.mr = mr;
+    mr.ondataavailable = e => { if (e.data && e.data.size) TB.parts.push(e.data); };
+    mr.start(200); clWarm();
+    webReady = true; if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){} micLabel();
+    clearTimeout(TB.t); TB.t = setTimeout(() => { if (listening && engine === 'tab' && !webFin){ webFin = true; micLabel(); tabStop(); } }, 6000);   // en fazla 6 sn
+  })();
+  try { await TB.starting; }
+  catch(e){ TB.starting = null; tabKill(); setListening(false);
+    const m = e && e.name === 'NotAllowedError' ? t('micDenied') : ot('micBusy'); $('msg').textContent = m; toast(m); }
+}
+async function tabStop(){
+  if (CL.sending) return;
+  try { if (TB.starting) await TB.starting; } catch(_){ return; }
+  if (!listening || engine !== 'tab' || !TB.mr){ return; }
+  CL.sending = true; const t0 = performance.now(); webFin = true; micLabel();
+  const mr = TB.mr, done = new Promise(r => { mr.onstop = r; setTimeout(r, 1500); });
+  try { mr.requestData(); } catch(_){} try { mr.stop(); } catch(_){}
+  await done; const parts = TB.parts; TB.parts = []; const type = mr.mimeType || 'audio/webm'; tabKill();
+  let wav = null;
+  try { const ab = await new Blob(parts, { type }).arrayBuffer();
+    const ctx = CL.ctx || (CL.ctx = new (window.AudioContext || window.webkitAudioContext)());
+    const buf = await new Promise((res, rej) => { const p = ctx.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); });
+    let ch = buf.getChannelData(0); CL.ch = 0;
+    if (buf.numberOfChannels > 1){ const c1 = buf.getChannelData(1); let e0 = 0, e1 = 0; for (let i = 0; i < ch.length; i += 16){ e0 += ch[i] * ch[i]; e1 += c1[i] * c1[i]; } if (e1 > e0){ ch = c1; CL.ch = 1; } }
+    CL.rate = buf.sampleRate; wav = toWav([new Float32Array(ch)], buf.sampleRate);
+  } catch(e){ CL.decErr = (e && (e.name || e.message)) || 'çözülemedi'; }
+  return clDeliver(wav, t0, parts.length > 2);
 }
 function startListening(){
   $('msg').textContent = '';
@@ -3435,6 +3477,7 @@ function startListening(){
     });
     return;
   }
+  if (tabMode() && cloudReady()){ tabStart(); return; }
   if (cloudReady()){ cloudStart(); return; }
   if (SR && !inClaude){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
   if (cloudCap()){ cloudStart(); return; }
@@ -3446,6 +3489,7 @@ function stopListening(){
   if (engine === 'web' && rec){ listening = false; webFin = false; clearTimeout(webFinT); clearTimeout(webIdleT); try { rec.onend = null; rec.abort(); } catch(_){} }
   if (engine === 'dict' && dict){ dict.stop().catch(()=>{}); }
   if (engine === 'cloud'){ CL.chunks = []; CL.on = false; cloudRelease(); }
+  if (engine === 'tab') tabKill();
   setListening(false);
 }
 
@@ -6008,7 +6052,7 @@ function renderGame(){
     if ($('ogAgain')) $('ogAgain').onclick = playAgain;
     if ($('ogShare')) $('ogShare').onclick = () => shareResult(r);
   }
-  const mb = $('ogMic'); if (mb){ mb.classList.toggle('live', listening); const prep = listening && (engine === 'web' || engine === 'cloud') && !webReady;
+  const mb = $('ogMic'); if (mb){ mb.classList.toggle('live', listening); const prep = listening && (engine === 'web' || engine === 'cloud' || engine === 'tab') && !webReady;
     mb.classList.toggle('prep', prep || webFin); const lb = webFin ? '⏳' : listening ? (prep ? '🎙' : '🔴') : '🎤'; if (mb.textContent !== lb) mb.textContent = lb;
     mb.title = webFin ? ot('pttWait') : listening ? (prep ? ot('pttPrep') : ot('pttLive')) : ot('pttHold'); }
   syncMic(r);
@@ -6057,6 +6101,7 @@ function pttUp(){
   if (!GR.ptt) return; GR.ptt = false;
   clearTimeout(GR.pttT);
   if (engine === 'cloud' && listening){ if (CL.sending || webFin) return; webFin = true; micLabel(); GR.pttT = setTimeout(cloudStop, 160); return; }
+  if (engine === 'tab' && listening){ if (CL.sending || webFin) return; webFin = true; micLabel(); GR.pttT = setTimeout(tabStop, 250); return; }
   if (engine === 'web' && rec && listening){
     // Bırakınca hemen kesme: son heceyi al, sonra tanımayı nazikçe bitir ve sonucu bekle (bazı telefonlar sonucu ancak bitince verir)
     webFin = true; micLabel();
