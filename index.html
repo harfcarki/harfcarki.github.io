@@ -1912,6 +1912,42 @@
   .up-t .adm-b .adm-tx,.acct .who-big .adm-b .adm-tx,.who2 .adm-b .adm-tx{display:inline}
   .up-t .adm-b:has(.adm-tx) svg,.acct .who-big .adm-b:has(.adm-tx) svg,.who2 .adm-b:has(.adm-tx) svg{color:currentColor}
   .ch-card .adm-b:has(.adm-tx) svg{color:#fff}
+  /* Yönetici rozeti: bordo kalkan + beyaz yıldız (çevrimiçi yeşil noktasıyla karışmasın) */
+  .adm-b{background:rgba(154,38,64,.12)!important;color:#8a1f37!important}
+  :root[data-theme="dark"] .adm-b{background:rgba(184,50,74,.2)!important;color:#ff9aac!important}
+  .adm-b:has(.adm-tx),:root[data-theme="dark"] .adm-b:has(.adm-tx){background:none!important}
+  .adm-b:has(.adm-tx){font-size:inherit;vertical-align:middle;line-height:0;margin-top:-.15em}
+  .adm-b:has(.adm-tx) svg{width:1.5em!important;height:1.5em!important;min-width:22px;min-height:22px}
+  .up-t .adm-b:has(.adm-tx),.acct .who-big .adm-b:has(.adm-tx),.who2 .adm-b:has(.adm-tx){background:rgba(154,38,64,.12)!important}
+  :root[data-theme="dark"] .up-t .adm-b:has(.adm-tx),:root[data-theme="dark"] .acct .who-big .adm-b:has(.adm-tx),:root[data-theme="dark"] .who2 .adm-b:has(.adm-tx){background:rgba(184,50,74,.2)!important}
+  .ch-card .adm-b{background:rgba(255,255,255,.25)!important;color:#fff!important}
+  .acct .who-big .adm-b:has(.adm-tx),.who2 .adm-b:has(.adm-tx){font-size:14px!important} .up-t .adm-b:has(.adm-tx){font-size:12px!important}
+  .acct .who-big .adm-b:has(.adm-tx) svg,.who2 .adm-b:has(.adm-tx) svg{width:20px!important;height:20px!important} .up-t .adm-b:has(.adm-tx) svg{width:17px!important;height:17px!important}
+  /* Rozet taşma düzeltmeleri: isim kısalır, rozet hep aynı satırda ve tam görünür */
+  b:has(> .adm-b){display:inline-flex!important;align-items:center;gap:2px;min-width:0;max-width:100%}
+  b > .adm-nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+  b > .adm-b{flex:none;margin-top:0!important}
+  .og-p b > .adm-b svg{width:1.2em!important;height:1.2em!important;min-width:17px!important;min-height:17px!important}
+  .arow .grow:has(> .adm-b){display:flex!important;flex-wrap:wrap;align-items:center;column-gap:0;min-width:0}
+  .arow .grow:has(> .adm-b) > b{min-width:0;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .arow .grow > .adm-b svg{width:18px!important;height:18px!important;min-width:0!important;min-height:0!important}
+  .og-p b > .adm-b svg{width:15px!important;height:15px!important;min-width:0!important;min-height:0!important} b:has(> .adm-b){gap:1px}
+  .arow .grow:has(> .adm-b) > :not(b):not(.adm-b):not(.hb){flex-basis:100%}
+  .arow .grow:has(> .adm-b) > .adm-b{flex:none;margin-top:0}
+  .up-t .adm-b:has(.adm-tx),.acct .who-big .adm-b:has(.adm-tx),.who2 .adm-b:has(.adm-tx){padding:1px 9px 1px 4px!important}
+  .acct .who-big .adm-b:has(.adm-tx) svg,.who2 .adm-b:has(.adm-tx) svg{width:19px!important;height:19px!important}
+  .arow .grow:has(> .adm-b) > .adm-b{margin-block:-3px!important}
+  .up-t .adm-b:has(.adm-tx){margin-block:-2px!important}
+  .av:has(> .adm-b.on-av){position:relative;overflow:visible}
+  .av > .adm-b.on-av{position:absolute;top:-2px;right:-4px;margin:0!important;font-size:12px!important;line-height:0;z-index:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+  .av > .adm-b.on-av svg{width:17px!important;height:17px!important;min-width:0!important;min-height:0!important}
+  .arow .grow > b{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+  .og-p .av > .adm-b.on-av{top:-4px;right:-4px} .og-p .av > .adm-b.on-av svg{width:14px!important;height:14px!important}
+  /* Takım kutusundaki çevrimiçi noktası soldan kesiliyordu: kutunun içinde biraz boşluk bırak */
+  .team-cols .trow .grow{padding-left:3px!important;overflow:hidden}
+  .team-cols .trow .grow::before{margin-right:3px}
+  .team-cols .trow .grow > .adm-b svg{width:15px!important;height:15px!important;min-width:0!important;min-height:0!important}
+  .team-cols .trow .grow > .adm-b{margin:0 0 0 2px!important;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -3919,7 +3955,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '175';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '180';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -4908,7 +4944,7 @@ function watchNt(){
   }, e => console.warn('ann', e)));
 }
 function ntCard(kind, x){
-  const adm = `<span class="adm-b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.3l3.2 3.2L17 8.7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>${escH(ot('admB'))}</span>`;
+  const adm = `<span class="adm-b"><svg viewBox="0 0 24 24"><path d="M12 1.6l8.4 3.1v6.4c0 5.3-3.6 9.6-8.4 11.3-4.8-1.7-8.4-6-8.4-11.3V4.7z" fill="#9a2640"/><path d="M12 1.6l8.4 3.1v6.4c0 1.2-.2 2.3-.5 3.4L12 1.6z" fill="#b8324a" opacity=".55"/><path d="M12 6.6l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z" fill="#fff"/></svg>${escH(ot('admB'))}</span>`;
   return kind === 'ann'
     ? `<div class="nt-card nt-ann"><div class="nt-h"><span class="nt-ic">📣</span><span class="grow"><b>${escH(x.title || ot('ntAnnT'))}</b>${adm}</span></div><p>${escH(x.text)}</p><small>${ntFmt(x.at)}</small></div>`
     : `<div class="nt-card nt-me${x.read ? '' : ' unread'}"><div class="nt-h"><span class="nt-ic">🛡</span><span class="grow"><b>${escH(ot('ntMeT'))}</b>${adm}</span></div><p>${escH(ntText(x))}</p><small>${ntFmt(x.at)}</small></div>`;
@@ -4976,17 +5012,31 @@ let STAFF = new Set();
 async function loadStaff(){ try { const d = await FB.F.getDoc(FB.F.doc(FB.db, 'config', 'staff')); STAFF = new Set(d.exists() ? (d.data().uids || []) : []); badgeScan(true); } catch(_){} }
 async function staffJoin(){ STAFF.add(me.uid); badgeScan(true); try { await FB.F.setDoc(FB.F.doc(FB.db, 'config', 'staff'), { uids:FB.F.arrayUnion(me.uid) }, { merge:true }); } catch(e){ console.warn('staff', e); } }
 const isStaff = uid => !!uid && STAFF.has(uid);
-const ADMB = () => `<span class="adm-b" title="${escH(ot('admB'))}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.3l3.2 3.2L17 8.7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="adm-tx">${escH(ot('admB'))}</span></span>`;
+const ADMB = () => `<span class="adm-b" title="${escH(ot('admB'))}"><svg viewBox="0 0 24 24"><path d="M12 1.6l8.4 3.1v6.4c0 5.3-3.6 9.6-8.4 11.3-4.8-1.7-8.4-6-8.4-11.3V4.7z" fill="#9a2640"/><path d="M12 1.6l8.4 3.1v6.4c0 1.2-.2 2.3-.5 3.4L12 1.6z" fill="#b8324a" opacity=".55"/><path d="M12 6.6l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z" fill="#fff"/></svg><span class="adm-tx">${escH(ot('admB'))}</span></span>`;
 function badgeScan(all){
   document.querySelectorAll('[data-prof],[data-badge]').forEach(el => {
     const uid = el.dataset.prof || el.dataset.badge;
     if (el.dataset.bd === uid && !all) return; el.dataset.bd = uid;
     const old = el.querySelector(':scope > .adm-b, :scope > b + .adm-b'); if (old) old.remove();
     el.querySelectorAll('.adm-b').forEach(x => x.remove());
+    try { const rw = el.closest('.arow,.og-p,.urow,.trow'); if (rw) rw.querySelectorAll('.av > .adm-b').forEach(x => x.remove()); } catch(_){}
     if (!isStaff(uid)) return;
     const b = el.tagName === 'B' ? null : el.querySelector('b');
+    if (!b && el.tagName === 'B' && !el.querySelector(':scope > .adm-nm')){   // isim kutusunun içine: ismi ayrı sar ki uzun isim kısalsın, rozet kesilmesin
+      const sp = document.createElement('span'); sp.className = 'adm-nm'; while (el.firstChild) sp.appendChild(el.firstChild); el.appendChild(sp); }
     if (b) b.insertAdjacentHTML('afterend', ADMB()); else el.insertAdjacentHTML('beforeend', ADMB());
+    if (b) try { b.nextElementSibling.style.fontSize = getComputedStyle(b).fontSize; } catch(_){}
+    admFit(el);   // rozet ismin yazı boyutunda olsun
   });
+}
+/* Dar satırda isim kısalıyorsa rozeti avatarın köşesine taşı: isim tam görünsün, rozet de kaybolmasın */
+function admFit(el){
+  requestAnimationFrame(() => { try {
+    const bd = el.querySelector('.adm-b'); if (!bd || !bd.offsetParent) return;
+    const row = el.closest('.arow,.og-p,.urow,.trow'), av = row && row.querySelector('.av'); if (!av) return;
+    const nm = el.tagName === 'B' ? el.querySelector('.adm-nm') : el.querySelector('b'); if (!nm) return;
+    if (nm.scrollWidth > nm.clientWidth + 1){ bd.classList.add('on-av'); av.appendChild(bd); }
+  } catch(_){} });
 }
 let bdQ = false;
 new MutationObserver(() => { if (bdQ || !STAFF.size) return; bdQ = true; requestAnimationFrame(() => { bdQ = false; if (STAFF.size) badgeScan(); }); }).observe(document.body, { childList:true, subtree:true });
