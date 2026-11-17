@@ -3194,7 +3194,7 @@ function finishWeb(){
 }
 function startWebSpeech(){
   rec = new SR(); const sl = speechLangOf(lang);
-  rec.lang = sl; rec.continuous = !IS_ANDROID; rec.interimResults = true; rec.maxAlternatives = 5;
+  rec.lang = sl; rec.continuous = !(IS_ANDROID || IS_TAB); rec.interimResults = true; rec.maxAlternatives = 5;
   webFin = false; webGot = false; webReady = false;
   rec.onstart = () => { micLabel(); };
   rec.onaudiostart = () => { if (!webReady && navigator.vibrate) try { navigator.vibrate(25); } catch(_){} webReady = true; srFails = 0; micLabel(); };
@@ -3250,7 +3250,7 @@ function startWebSpeech(){
     if (webFin){ finishWeb(); return; }
     if (listening && engine === 'web') {
       if (!webReady && ++srFails >= 4){ webFin = false; setListening(false); if (useCloud(true)) return; kbFallback(t('kbHint')); return; }   // ses hiç açılamıyor: klavye mikrofonuna yönlendir
-      webReady = false; micLabel(); setTimeout(() => { if (listening && engine === 'web') try { rec.start(); } catch(_){} }, IS_ANDROID ? 120 : 0); }
+      webReady = false; micLabel(); setTimeout(() => { if (listening && engine === 'web') try { rec.start(); } catch(_){} }, (IS_ANDROID || IS_TAB) ? 120 : 0); }
   };
   webIgnore = false;
   rec.start(); engine = 'web'; micLang = sl === 'tr-TR' ? 'tr' : LANGS[lang].locale; setListening(true);
@@ -3272,6 +3272,7 @@ const cloudReady = () => cloudCap() && navigator.onLine !== false && settings.sr
 function useCloud(why){
   if (!cloudCap() || navigator.onLine === false) return false;
   if (settings.srMode === 'web'){ delete settings.srMode; saveSettings(); }
+  if (why && !settings.tabNoWeb){ settings.tabNoWeb = true; saveSettings(); }   // Google bu cihazda hiç açılamıyor: bir daha deneme
   CL.downUntil = 0; if (why) toast(t('srCloud')); return true;
 }
 /* Samsung tabletlerde yankı/gürültü engelleme açıkken mikrofon sesi neredeyse sıfır geliyor ("anlaşılmadı").
@@ -3281,7 +3282,7 @@ function useCloud(why){
 const IS_TAB = (IS_ANDROID && !/Mobile/i.test(navigator.userAgent)) || ((navigator.maxTouchPoints || 0) > 0 && Math.min(screen.width, screen.height) >= 600 && !/iPhone|Mobile/i.test(navigator.userAgent));
 const micRaw = () => settings.micRaw != null ? !!settings.micRaw : IS_TAB;
 function clMiss(){ CL.miss = (CL.miss || 0) + 1; if (++CL.weak >= 2){ CL.weak = 0; settings.micRaw = !micRaw(); saveSettings(); clTeardown(true); }
-  if (CL.miss >= 4 && IS_TAB && SR && !inClaude){ CL.miss = 0; settings.srMode = 'web'; saveSettings(); clTeardown(); toast(ot('srDevice')); } }   // iki ayarda da anlaşılmadı: cihazın kendi ses tanımasına geç
+  if (CL.miss >= 4 && IS_TAB && SR && !inClaude){ CL.miss = 0; settings.srMode = 'web'; settings.tabNoWeb = false; saveSettings(); clTeardown(); toast(ot('srDevice')); } }   // iki ayarda da anlaşılmadı: cihazın kendi ses tanımasına geç
 async function clArm(){
   if (CL.stream && CL.stream.active && CL.proc && CL.raw !== micRaw()) clTeardown(true);
   if (CL.stream && CL.stream.active && CL.proc) return;
@@ -3315,8 +3316,8 @@ let clModelAt = 0, clPrepKey = '';
 async function micPrep(key){
   if (key && key === clPrepKey) return; clPrepKey = key || '';
   if (!cloudReady() || document.hidden) return;
-  try { const st = navigator.permissions && await navigator.permissions.query({ name:'microphone' }); if (st && st.state === 'granted' && !tabMode()) { await clArm(); CL.ctx && CL.ctx.state !== 'running' && CL.ctx.resume().catch(() => {}); clearTimeout(CL.keepT); CL.keepT = setTimeout(() => { if (!CL.on) clTeardown(); }, 45000); } } catch(_){}
-  clWarm();
+  try { const st = navigator.permissions && await navigator.permissions.query({ name:'microphone' }); if (st && st.state === 'granted' && !tabMode() && !webFirst()) { await clArm(); CL.ctx && CL.ctx.state !== 'running' && CL.ctx.resume().catch(() => {}); clearTimeout(CL.keepT); CL.keepT = setTimeout(() => { if (!CL.on) clTeardown(); }, 45000); } } catch(_){}
+  if (!webFirst()) clWarm();
   if (Date.now() - clModelAt > 50000){ clModelAt = Date.now();      // 0,3 sn sessizlik gönder: sunucudaki ses modeli uyanır
     try { const n = 4800, buf = new ArrayBuffer(44 + n * 2), dv = new DataView(buf), w = (p, x) => { for (let i = 0; i < x.length; i++) dv.setUint8(p + i, x.charCodeAt(i)); };
       w(0, 'RIFF'); dv.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true); dv.setUint32(24, 16000, true); dv.setUint32(28, 32000, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); w(36, 'data'); dv.setUint32(40, n * 2, true);
@@ -3422,6 +3423,8 @@ async function clDeliver(wav, t0, enough){
 /* ===== Tablet için ayrı kayıt yolu: canlı ses işleme yerine cihazın kendi kaydedicisi (MediaRecorder).
    Basınca mikrofon açılır, bırakınca kayıt biter, kayıt çözülüp sunucuya gönderilir. ===== */
 const TB = { st:null, mr:null, parts:[], t:null, starting:null };
+/* Her cihazda önce Google ses tanıması (doğrudan, sunucu köprüsü yok) */
+const webFirst = () => !!SR && !inClaude && !settings.tabNoWeb && navigator.onLine !== false;
 const tabMode = () => IS_TAB && !!window.MediaRecorder && settings.micTab !== false;
 function tabKill(){ clearTimeout(TB.t); try { if (TB.mr && TB.mr.state !== 'inactive') TB.mr.stop(); } catch(_){} try { TB.st && TB.st.getTracks().forEach(x => x.stop()); } catch(_){} TB.mr = TB.st = null; }
 async function tabStart(){
@@ -3479,6 +3482,9 @@ function startListening(){
     });
     return;
   }
+  /* Tablet: önce cihazın kendi Google ses tanıması (Chrome'un yerleşik tanıması, büyük web oyunlarının da kullandığı yol).
+     O hiç açılamazsa bir daha denenmez, tablet kayıt yoluna geçilir. */
+  if (webFirst()){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
   if (tabMode() && cloudReady()){ tabStart(); return; }
   if (cloudReady()){ cloudStart(); return; }
   if (SR && !inClaude){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
@@ -3840,7 +3846,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '168';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '170';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
