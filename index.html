@@ -1970,6 +1970,10 @@
   #createPage .s-sec > .s-label:first-child,#pModal .s-sec > .s-label:first-child{margin-top:0!important}
   #crPinW[hidden]{display:none!important}
   #crPinW{margin-top:10px!important}
+  /* Oyun sırasında sağa-sola titreme: oyuncu sütununun genişliği puan/isim değiştikçe değişip çarkı kaydırıyordu → sabit genişlik */
+  body.playing .wheel-area.has-pcol,#roomPage.playing .og-wheel.has-pcol{grid-template-columns:min(34vw,156px) minmax(0,1fr)!important}
+  .pcol{width:100%;max-width:none!important;justify-self:stretch!important}
+  .pcol,.pcol *,.og-ps,.og-ps *{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -3984,7 +3988,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '185';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '186';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
