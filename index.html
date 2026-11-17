@@ -2093,7 +2093,7 @@
             </ul>
             <button class="btn ghost sm" id="setHow" data-i18n="howBtn" style="margin:4px 0 10px">❓ Nasıl oynanır?</button><br>
             <a class="linkbtn" href="gizlilik.html" target="_blank" rel="noopener" data-i18n="privLink" style="display:inline-block;margin-bottom:8px">🔒 Gizlilik politikası</a><br>
-            <small data-i18n="aboutVer">Sürüm 1.0 · Eklediğin isimler bu cihazda saklanır.</small>
+            <small id="appVer" style="display:block;font-weight:800;margin-bottom:2px"></small><small data-i18n="aboutVer">Sürüm 1.0 · Eklediğin isimler bu cihazda saklanır.</small>
           </div>
         </div>
       </section>
@@ -3276,7 +3276,9 @@ function useCloud(why){
 }
 /* Samsung tabletlerde yankı/gürültü engelleme açıkken mikrofon sesi neredeyse sıfır geliyor ("anlaşılmadı").
    Tabletlerde ham mikrofon kullanılır; bir cihazda üst üste 2 kez anlaşılmazsa diğer moda kendiliğinden geçilir ve hatırlanır. */
-const IS_TAB = IS_ANDROID && !/Mobile/i.test(navigator.userAgent);
+/* Tablet tespiti: Samsung tabletlerde Chrome kendini masaüstü bilgisayar gibi tanıtıyor (Android yazmıyor).
+   Bu yüzden dokunmatik + büyük ekran da tablet sayılır. */
+const IS_TAB = (IS_ANDROID && !/Mobile/i.test(navigator.userAgent)) || ((navigator.maxTouchPoints || 0) > 0 && Math.min(screen.width, screen.height) >= 600 && !/iPhone|Mobile/i.test(navigator.userAgent));
 const micRaw = () => settings.micRaw != null ? !!settings.micRaw : IS_TAB;
 function clMiss(){ CL.miss = (CL.miss || 0) + 1; if (++CL.weak >= 2){ CL.weak = 0; settings.micRaw = !micRaw(); saveSettings(); clTeardown(true); }
   if (CL.miss >= 4 && IS_TAB && SR && !inClaude){ CL.miss = 0; settings.srMode = 'web'; saveSettings(); clTeardown(); toast(ot('srDevice')); } }   // iki ayarda da anlaşılmadı: cihazın kendi ses tanımasına geç
@@ -3398,7 +3400,7 @@ async function cloudStop(){
   return clDeliver(wav, t0, chunks.length > 8);
 }
 async function clDeliver(wav, t0, enough){
-  const dbg = w => { if (typeof isAdminUser !== 'undefined' && isAdminUser) try { const m = '🔧 v167 · ' + (CL.raw === 'tab' ? 'tablet' + (CL.decErr ? ' hata:' + CL.decErr : '') : CL.raw ? 'ham' : 'filtre') + ' · tepe ' + (w ? w.peak.toFixed(3) : '-') + ' · ses ' + (w ? w.voiced.toFixed(2) : '-') + 'sn · ' + CL.rate + 'Hz · kanal ' + (CL.ch > 0.5 ? 2 : 1) + ' · cevap: ' + (CL.lastTxt || '—'); $('msg').textContent = t('cloudNone') + '  ' + m; toast(m); } catch(_){} };
+  const dbg = w => { if ((typeof isAdminUser !== 'undefined' && isAdminUser) || IS_TAB) try { const m = '🔧 v' + APP_V + ' · ' + (CL.raw === 'tab' ? 'tablet' + (CL.decErr ? ' hata:' + CL.decErr : '') : CL.raw ? 'ham' : 'filtre') + ' · tepe ' + (w ? w.peak.toFixed(3) : '-') + ' · ses ' + (w ? w.voiced.toFixed(2) : '-') + 'sn · ' + CL.rate + 'Hz · kanal ' + (CL.ch > 0.5 ? 2 : 1) + ' · cevap: ' + (CL.lastTxt || '—'); $('msg').textContent = t('cloudNone') + '  ' + m; toast(m); } catch(_){} };
   if (!wav || wav.voiced < 0.12 || wav.peak < 0.008){ CL.sending = false; webFin = false; setListening(false); if (wav && enough || !wav && CL.raw === 'tab'){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); dbg(wav); clMiss(); } return; }
   CL.lastTxt = '';
   try { let txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -3837,6 +3839,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSetting
 try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(e){ console.warn('i18n', e); } try { updateThemeBtn(); } catch(_){}
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
+/* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
+const APP_V = '168';   // her teslimde sw.js ile birlikte artırılır
+try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
 /* ===================== ONLINE: Firebase ile hesap ===================== */
