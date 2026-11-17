@@ -1841,6 +1841,17 @@
   .stage-fx.k-lose .sf-t{color:#ffb4a8!important}
   .res-b{font-size:22px;font-weight:900;margin:2px 30px 10px;padding:8px 12px;border-radius:14px}
   .res-b.win{color:#3a2a00;background:linear-gradient(90deg,#f4d06a,#e8b630)} .res-b.lose{color:#ffd9d2;background:#5a2e2a}
+  /* ===== Performans (herkes için): canlı bulanıklık filtreleri kaldırıldı, görünmeyen animasyonlar durdurulur ===== */
+  *,*::before,*::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .home .icon-btn{background:color-mix(in srgb, var(--card) 90%, transparent)}
+  .home .acct,.home .menu,.home .btn.ghost.big{background:color-mix(in srgb, var(--card) 92%, transparent)}
+  .mbar,.mpanel{background:var(--card)}
+  body.wp #roomPage .s-head{background:color-mix(in srgb, var(--bg) 90%, transparent)}
+  .home::before,.home::after{filter:none;will-change:transform}
+  html.sheet-on .home::before,html.sheet-on .home::after,html.sheet-on .hero-logo::before,html.sheet-on .hero-logo .logo,
+  body.playing .home::before,body.playing .home::after,body.playing .hero-logo::before{animation-play-state:paused!important}
+  .sheet .s-sec{content-visibility:auto;contain-intrinsic-size:auto 220px}
+  .nm-wrap{content-visibility:auto;contain-intrinsic-size:auto 600px}
 </style>
 </head>
 <body>
@@ -2550,12 +2561,12 @@ let nmLang = 'tr', nmResetArmed = false, nmEditing = null;
 function segSet(id, v){ document.querySelectorAll(`#${id} button`).forEach(b => b.classList.toggle('on', b.dataset.v === v)); }
 function openSettings(){
   // Önce sayfayı aç (zayıf telefonlarda binlerce isimlik liste sayfayı geciktiriyordu), ağır kısımları sonra çiz
-  $('sheet').classList.add('open'); $('sheet').setAttribute('aria-hidden','false');
+  $('sheet').classList.add('open'); $('sheet').setAttribute('aria-hidden','false'); document.documentElement.classList.add('sheet-on');
   try { nmLang = lang; segSet('uiSeg', settings.ui); renderGameSettings(); segSet('nmSeg', nmLang); } catch(e){ console.warn('settings', e); }
   try { if (typeof renderMyFb === 'function' && OL.fbRows) setTimeout(renderMyFb, 0); } catch(_){}
-  clearTimeout(openSettings.t); openSettings.t = setTimeout(() => { try { renderNames(); } catch(e){ console.warn('names', e); } }, 350);
+  clearTimeout(openSettings.t); if (document.body.classList.contains('admin')) openSettings.t = setTimeout(() => { try { renderNames(); } catch(e){ console.warn('names', e); } }, 350);
 }
-function closeSettings(){ $('sheet').classList.remove('open'); $('sheet').setAttribute('aria-hidden','true'); nmEditing = null; $('nmAdd').textContent = t('add'); recompute(); drawWheel(); }
+function closeSettings(){ document.documentElement.classList.remove('sheet-on'); $('sheet').classList.remove('open'); try { $('nmList').innerHTML = ''; $('nmLetters').innerHTML = ''; } catch(_){} $('sheet').setAttribute('aria-hidden','true'); nmEditing = null; $('nmAdd').textContent = t('add'); recompute(); drawWheel(); }
 function renderGameSettings(){
   document.querySelectorAll('#timeSeg button').forEach(b => { b.textContent = t('sec', b.dataset.v); b.classList.toggle('on', +b.dataset.v === settings.time); });
   $('graceNote').textContent = t('graceNote', settings.time);
@@ -2588,6 +2599,8 @@ function nmItem(n, e, l, adm, mine, DUP, KEEP){
     return `<span class="chipn${adm&&mine.has(n)?' mine':''}${nmEditing===n?' editing':''}${adm&&DUP.has(n)?(KEEP.has(n)?' dup keep':' dup'):''}"><span class="nm"${adm?` data-e="${e}"`:''}>${cap(n,l).replace(/</g,'&lt;')}</span>${adm?`<button data-n="${e}" aria-label="sil">×</button>`:''}</span>`
 }
 function renderNames(){
+  /* İsim listeleri sadece yöneticiye görünür: diğerlerinde binlerce kartı boşuna çizme (ayarlar ağır açılıyordu) */
+  if (!document.body.classList.contains('admin') || !$('sheet').classList.contains('open')){ $('nmList').innerHTML = ''; $('nmLetters').innerHTML = ''; return; }
   const l = nmLang, loc = LANGS[l].locale, q = $('nmInput').value.trim().toLocaleLowerCase(loc);
   const G = renderDup(), DUP = new Set(G.flat()), KEEP = new Set(G.map(g => g[0]));
   let all = [...NAMESET[l]].sort((a,b) => a.localeCompare(b, loc));
@@ -3846,7 +3859,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '170';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '171';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
