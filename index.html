@@ -1948,6 +1948,10 @@
   .team-cols .trow .grow::before{margin-right:3px}
   .team-cols .trow .grow > .adm-b svg{width:15px!important;height:15px!important;min-width:0!important;min-height:0!important}
   .team-cols .trow .grow > .adm-b{margin:0 0 0 2px!important;vertical-align:middle}
+  /* Aynı telefonda oyun ayarları: online "Oda kur" sayfasıyla aynı tam sayfa düzen */
+  .pset-page .prows{overflow:visible;margin:8px 0 4px}
+  .pset-page .row.pset-acts{display:flex;gap:10px;margin-top:10px} .pset-page .row.pset-acts .btn{flex:1}
+  .pset-page #pSave{flex:1.4}
 </style>
 </head>
 <body>
@@ -2322,28 +2326,30 @@
     <button class="btn spin" id="toBtn" style="width:100%" data-i18n="cont">Devam et</button>
   </div>
 </div>
-<div class="modal" id="pModal">
-  <div class="box pbox">
-    <b id="pTitle" data-i18n="players">Oyuncular</b>
-    <div class="psets">
-      <div class="s-label" id="pModeL">Oyun türü</div>
-      <div class="seg seg4" id="pMode"><button data-v="n" class="on">👤 İsimler</button><button data-v="s">🏙 Şehirler</button><button data-v="u">🌍 Ülkeler</button><button data-v="k">🎲 Karışık</button></div>
-      <div class="s-label" id="pLangL">İsim dili</div>
-      <div class="seg" id="pLang"><button data-v="tr" class="on">Türkçe</button><button data-v="az">Azərbaycan</button></div>
-      <div class="s-label" id="pTimeL">Cevap süresi</div>
-      <div class="seg" id="pTime"><button data-v="15" class="on">15</button><button data-v="20">20</button><button data-v="30">30</button><button data-v="40">40</button></div>
-      <div class="s-label" id="pRoundsL">Kaç tur oynansın?</div>
-      <div class="seg" id="pRounds"><button data-v="5">5</button><button data-v="10">10</button><button data-v="0" class="on" id="pRAll">Harfler bitene kadar</button></div>
-      <div class="s-label" id="pPlayersL">Oyuncular</div>
-    </div>
-    <p data-i18n="playersHint">En fazla 11 oyuncu. Boş bırakırsan tek başına oynarsın.</p>
-    <div class="prows" id="pRows"></div>
-    <button class="linkbtn addp" id="pAdd" data-i18n="addPlayer">+ Oyuncu ekle</button>
-    <div class="row">
-      <button class="btn ghost" id="pCancel" data-i18n="cancel">Vazgeç</button>
-      <button class="btn spin" id="pSave" data-i18n="save">Kaydet</button>
-    </div>
-  </div>
+<div class="sheet page" id="pModal" aria-hidden="true">
+  <aside class="panel">
+    <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" id="pBack" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2 id="pTitle" data-i18n="players">Oyuncular</h2></div></div>
+    <div class="s-body"><div class="s-wrap narrow">
+      <section class="s-sec pset-page">
+        <div class="s-label" id="pModeL">Oyun türü</div>
+        <div class="seg seg4" id="pMode"><button data-v="n" class="on">👤 İsimler</button><button data-v="s">🏙 Şehirler</button><button data-v="u">🌍 Ülkeler</button><button data-v="k">🎲 Karışık</button></div>
+        <div class="s-label" id="pLangL">İsim dili</div>
+        <div class="seg" id="pLang"><button data-v="tr" class="on">Türkçe</button><button data-v="az">Azərbaycan</button></div>
+        <div class="s-label" style="margin-top:14px" id="pTimeL">Cevap süresi</div>
+        <div class="seg" id="pTime"><button data-v="15" class="on">15</button><button data-v="20">20</button><button data-v="30">30</button><button data-v="40">40</button></div>
+        <div class="s-label" style="margin-top:14px" id="pRoundsL">Kaç tur oynansın?</div>
+        <div class="seg" id="pRounds"><button data-v="5">5</button><button data-v="10">10</button><button data-v="0" class="on" id="pRAll">Harfler bitene kadar</button></div>
+        <div class="s-label" style="margin-top:14px" id="pPlayersL">Oyuncular</div>
+        <p class="s-note" data-i18n="playersHint">En fazla 11 oyuncu. Boş bırakırsan tek başına oynarsın.</p>
+        <div class="prows" id="pRows"></div>
+        <button class="linkbtn addp" id="pAdd" data-i18n="addPlayer">+ Oyuncu ekle</button>
+        <div class="row pset-acts">
+          <button class="btn ghost" id="pCancel" data-i18n="cancel">Vazgeç</button>
+          <button class="btn mic" id="pSave" data-i18n="save">Kaydet</button>
+        </div>
+      </section>
+    </div></div>
+  </aside>
 </div>
 <div class="modal" id="sumModal">
   <div class="box sbox">
@@ -3876,7 +3882,7 @@ function openPlayers(start){
     $('pSave').textContent = start ? ot('offStart') : t('save'); } catch(_){}
   segSet('pLang', PS.base); segSet('pMode', PS.kind);
   try { $('pModeL').textContent = ot('modeL'); const mb = $('pMode').querySelectorAll('button'); ['modeN','modeS','modeU','modeK'].forEach((k, i) => mb[i].textContent = ot(k)); } catch(_){} segSet('pTime', String(PS.time)); segSet('pRounds', String(PS.rounds));
-  $('pModal').classList.add('show');
+  openPage('pModal');
 }
 ['pLang','pTime','pRounds'].forEach(id => $(id).onclick = e => { const b = e.target.closest('button'); if (!b) return;
   const k = { pLang:'lang', pTime:'time', pRounds:'rounds' }[id];
@@ -3886,13 +3892,13 @@ function pRenumber(){ [...$('pRows').children].forEach((r, i) => { r.querySelect
   $('pAdd').style.display = $('pRows').children.length >= 11 ? 'none' : ''; }
 $('pAdd').onclick = () => { if ($('pRows').children.length >= 11) return; $('pRows').insertAdjacentHTML('beforeend', pRow('', $('pRows').children.length)); pRenumber(); $('pRows').lastElementChild.querySelector('input').focus(); };
 $('pRows').onclick = e => { const b = e.target.closest('button'); if (!b) return; b.parentElement.remove(); pRenumber(); };
-$('pCancel').onclick = () => $('pModal').classList.remove('show');
+$('pCancel').onclick = $('pBack').onclick = () => closePage('pModal');
 $('pSave').onclick = () => {
   settings.players = [...$('pRows').querySelectorAll('input')].map(i => i.value.trim()).filter(Boolean).slice(0, 11);
   const ch = PS.lang !== gameMode || PS.time !== settings.time || PS.rounds !== (+settings.rounds || 0);
   settings.time = PS.time; settings.rounds = PS.rounds;
   saveSettings(); resetPlayers(); if (current && P()){ turn = 0; } names.forEach(n => n.by = -1);
-  $('pModal').classList.remove('show');
+  closePage('pModal');
   if (PS.lang !== gameMode){ const b = document.querySelector(`#langs .lang[data-l="${PS.lang}"]`); if (b) b.click(); }
   else if (ch && PS.start) resetSession();
   renderList(); setPlaying(); try { renderGameSettings(); } catch(_){}
@@ -3955,7 +3961,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '180';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '181';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
