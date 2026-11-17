@@ -1965,6 +1965,11 @@
   .modal.pin-modal{z-index:9000}
   .rm-code .rc-pin b{display:inline;font-size:17px;letter-spacing:4px;margin:0}
   #crPin:placeholder-shown{letter-spacing:normal!important;font-weight:500!important;text-align:left!important}
+  /* Oda kur / Oyun ayarları: her başlık üstündeki kutudan eşit uzaklıkta */
+  #createPage .s-sec > .s-label,#pModal .s-sec > .s-label{margin-top:16px!important;margin-bottom:8px}
+  #createPage .s-sec > .s-label:first-child,#pModal .s-sec > .s-label:first-child{margin-top:0!important}
+  #crPinW[hidden]{display:none!important}
+  #crPinW{margin-top:10px!important}
 </style>
 </head>
 <body>
@@ -3979,7 +3984,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '184';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '185';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
