@@ -1972,6 +1972,7 @@
   /* ===== Gömülü klavye (v187) ===== */
   .kb-slot{display:none}
   body.playing .stage #offKbSlot,#roomPage.playing #ogKbSlot{display:block;flex:none}
+  #thGame #thKbSlot{display:block;flex:none} #thGame.nolet #thKbSlot,#thGame.nolet .th-form{display:none!important}
   .hkb{position:relative;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:3px 4px 5px;box-shadow:0 2px 10px rgba(0,0,0,.06);--kh:clamp(36px, 5.6dvh, 50px);transition:opacity .2s}
   .hkb.off{opacity:.42}
   .hkb.shk{animation:kbShk .28s ease}
@@ -2091,6 +2092,28 @@
 
   /* v194: isim satırında imleç görünür, seçim serbest */
   #input,#ogIn{-webkit-user-select:text!important;user-select:text!important;-webkit-touch-callout:default;caret-color:var(--accent);cursor:text}
+
+/* v195: Tek harfle devam et */
+.th-modes{display:flex;flex-direction:column;gap:12px;padding-top:8px}
+.th-mode{display:flex!important;align-items:center;gap:14px;text-align:left;justify-content:flex-start!important;padding:16px 18px!important;height:auto!important;white-space:normal}
+.th-mode .ico{font-size:28px}.th-mode b{display:block;font-size:17px}.th-mode small{display:block;font-weight:500;opacity:.7;font-size:13px;margin-top:2px}
+.th-how{background:var(--card,rgba(0,0,0,.04));border:1px solid var(--sep);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.45;margin-bottom:14px}
+.th-li{display:flex;gap:6px;margin-top:5px}.th-li span:first-child{font-weight:800;color:var(--accent);min-width:14px}
+.th-how.sm{font-size:12.5px;padding:9px 12px;margin:6px 0 0}.th-how[hidden]{display:none}
+.th-body{display:flex;flex-direction:column}.th-wrap{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding-bottom:6px}
+.th-info{display:flex;justify-content:space-between;font-weight:700;font-size:14px;opacity:.85}
+.th-wheel{position:relative;display:flex;justify-content:center}
+.th-wheel .wheel-wrap{width:min(56vw,230px);height:min(56vw,230px);position:relative}
+.th-wheel #thWheel{position:relative;width:100%;height:100%;transition:transform 4.6s cubic-bezier(.12,.7,.08,1)}
+.th-wheel .t-sec{position:absolute;right:0;top:0;font-weight:800;font-size:20px}
+.th-q{text-align:center;font-weight:700;font-size:18px;line-height:1.3;min-height:24px}
+.th-msg{text-align:center;font-size:13.5px;font-weight:600;min-height:18px}.th-msg.ok{color:var(--accent)}.th-msg.bad,.th-msg.warn{color:#c0392b}
+.th-spin{align-self:center;min-width:180px}.th-form[hidden],.th-spin[hidden]{display:none!important}
+.th-form input{width:100%}
+.th-end{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:20}.th-end[hidden]{display:none}
+.th-endb{background:var(--bg,#fff);border-radius:20px;padding:22px;text-align:center;width:min(86vw,340px);display:flex;flex-direction:column;align-items:center}
+.th-endb .big{font-size:44px}.th-endb b{font-size:20px}.th-score{font-size:36px;font-weight:800;color:var(--accent);margin:6px 0}
+.th-endb p{font-size:13.5px;opacity:.8}.th-endb .row{display:flex;gap:10px;margin-top:8px}.th-endb .row .btn{white-space:nowrap;padding-left:18px;padding-right:18px}
 </style>
 </head>
 <body>
@@ -3670,7 +3693,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '194';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '195';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -6567,7 +6590,7 @@ function showHome(){ sfxStop(); if (spinning){ clearTimeout(spinT); spinning = f
 setTimeout(() => { try { $('home').classList.remove('intro'); } catch(_){} }, 1400);   // giriş animasyonu yalnız ilk açılışta (sayfa değişince titreme olmasın)
 function hideHome(){ $('home').classList.add('hide'); try { setPlaying(); } catch(_){} try { alignProw(); setTimeout(alignProw, 500); } catch(_){} }
 function navTop(){
-  for (const id of ['chatPage','msgPage','adminPage','roomPage','createPage','friendsPage','unamePage','authPage','sheet','onlinePage']) if (isOpen(id)) return id;
+  for (const id of ['thGame','thSet','thMode','chatPage','msgPage','adminPage','roomPage','createPage','friendsPage','unamePage','authPage','sheet','onlinePage']) if (isOpen(id)) return id;
   return $('home').classList.contains('hide') ? 'game' : null;
 }
 let backArmed = false;
@@ -6759,14 +6782,16 @@ const KB_COMMON = new Set(('ahmet mehmet mustafa ali hüseyin hasan ibrahim isma
   + 'ayşe fatma emine hatice zeynep elif meryem şerife zehra sultan hanife merve özlem yasemin hülya esra leyla gül melek büşra kübra sevgi sevim songül tuğba ebru derya dilek canan gülsüm hacer havva nur nuray nurcan pınar seda selin sibel şeyma tülay yıldız zeliha aysel ayten aynur aslı aylin beyza buse cansu damla ece ela eda ezgi gamze gizem hande irem melis nazlı neslihan rabia sena serap sinem tuba yağmur asiye arzu bahar berna betül burcu cemile dilara duygu emel esma feride figen filiz gülay gülşen ilknur kader lale naciye necla nermin nesrin nilgün nihal reyhan safiye saliha semra serpil sevda sevil şükran türkan yeter zübeyde '
   + 'əli məhəmməd hüseyn həsən elçin elnur orxan rəşad tural vüqar ramil anar elvin nicat kamran fərid ruslan cavid murad rauf samir səbuhi tofiq vüsal yusif zaur əhməd ismayıl kərim namiq ilqar fuad nurlan xəyal vaqif rəhim sərxan günel nərmin aytən səbinə könül lalə xədicə fatimə zəhra ülviyyə sevinc nigar məryəm günay aygün şəbnəm zərifə gülnar nərgiz ilahə lamiyə aidə rəna şəhla vüsalə').split(' '));
 const KB = { el:null, lng:'', tr:null, geo:null, sw:null, rep:null, idx:{}, list:{}, fade:0 };
-const kbL = () => baseL(typeof lang !== 'undefined' ? lang : 'tr') === 'az' ? 'az' : 'tr';
+const thAct = () => typeof TH !== 'undefined' && TH.on && isOpen('thGame');
+const kbL = () => thAct() ? (TH.lang === 'az' ? 'az' : 'tr') : baseL(typeof lang !== 'undefined' ? lang : 'tr') === 'az' ? 'az' : 'tr';
 const kbLoc = () => kbL() === 'az' ? 'az' : 'tr';
-const kbInp = () => (typeof ONL !== 'undefined' && ONL && $('ogIn')) ? $('ogIn') : $('input');
+const kbInp = () => thAct() ? $('thIn') : (typeof ONL !== 'undefined' && ONL && $('ogIn')) ? $('ogIn') : $('input');
 const kbCapW = w => w ? w.charAt(0).toLocaleUpperCase(kbLoc()) + w.slice(1) : w;
 const kbFmt = v => v.toLocaleLowerCase(kbLoc()).replace(/\s+/g, ' ').replace(/^ /, '').split(' ').map(kbCapW).join(' ');
 const kbWords = v => v.trim() ? v.trim().split(/\s+/) : [];
 function kbOn(){
   const inp = kbInp(); if (!inp || inp.disabled) return false;
+  if (thAct()) return !!TH.ans;
   if (typeof ONL !== 'undefined' && ONL) return true;
   return document.body.classList.contains('playing') && !!current && !roundOver && !spinning;
 }
@@ -6779,12 +6804,12 @@ function kbBuild(){
 }
 function kbSync(){
   if (!KB.el) return;
-  const on = typeof ONL !== 'undefined' && ONL, slot = on ? $('ogKbSlot') : null, host = slot || $('offKbSlot');
+  const th = thAct(), on = typeof ONL !== 'undefined' && ONL, slot = th ? $('thKbSlot') : on ? $('ogKbSlot') : null, host = slot || $('offKbSlot');
   if (host && KB.el.parentNode !== host) host.appendChild(KB.el);
-  document.body.classList.toggle('has-kb', on ? !!slot : document.body.classList.contains('playing'));
+  document.body.classList.toggle('has-kb', th || (on ? !!slot : document.body.classList.contains('playing')));
   if (KB.lng !== kbL()) kbBuild();
   KB.el.classList.toggle('off', !kbOn());
-  ['input', 'ogIn'].forEach(id => { const x = $(id); if (x && x.getAttribute('inputmode') !== 'none'){ x.readOnly = false; x.setAttribute('inputmode', 'none'); x.setAttribute('autocomplete', 'off'); x.setAttribute('autocorrect', 'off'); x.setAttribute('autocapitalize', 'off'); x.setAttribute('spellcheck', 'false');
+  ['input', 'ogIn', 'thIn'].forEach(id => { const x = $(id); if (x && x.getAttribute('inputmode') !== 'none'){ x.readOnly = false; x.setAttribute('inputmode', 'none'); x.setAttribute('autocomplete', 'off'); x.setAttribute('autocorrect', 'off'); x.setAttribute('autocapitalize', 'off'); x.setAttribute('spellcheck', 'false');
     ['pointerdown', 'select', 'keydown'].forEach(ev => x.addEventListener(ev, () => { KB.sw = null; })); } });
 }
 /* ---- Yazma işlemleri ---- */
@@ -6809,7 +6834,7 @@ function kbSpace(){
   const inp = kbInp(); if (!inp) return; const v = inp.value, [a, b] = kbSel(inp);
   KB.sw = null;
   const nv = v.slice(0, a) + ' ' + v.slice(b);
-  if (!v.slice(0, a).trim() || / $/.test(v.slice(0, a)) || /^ /.test(v.slice(b)) || kbWords(nv).length > 2){ kbShake(); return; }   // en fazla 2 kelime, çift boşluk yok
+  if (!v.slice(0, a).trim() || / $/.test(v.slice(0, a)) || /^ /.test(v.slice(b)) || kbWords(nv).length > (thAct() ? 3 : 2)){ kbShake(); return; }   // en fazla 2 kelime, çift boşluk yok
   inp.value = nv; kbFocus(inp); try { inp.setSelectionRange(a + 1, a + 1); } catch(_){}
 }
 function kbBack(word){
@@ -7017,5 +7042,176 @@ kbInit(); setInterval(kbSync, 500);
   document.addEventListener('dragstart', e => { if (!editable(e.target)) e.preventDefault(); }, { capture:true });
 })();
 </script>
+<script>
+/* ===================== TEK HARFLE DEVAM ET (v195) — tek telefonda, internetsiz =====================
+   Çark bir harf seçer; bütün sorulara o harfle başlayan 1–3 kelimelik cevap yazılır. */
+const TH_Q = {
+  tr:["Adın ne?","Nerelisin?","Şu an neredesin?","Mesleğin ne?","Annenin adı ne?","Babanın adı ne?","En iyi arkadaşının adı ne?","Bir akrabanın adını söyle.","Kaç kardeşin var?",
+    "En sevdiğin yemek ne?","En sevdiğin meyve ne?","En sevdiğin hayvan ne?","En sevdiğin renk ne?","Doğum günü hediyesi olarak ne istersin?",
+    "Hangi şehirde yaşamak istersin?","Tatilde nereye gitmek istersin?","Hangi ülkeyi görmek istersin?","Doğduğun yer neresi?","Hangi dağı ya da gölü görmek istersin?",
+    "Kahvaltıda ne yedin?","Dün akşam ne yedin?","Sabah ilk ne yaparsın?","Çantanda ne var?","Mutfakta ne var?","Evinde en çok kullandığın eşya ne?",
+    "Sabah kaçta kalkarsın?","İşe ya da okula nasıl gidersin?","Hafta sonu ne yaparsın?","En son ne satın aldın?","En sevdiğin mevsim hangisi?",
+    "Telefonunda en çok hangi uygulamayı kullanırsın?","Akşam yemeğinde ne yemeyi seversin?","Boş zamanında ne yaparsın?","Gece kaçta uyursun?","Çayın yanında ne yersin?",
+    "En sevdiğin içecek ne?","Bir çiçek adı söyle.","Hangi sporu seversin?","En sevdiğin tatlı ne?","Bahçende ne yetiştirmek istersin?","Hangi aracı kullanmak istersin?",
+    "En sevdiğin şarkıcı kim?","Hangi müzik aletini çalmak istersin?"],
+  az:["Adın nədir?","Haralısan?","Hazırda haradasan?","Peşən nədir?","Ananın adı nədir?","Atanın adı nədir?","Ən yaxın dostunun adı nədir?","Bir qohumunun adını de.","Neçə bacı-qardaşın var?",
+    "Ən sevdiyin yemək nədir?","Ən sevdiyin meyvə nədir?","Ən sevdiyin heyvan hansıdır?","Ən sevdiyin rəng hansıdır?","Ad günü hədiyyəsi olaraq nə istərdin?",
+    "Hansı şəhərdə yaşamaq istərdin?","Tətildə hara getmək istərdin?","Hansı ölkəni görmək istərdin?","Doğulduğun yer haradır?","Hansı dağı və ya gölü görmək istərdin?",
+    "Səhər yeməyində nə yedin?","Dünən axşam nə yedin?","Səhər ilk nə edirsən?","Çantanda nə var?","Mətbəxdə nə var?","Evində ən çox istifadə etdiyin əşya nədir?",
+    "Səhər saat neçədə oyanırsan?","İşə və ya məktəbə necə gedirsən?","Həftəsonu nə edirsən?","Ən son nə almısan?","Ən sevdiyin fəsil hansıdır?",
+    "Telefonunda ən çox hansı tətbiqdən istifadə edirsən?","Axşam yeməyində nə yeməyi xoşlayırsan?","Boş vaxtında nə edirsən?","Gecə saat neçədə yatırsan?","Çayın yanında nə yeyirsən?",
+    "Ən sevdiyin içki nədir?","Bir gül adı de.","Hansı idman növünü sevirsən?","Ən sevdiyin şirniyyat nədir?","Bağçanda nə əkmək istərdin?","Hansı nəqliyyat vasitəsini sürmək istərdin?",
+    "Ən sevdiyin müğənni kimdir?","Hansı musiqi alətində çalmaq istərdin?"]
+};
+const THX = {
+  tr:{ modeT:'Tek telefonda oyna', m1:'Harf Çarkı', m1s:'Son harften isim zinciri, sırayla oyna', m2:'Tek harfle devam et', m2s:'Çark bir harf seçer, bütün sorulara o harfle cevap ver',
+    setT:'Tek harfle devam et', lang:'Dil', time:'Her soru için süre', cnt:'Kaç soru sorulsun?', all:'Sorular bitene kadar', start:'▶ Başla', title:'Aynı harfle devam et',
+    q:(a,b)=>`Soru ${a}/${b}`, pts:'Puan', spin:'🎡 Çarkı Çevir', spinHint:'Çarkı çevir. Çıkan harfle bütün sorulara cevap vereceksin.', ph:'Cevabını yaz…', sec:'sn',
+    max3:'En fazla 3 kelime yazabilirsin. Cevap kabul edilmedi (puan düşmedi).', warn:x=>`⚠️ Cevap ${x} harfiyle başlamalı! Bu ilk uyarı, bundan sonraki yanlışlarda puan düşecek.`, minus:x=>`❌ Cevap ${x} harfiyle başlamalı! −1 puan`,
+    ok:'✅ +1 puan', late:'⏰ Süre doldu, puan yok', endT:'Oyun bitti', endOk:'doğru', endBad:'yanlış harf', endLate:'süresi dolan', again:'Tekrar oyna', settings:'Ayarlar', close:'Kapat', letterIs:x=>`Harfin: ${x}`, howT:'Nasıl oynanır?',
+    how:['Çarkı çevir; çıkan harf bütün oyun boyunca senin harfin.','Her soruya bu harfle başlayan 1–3 kelimelik bir cevap yaz ve Gönder\'e bas.','Her doğru cevap +1 puan. Süre biterse puan yok, sonraki soruya geçilir.','Yanlış harfle başlarsan cevap kabul edilmez: ilk seferde sadece uyarı, sonraki her yanlışta −1 puan.','3 kelimeden uzun cevap kabul edilmez ama puan da düşmez.'] },
+  az:{ modeT:'Bir telefonda oyna', m1:'Harf Çarkı', m1s:'Son hərfdən ad zənciri, növbə ilə oyna', m2:'Bir hərflə davam et', m2s:'Çarx bir hərf seçir, bütün suallara o hərflə cavab ver',
+    setT:'Bir hərflə davam et', lang:'Dil', time:'Hər sual üçün vaxt', cnt:'Neçə sual verilsin?', all:'Suallar bitənədək', start:'▶ Başla', title:'Eyni hərflə davam et',
+    q:(a,b)=>`Sual ${a}/${b}`, pts:'Xal', spin:'🎡 Çarxı fırlat', spinHint:'Çarxı fırlat. Çıxan hərflə bütün suallara cavab verəcəksən.', ph:'Cavabını yaz…', sec:'san',
+    max3:'Ən çox 3 söz yaza bilərsən. Cavab qəbul olunmadı (xal düşmədi).', warn:x=>`⚠️ Cavab ${x} hərfi ilə başlamalıdır! Bu ilk xəbərdarlıqdır, sonrakı səhvlərdə xal düşəcək.`, minus:x=>`❌ Cavab ${x} hərfi ilə başlamalıdır! −1 xal`,
+    ok:'✅ +1 xal', late:'⏰ Vaxt bitdi, xal yoxdur', endT:'Oyun bitdi', endOk:'düzgün', endBad:'səhv hərf', endLate:'vaxtı bitən', again:'Yenidən oyna', settings:'Ayarlar', close:'Bağla', letterIs:x=>`Hərfin: ${x}`, howT:'Necə oynanılır?',
+    how:['Çarxı fırlat; çıxan hərf bütün oyun boyu sənin hərfindir.','Hər suala bu hərflə başlayan 1–3 sözlük cavab yaz və Göndər düyməsinə bas.','Hər düzgün cavab +1 xal. Vaxt bitsə xal yoxdur, növbəti suala keçilir.','Səhv hərflə başlasan cavab qəbul olunmur: ilk dəfə yalnız xəbərdarlıq, sonrakı hər səhvdə −1 xal.','3 sözdən uzun cavab qəbul olunmur, amma xal da düşmür.'] }
+};
+const thx = (k, ...a) => { const v = (THX[settings.ui] || THX.tr)[k]; return typeof v === 'function' ? v(...a) : v; };
+const thHow = () => `<b>📖 ${escH(thx('howT'))}</b>${thx('how').map((x, i) => `<div class="th-li"><span>${i + 1}.</span><span>${escH(x)}</span></div>`).join('')}`;
+var TH = { on:false, lang:'tr', time:30, count:15, letter:'', qs:[], i:0, score:0, wrong:0, ok:0, late:0, t0:0, raf:null, ans:false, rot:0, spinning:false };
+try { const s0 = JSON.parse(localStorage.getItem('iz-th') || '{}'); if (s0.lang) TH.lang = s0.lang; if ([20,30,40].includes(s0.time)) TH.time = s0.time; if ([15,30,40,0].includes(s0.count)) TH.count = s0.count; } catch(_){}
+const thSave = () => { try { localStorage.setItem('iz-th', JSON.stringify({ lang:TH.lang, time:TH.time, count:TH.count })); } catch(_){} };
+const BACK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
+function thBuild(){
+  if ($('thMode')) return;
+  document.body.insertAdjacentHTML('beforeend', `
+<div class="sheet page" id="thMode" aria-hidden="true"><aside class="panel">
+  <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" data-close="thMode" aria-label="Geri">${BACK_SVG}</button><h2 id="thModeT"></h2></div></div>
+  <div class="s-body"><div class="s-wrap narrow th-modes">
+    <button class="btn ghost big th-mode" id="thPick1"><span class="ico">🎡</span><span><b id="thM1"></b><small id="thM1s"></small></span></button>
+    <button class="btn ghost big th-mode" id="thPick2"><span class="ico">🔤</span><span><b id="thM2"></b><small id="thM2s"></small></span></button>
+  </div></div></aside></div>
+<div class="sheet page" id="thSet" aria-hidden="true"><aside class="panel">
+  <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" data-close="thSet" aria-label="Geri">${BACK_SVG}</button><h2 id="thSetT"></h2></div></div>
+  <div class="s-body"><div class="s-wrap narrow"><section class="s-sec">
+    <div class="th-how" id="thHowS"></div>
+    <div class="s-label" id="thLangL"></div><div class="seg" id="thLang"><button data-v="tr">Türkçe</button><button data-v="az">Azərbaycan</button></div>
+    <div class="s-label" id="thTimeL"></div><div class="seg" id="thTime"><button data-v="20">20</button><button data-v="30">30</button><button data-v="40">40</button></div>
+    <div class="s-label" id="thCntL"></div><div class="seg" id="thCnt"><button data-v="15">15</button><button data-v="30">30</button><button data-v="40">40</button><button data-v="0" id="thAll"></button></div>
+    <button class="btn mic" id="thGo" style="width:100%;margin-top:18px"></button>
+  </section></div></div></aside></div>
+<div class="sheet page" id="thGame" aria-hidden="true"><aside class="panel">
+  <div class="s-head"><div class="s-wrap s-headin"><button class="icon-btn" id="thBack" aria-label="Geri">${BACK_SVG}</button><h2 id="thTitle"></h2></div></div>
+  <div class="s-body th-body"><div class="s-wrap narrow th-wrap">
+    <div class="th-info"><span id="thQn"></span><span id="thPts"></span></div>
+    <div class="th-wheel"><div class="t-sec" id="thSec"></div><div class="wheel-wrap">
+      <div class="pointer"><svg viewBox="0 0 40 52"><path d="M20 51 C14 38 3 30 3 18 A17 17 0 0 1 37 18 C37 30 26 38 20 51Z" fill="#1c1b19"/><circle cx="20" cy="18" r="6.5" fill="#e8b630"/></svg></div>
+      <svg id="thWheel" viewBox="0 0 300 300"></svg>
+      <svg class="t-ring" id="thRing" viewBox="0 0 109 109" aria-hidden="true"><circle class="trk" cx="54.5" cy="54.5" r="52.2"/><circle class="bar" cx="54.5" cy="54.5" r="52.2" pathLength="100"/></svg>
+      <div class="hub" id="thHub">?</div></div></div>
+    <div class="th-q" id="thQ"></div>
+    <div class="th-msg" id="thMsg"></div>
+    <button class="btn mic th-spin" id="thSpin"></button>
+    <div class="th-how sm" id="thHowG"></div>
+    <form class="og-type th-form" id="thForm" autocomplete="off"><input id="thIn" autocomplete="off" dir="auto"></form>
+    <div id="thKbSlot" class="kb-slot th-kbs"></div>
+  </div></div>
+  <div class="th-end" id="thEnd" hidden><div class="th-endb"><div class="big">🏆</div><b id="thEndT"></b><div class="th-score" id="thEndP"></div><p id="thEndS"></p>
+    <div class="row"><button class="btn ghost" id="thEndSet"></button><button class="btn spin" id="thEndAgain"></button></div><button class="linkbtn" id="thEndX" style="margin-top:10px"></button></div></div>
+</aside></div>`);
+  ['thMode', 'thSet'].forEach(id => $(id).querySelector('[data-close]').onclick = () => closePage(id));
+  $('thPick1').onclick = () => { closePage('thMode'); hideHome(); armBack(); if (!current || roundOver) openPlayers(true); };
+  $('thPick2').onclick = () => { closePage('thMode'); thOpenSet(); };
+  $('thLang').onclick = e => { const b = e.target.closest('button'); if (b){ TH.lang = b.dataset.v; segSet('thLang', TH.lang); } };
+  $('thTime').onclick = e => { const b = e.target.closest('button'); if (b){ TH.time = +b.dataset.v; segSet('thTime', String(TH.time)); } };
+  $('thCnt').onclick = e => { const b = e.target.closest('button'); if (b){ TH.count = +b.dataset.v; segSet('thCnt', String(TH.count)); } };
+  $('thGo').onclick = () => { thSave(); closePage('thSet'); thStart(); };
+  $('thSpin').onclick = thSpin;
+  $('thBack').onclick = () => closePage('thGame');
+  $('thForm').onsubmit = e => { e.preventDefault(); thAnswer(); };
+  $('thEndAgain').onclick = () => { $('thEnd').hidden = true; thStart(); };
+  $('thEndSet').onclick = () => { $('thEnd').hidden = true; closePage('thGame'); thOpenSet(); };
+  $('thEndX').onclick = () => { $('thEnd').hidden = true; closePage('thGame'); };
+}
+function thTexts(){
+  $('thModeT').textContent = thx('modeT'); $('thM1').textContent = thx('m1'); $('thM1s').textContent = thx('m1s'); $('thM2').textContent = thx('m2'); $('thM2s').textContent = thx('m2s');
+  $('thSetT').textContent = thx('setT'); $('thLangL').textContent = thx('lang'); $('thTimeL').textContent = thx('time'); $('thCntL').textContent = thx('cnt'); $('thAll').textContent = thx('all'); $('thGo').textContent = thx('start');
+  $('thTitle').textContent = thx('title'); $('thSpin').textContent = thx('spin'); $('thIn').placeholder = thx('ph');
+  $('thHowS').innerHTML = thHow(); $('thHowG').innerHTML = thHow();
+  $('thEndT').textContent = thx('endT'); $('thEndAgain').textContent = thx('again'); $('thEndSet').textContent = thx('settings'); $('thEndX').textContent = thx('close');
+}
+function thOpenMode(){ thBuild(); thTexts(); openPage('thMode'); }
+function thOpenSet(){ thBuild(); thTexts(); segSet('thLang', TH.lang); segSet('thTime', String(TH.time)); segSet('thCnt', String(TH.count)); openPage('thSet'); }
+/* ---- Çark ---- */
+function thLetters(){ const l = TH.lang, ex = new Set(exclOf(l)); return LANGS[l].letters.filter(ch => ch !== 'Ğ' && !ex.has(ch)); }
+function thDraw(){
+  const L = thLetters(), n = L.length, seg = 360 / n, cx = 150, cy = 150, r = 146, pt = (a, rad) => { const t = a * Math.PI / 180; return [cx + rad * Math.sin(t), cy - rad * Math.cos(t)]; };
+  let s = '';
+  L.forEach((ch, i) => { const a0 = i * seg, a1 = (i + 1) * seg, [x0, y0] = pt(a0, r), [x1, y1] = pt(a1, r), on = !TH.letter || ch === TH.letter;
+    s += `<path d="M${cx},${cy} L${x0},${y0} A${r},${r} 0 0,1 ${x1},${y1} Z" fill="${!on ? 'var(--used)' : i % 2 ? 'var(--seg-b)' : 'var(--seg-a)'}" style="stroke:var(--sep)" stroke-width="1.2"/>`;
+    const mid = a0 + seg / 2, [tx, ty] = pt(mid, r * .83);
+    s += `<text x="${tx}" y="${ty}" transform="rotate(${mid} ${tx} ${ty})" text-anchor="middle" dominant-baseline="central" font-size="19" font-weight="800" fill="${on ? '#fff' : '#a9a49a'}" font-family="Inter,sans-serif">${ch}</text>`; });
+  s += `<circle cx="150" cy="150" r="146" fill="none" style="stroke:var(--sep)" stroke-width="2.5"/>`;
+  $('thWheel').innerHTML = s;
+}
+/* ---- Oyun ---- */
+function thShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function thInfo(){ $('thQn').textContent = TH.letter ? thx('q', Math.min(TH.i + 1, TH.qs.length), TH.qs.length) : ''; $('thPts').textContent = thx('pts') + ': ' + TH.score; }
+function thMsg(t, k){ const m = $('thMsg'); m.textContent = t || ''; m.className = 'th-msg' + (k ? ' ' + k : ''); clearTimeout(thMsg.t); if (t && k !== 'warn') thMsg.t = setTimeout(() => { if (m.textContent === t) m.textContent = ''; }, 2600); }
+function thStart(){
+  thBuild(); thTexts(); thStopTimer();
+  const all = TH_Q[TH.lang] || TH_Q.tr;
+  Object.assign(TH, { on:true, letter:'', qs:thShuffle(all).slice(0, TH.count || all.length), i:0, score:0, wrong:0, ok:0, late:0, ans:false, spinning:false });
+  thDraw(); $('thGame').classList.add('nolet'); $('thHub').textContent = '?'; $('thSpin').hidden = false; $('thSpin').disabled = false; $('thForm').hidden = true; $('thIn').value = '';
+  $('thQ').textContent = ''; $('thHowG').hidden = false; thMsg(''); $('thEnd').hidden = true; setSec($('thSec'), TH.time * 1000, TH.time * 1000); setRing($('thRing'), 1, false); $('thRing').classList.remove('on');
+  thInfo(); if (!isOpen('thGame')) openPage('thGame'); kbSync();
+}
+function thSpin(){
+  if (TH.spinning || TH.letter) return; TH.spinning = true; $('thSpin').disabled = true; $('thHowG').hidden = true; ensureAudio();
+  const L = thLetters(), seg = 360 / L.length, i = Math.floor(Math.random() * L.length), pick = L[i];
+  const center = i * seg + seg / 2 + (Math.random() - .5) * seg * .5; let target = TH.rot - (TH.rot % 360) + 360 * 6 + (360 - center); if (target - TH.rot < 360 * 5) target += 360; TH.rot = target;
+  $('thWheel').style.transform = `rotate(${target}deg)`; $('thHub').textContent = '…'; spinTicks($('thWheel'), L.length, 4600);
+  setTimeout(() => { if (!TH.on) return; sfx('land'); TH.spinning = false; TH.letter = pick; $('thGame').classList.remove('nolet'); $('thHub').textContent = pick; thDraw(); $('thSpin').hidden = true;
+    thMsg(thx('letterIs', pick), 'ok'); setTimeout(thNext, 900); }, 4700);
+}
+function thNext(){
+  if (!TH.on) return; thStopTimer();
+  if (TH.i >= TH.qs.length){ thEnd(); return; }
+  TH.ans = true; $('thQ').textContent = TH.qs[TH.i]; $('thForm').hidden = false; $('thIn').value = ''; KB.sw = null; thInfo(); kbSync();
+  TH.t0 = performance.now(); TH.last = null; $('thRing').classList.add('on'); TH.raf = requestAnimationFrame(thTick);
+}
+function thTick(now){
+  if (!TH.on || !TH.ans) return; const lim = TH.time * 1000, rem = lim - (now - TH.t0);
+  setRing($('thRing'), Math.max(0, rem / lim), rem <= 5000); setSec($('thSec'), rem, lim);
+  const s = Math.ceil(rem / 1000); if (rem <= 5000 && rem > 0 && s !== TH.last){ TH.last = s; beep(s === 1 ? 660 : 880, .08); if (navigator.vibrate) try { navigator.vibrate(30); } catch(_){} }
+  if (rem <= 0){ TH.ans = false; TH.late++; TH.i++; sfx('out'); thMsg(thx('late'), 'bad'); kbSync(); setTimeout(thNext, 1100); return; }
+  TH.raf = requestAnimationFrame(thTick);
+}
+function thStopTimer(){ if (TH.raf) cancelAnimationFrame(TH.raf); TH.raf = null; }
+function thAnswer(){
+  if (!TH.on || !TH.ans) return;
+  const loc = TH.lang === 'az' ? 'az' : 'tr', txt = $('thIn').value.trim(); if (!txt) return;
+  const words = txt.split(/\s+/).filter(Boolean);
+  if (words.length > 3){ thMsg(thx('max3'), 'warn'); sfx('bad'); kbShake(); return; }                     // 3'ten fazla kelime: kabul yok, ceza yok
+  if (words[0].charAt(0).toLocaleUpperCase(loc) !== TH.letter){
+    TH.wrong++; sfx('bad'); kbShake(); if (navigator.vibrate) try { navigator.vibrate([80, 60, 80]); } catch(_){}
+    if (TH.wrong === 1) thMsg(thx('warn', TH.letter), 'warn'); else { TH.score = Math.max(0, TH.score - 1); thMsg(thx('minus', TH.letter), 'bad'); thInfo(); }
+    return;
+  }
+  TH.ans = false; thStopTimer(); TH.score++; TH.ok++; TH.i++; sfx('ok'); thMsg(thx('ok'), 'ok'); thInfo(); kbSync(); setTimeout(thNext, 450);
+}
+function thEnd(){
+  TH.ans = false; thStopTimer(); $('thRing').classList.remove('on'); kbSync();
+  $('thEndP').textContent = TH.score + ' ' + thx('pts').toLocaleLowerCase(settings.ui === 'az' ? 'az' : 'tr');
+  $('thEndS').innerHTML = `${escH(TH.letter)} · ✅ ${TH.ok} ${thx('endOk')} · ❌ ${TH.wrong} ${thx('endBad')} · ⏰ ${TH.late} ${thx('endLate')}`;
+  $('thEnd').hidden = false; sfx('win');
+}
+function thStop(){ TH.on = false; TH.ans = false; TH.spinning = false; thStopTimer(); try { kbSync(); } catch(_){} }
+/* "Aynı telefonda oyna" artık önce mod seçtirir; oyun sayfası kapanınca mod durur */
+$('goLocal').onclick = () => thOpenMode();
+{ const _cp = closePage; closePage = function(id){ if (id === 'thGame') thStop(); return _cp.apply(this, arguments); }; }
+</script>
+
 </body>
 </html>
