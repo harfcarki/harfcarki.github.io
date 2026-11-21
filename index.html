@@ -1991,8 +1991,7 @@
   .hkb-k.sp{flex:4 1 0} .hkb-k.en{flex:1.7 1 0;background:var(--grad);color:#fff;font-size:15px;font-weight:800;box-shadow:0 3px 10px rgba(47,111,94,.3)}
   .hkb-tr{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;transition:opacity .25s}
   .hkb-tr.fd{opacity:0}
-  body.playing.has-kb .off-acts input,#roomPage.playing #ogIn{caret-color:transparent;cursor:default}
-  body.playing.has-kb .off-acts form.og-type .abtn,body.has-kb #ogActs .og-row .og-type .abtn{display:none}
+    body.playing.has-kb .off-acts form.og-type .abtn,body.has-kb #ogActs .og-row .og-type .abtn{display:none}
   /* Klavye açıkken: çark küçülür ama harfler okunur kalsın (harfler büyütülür) */
   body.has-kb #wheel text,body.has-kb #ogWheel text{font-size:19px!important}
   @media (max-width:599px){
@@ -2087,9 +2086,11 @@
   *{-webkit-touch-callout:none}
   img,svg,a{-webkit-user-drag:none;user-drag:none}
   input:not([readonly]),textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
-  #input,#ogIn{-webkit-user-select:none;user-select:none}
   ::selection{background:transparent}
   input:not([readonly])::selection,textarea::selection{background:color-mix(in srgb, var(--accent) 35%, transparent)}
+
+  /* v194: isim satırında imleç görünür, seçim serbest */
+  #input,#ogIn{-webkit-user-select:text!important;user-select:text!important;-webkit-touch-callout:default;caret-color:var(--accent);cursor:text}
 </style>
 </head>
 <body>
@@ -3669,7 +3670,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '193';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '194';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -6783,26 +6784,43 @@ function kbSync(){
   document.body.classList.toggle('has-kb', on ? !!slot : document.body.classList.contains('playing'));
   if (KB.lng !== kbL()) kbBuild();
   KB.el.classList.toggle('off', !kbOn());
-  ['input', 'ogIn'].forEach(id => { const x = $(id); if (x && !x.readOnly){ x.readOnly = true; x.setAttribute('inputmode', 'none'); x.setAttribute('autocomplete', 'off'); } });
+  ['input', 'ogIn'].forEach(id => { const x = $(id); if (x && x.getAttribute('inputmode') !== 'none'){ x.readOnly = false; x.setAttribute('inputmode', 'none'); x.setAttribute('autocomplete', 'off'); x.setAttribute('autocorrect', 'off'); x.setAttribute('autocapitalize', 'off'); x.setAttribute('spellcheck', 'false');
+    ['pointerdown', 'select', 'keydown'].forEach(ev => x.addEventListener(ev, () => { KB.sw = null; })); } });
 }
 /* ---- Yazma işlemleri ---- */
-function kbSet(v){ const inp = kbInp(); if (!inp) return; inp.value = kbFmt(v); inp.scrollLeft = inp.scrollWidth; }
+/* v194: imleç serbest — yazı satırında imleç görünür, istenen harfe dokunup imleci oraya taşıyabilir, seçebilirsin.
+   Klavye her harfi imlecin olduğu yere yazar; seçili yazı varsa onun yerine yazar. Telefonun kendi klavyesi yine açılmaz (inputmode=none). */
+function kbSel(inp){ const n = inp.value.length; let a = inp.selectionStart, b = inp.selectionEnd; if (a == null){ a = b = n; } return [Math.min(a, n), Math.min(b, n)]; }
+function kbFocus(inp){ if (document.activeElement !== inp) try { inp.focus({ preventScroll:true }); } catch(_){ inp.focus(); } }
+function kbPut(inp, v, caret){
+  const f = kbFmt(v), keepSp = / $/.test(v) && v.trim() ? ' ' : '';
+  // biçimlendirme (büyük harf, fazla boşluk) imleci kaydırmasın: imleçten önceki kısmı ayrıca biçimlendirip yerini bul
+  const pre = v.slice(0, caret), preF = kbFmt(pre) + (/ $/.test(pre) && pre.trim() ? ' ' : '');
+  inp.value = f + (f.endsWith(' ') ? '' : keepSp);
+  const c = Math.min(inp.value.length, preF.length); kbFocus(inp);
+  try { inp.setSelectionRange(c, c); } catch(_){}
+}
+function kbSet(v){ const inp = kbInp(); if (!inp) return; kbPut(inp, v, v.length); }
 function kbType(ch){
-  const inp = kbInp(); if (!inp) return; let v = inp.value;
-  KB.sw = null; kbSet(v + ch);
+  const inp = kbInp(); if (!inp) return; const v = inp.value, [a, b] = kbSel(inp);
+  KB.sw = null; kbPut(inp, v.slice(0, a) + ch + v.slice(b), a + ch.length);
 }
 function kbSpace(){
-  const inp = kbInp(); if (!inp) return; const v = inp.value;
+  const inp = kbInp(); if (!inp) return; const v = inp.value, [a, b] = kbSel(inp);
   KB.sw = null;
-  if (!v.trim() || / $/.test(v) || kbWords(v).length >= 2){ kbShake(); return; }   // en fazla 2 kelime, çift boşluk yok
-  inp.value = v + ' '; kbSug([]);
+  const nv = v.slice(0, a) + ' ' + v.slice(b);
+  if (!v.slice(0, a).trim() || / $/.test(v.slice(0, a)) || /^ /.test(v.slice(b)) || kbWords(nv).length > 2){ kbShake(); return; }   // en fazla 2 kelime, çift boşluk yok
+  inp.value = nv; kbFocus(inp); try { inp.setSelectionRange(a + 1, a + 1); } catch(_){}
 }
 function kbBack(word){
-  const inp = kbInp(); if (!inp) return; let v = inp.value; if (!v) return;
-  if (KB.sw && !word){ v = KB.sw.base; KB.sw = null; inp.value = v; return; }   // kaydırıp yazılan isim tek dokunuşla silinir
+  const inp = kbInp(); if (!inp) return; const v = inp.value; if (!v) return;
+  const [a, b] = kbSel(inp);
+  if (KB.sw && !word && a === v.length && b === a){ const base = KB.sw.base; KB.sw = null; kbPut(inp, base, base.length); return; }   // az önce kaydırılan isim tek dokunuşla silinir
   KB.sw = null;
-  v = word ? v.replace(/\s*\S*\s*$/, '') : v.slice(0, -1);
-  inp.value = kbFmt(v) + (/ $/.test(v) && v.trim() ? ' ' : '');
+  if (a !== b){ kbPut(inp, v.slice(0, a) + v.slice(b), a); return; }   // seçili kısmı sil
+  if (!a) return;
+  const cut = word ? v.slice(0, a).replace(/\s*\S*\s*$/, '').length : a - 1;
+  kbPut(inp, v.slice(0, cut) + v.slice(a), cut);
 }
 function kbEnter(){
   const inp = kbInp(); if (!inp || !inp.value.trim()){ kbShake(); return; }
@@ -6812,7 +6830,11 @@ function kbEnter(){
 function kbShake(){ KB.el.classList.remove('shk'); void KB.el.offsetWidth; KB.el.classList.add('shk'); }
 /* Kaydırılan kelimeyi yerleştir: ilk isimden sonra boşluk kendiliğinden gelir, 2. isim varsa değiştirilir */
 function kbPutWord(w){
-  const inp = kbInp(); if (!inp) return; const v = inp.value, ws = kbWords(v);
+  const inp = kbInp(); if (!inp) return ''; const v = inp.value, ws = kbWords(v), [a, b] = kbSel(inp);
+  if (!(KB.sw && KB.sw.base != null) && (a < v.length || b < v.length)){   // imleç ortadaysa ismi imlecin yerine koy
+    const L = v.slice(0, a), Rr = v.slice(b), sp1 = L && !/ $/.test(L) ? ' ' : '', sp2 = Rr && !/^ /.test(Rr) ? ' ' : '';
+    kbPut(inp, L + sp1 + w + sp2 + Rr, (L + sp1 + w).length); return null;
+  }
   let base;
   if (KB.sw && KB.sw.base != null) base = KB.sw.base;
   else if (!ws.length) base = '';
@@ -6937,7 +6959,7 @@ function kbFinish(tr){
   kbFadeTrail();
   const out = kbDecode(tr.pts);
   if (!out.length){ kbShake(); return; }
-  const base = kbPutWord(out[0]); KB.sw = { base, w:out[0] };
+  const base = kbPutWord(out[0]); KB.sw = base == null ? null : { base, w:out[0] };
 }
 function kbInit(){
   if (KB.el) return;

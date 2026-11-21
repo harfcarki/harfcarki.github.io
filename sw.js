@@ -1,5 +1,5 @@
 // İsim Zinciri: önce internetten yeni sürümü al, internet yoksa kayıtlı sürümü aç
-const C = 'isim-zinciri-v193', WPC = 'iz-duvar-v1';
+const C = 'isim-zinciri-v194', WPC = 'iz-duvar-v1';
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './manifest.json', './logo2-192.png', './logo2-512.png', './logo2-maskable.png', './logo2-apple.png'].map(u => new Request(u, { cache:'reload' }))))); });
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', e => {
