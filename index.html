@@ -3262,8 +3262,8 @@ function renderList(){
 
 /* ---------- Süre: 3 sn tolerans + 10 sn, son 5 sn geri sayım ---------- */
 const GRACE = 3000, MIN_T = 5;
-/* Süre giderek kısalır: turda her doğru isimden sonra 1 sn eksilir (en az 5 sn) — turlar sonsuza kadar uzamasın */
-const shrunk = (base, ok) => Math.max(Math.min(MIN_T, base), base - ok);
+/* Süre giderek kısalır: turda her 2 doğru isimde 1 sn eksilir (en az 5 sn) — turlar sonsuza kadar uzamasın */
+const shrunk = (base, ok) => Math.max(Math.min(MIN_T, base), base - Math.floor(ok / 2));   // v191: yarı hız (her 2 doğru isimde 1 sn)
 const LIMIT_MS = () => shrunk(settings.time || 15, names.filter(n => !n.wrong && !n.unk && !n.rep).length) * 1000;
 let tStart = 0, tRaf = null, tLastSec = null;
 function hideCount(){ $('count').classList.remove('show'); $('count').innerHTML = ''; }
@@ -3666,7 +3666,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '190';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '191';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -4019,7 +4019,7 @@ const OTX = {
     outTime:x=>`⏱ @${x} süresi doldu, elendi`, outLeft:x=>`🚫 @${x} uygulamadan çıktı, elendi`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitti', pts:'puan', ogAgain:'Tekrar oyna', ogWaitAgain:x=>`@${x} yeni oyun başlatabilir`, ogShare:'Sonucu paylaş',
     leftT1:'Bu turdan elendin', leftP1:n=>`Oyun sırasında uygulamadan çıktığın için bu turdan elendin (${n}/3). 3. kez çıkarsan odadan atılırsın.`,
     fbTitle:'Bize bildir', fbNote:'Bir hata mı buldun, bir önerin mi var? Yaz, istersen ekran görüntüsü ekle.', fbPh:'Mesajını yaz…', fbImg:'Fotoğraf ekle', fbSend:'Gönder', fbMax:'En fazla 2 fotoğraf eklenebilir', fbImgErr:'Fotoğraf açılamadı', fbEmpty:'Bir mesaj yaz ya da fotoğraf ekle', fbLogin:'Göndermek için giriş yap', fbWait:'Biraz bekle, az önce gönderdin', fbThanks:'Teşekkürler! Mesajın bize ulaştı 🙏',
-    leftT:'Odadan atıldın', leftP:'Oyun sırasında 3 kez uygulamadan çıktığın için odadan çıkarıldın.', rule:'⚠️ Oyun sırasında uygulamadan çıkan, başka uygulamaya ya da sekmeye geçen oyuncu o turdan hemen elenir. Aynı oyunda 3 kez çıkan odadan atılır.<br>⏱ Her doğru cevaptan sonra cevap süresi 1 saniye kısalır (en az 5 sn).<br>⚡ Sıran gelince ilk 3 saniyede doğru cevap verene +1 ekstra puan.', leaveWarn:'Oyundan çıkarsan odadan atılırsın. Çıkmak için tekrar bas.',
+    leftT:'Odadan atıldın', leftP:'Oyun sırasında 3 kez uygulamadan çıktığın için odadan çıkarıldın.', rule:'⚠️ Oyun sırasında uygulamadan çıkan, başka uygulamaya ya da sekmeye geçen oyuncu o turdan hemen elenir. Aynı oyunda 3 kez çıkan odadan atılır.<br>⏱ Her 2 doğru cevapta cevap süresi 1 saniye kısalır (en az 5 sn).<br>⚡ Sıran gelince ilk 3 saniyede doğru cevap verene +1 ekstra puan.', leaveWarn:'Oyundan çıkarsan odadan atılırsın. Çıkmak için tekrar bas.',
     frTitle:'Arkadaşlar', frAdd:'Arkadaş ekle', frQph:'Kullanıcı adı yaz…', frSearch:'Ara', frIn:'Gelen istekler', frList:'Arkadaşlarım',
     frCount:n=>`${n} arkadaş`, frNone:'Henüz arkadaş yok', frWants:'Seni arkadaş olarak eklemek istiyor', frAccept:'Kabul et', frRemove:'Çıkar', frEmpty:'Henüz arkadaşın yok. Yukarıdan kullanıcı adıyla arayıp ekleyebilirsin.',
     frAlready:'Arkadaşın', frSent:'İstek gönderildi', frAddBtn:'Ekle', frNoUser:'Kullanıcı bulunamadı', frShort:'En az 2 harf yaz', frSentT:x=>`@${x} kişisine istek gönderildi`, frNow:x=>`@${x} artık arkadaşın`, sure:'Emin misin?',
@@ -4038,7 +4038,7 @@ const OTX = {
     outTime:x=>`⏱ @${x} vaxtı bitdi, çıxdı`, outLeft:x=>`🚫 @${x} tətbiqdən çıxdı, raunddan çıxarıldı`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitdi', pts:'xal', ogAgain:'Yenidən oyna', ogWaitAgain:x=>`@${x} yeni oyun başlada bilər`, ogShare:'Nəticəni paylaş',
     leftT1:'Bu raunddan çıxdın', leftP1:n=>`Oyun zamanı tətbiqdən çıxdığın üçün bu raunddan çıxarıldın (${n}/3). 3-cü dəfə çıxsan otaqdan çıxarılacaqsan.`,
     fbTitle:'Bizə yaz', fbNote:'Xəta tapdın, təklifin var? Yaz, istəsən ekran şəkli əlavə et.', fbPh:'Mesajını yaz…', fbImg:'Şəkil əlavə et', fbSend:'Göndər', fbMax:'Ən çox 2 şəkil əlavə etmək olar', fbImgErr:'Şəkil açılmadı', fbEmpty:'Mesaj yaz və ya şəkil əlavə et', fbLogin:'Göndərmək üçün daxil ol', fbWait:'Bir az gözlə, az öncə göndərdin', fbThanks:'Təşəkkürlər! Mesajın bizə çatdı 🙏',
-    leftT:'Otaqdan çıxarıldın', leftP:'Oyun zamanı 3 dəfə tətbiqdən çıxdığın üçün otaqdan çıxarıldın.', rule:'⚠️ Oyun zamanı tətbiqdən çıxan, başqa tətbiqə və ya sekməyə keçən oyunçu həmin raunddan dərhal çıxarılır. Eyni oyunda 3 dəfə çıxan otaqdan çıxarılır.<br>⏱ Hər düzgün cavabdan sonra cavab vaxtı 1 saniyə qısalır (ən az 5 san).<br>⚡ Növbən gələndə ilk 3 saniyədə düzgün cavab verənə +1 əlavə xal.', leaveWarn:'Oyundan çıxsan otaqdan çıxarılacaqsan. Çıxmaq üçün yenidən bas.',
+    leftT:'Otaqdan çıxarıldın', leftP:'Oyun zamanı 3 dəfə tətbiqdən çıxdığın üçün otaqdan çıxarıldın.', rule:'⚠️ Oyun zamanı tətbiqdən çıxan, başqa tətbiqə və ya sekməyə keçən oyunçu həmin raunddan dərhal çıxarılır. Eyni oyunda 3 dəfə çıxan otaqdan çıxarılır.<br>⏱ Hər 2 düzgün cavabda cavab vaxtı 1 saniyə qısalır (ən az 5 san).<br>⚡ Növbən gələndə ilk 3 saniyədə düzgün cavab verənə +1 əlavə xal.', leaveWarn:'Oyundan çıxsan otaqdan çıxarılacaqsan. Çıxmaq üçün yenidən bas.',
     frTitle:'Dostlar', frAdd:'Dost əlavə et', frQph:'İstifadəçi adını yaz…', frSearch:'Axtar', frIn:'Gələn istəklər', frList:'Dostlarım',
     frCount:n=>`${n} dost`, frNone:'Hələ dost yoxdur', frWants:'Səni dost kimi əlavə etmək istəyir', frAccept:'Qəbul et', frRemove:'Sil', frEmpty:'Hələ dostun yoxdur. Yuxarıda istifadəçi adı ilə axtarıb əlavə edə bilərsən.',
     frAlready:'Dostundur', frSent:'İstək göndərildi', frAddBtn:'Əlavə et', frNoUser:'İstifadəçi tapılmadı', frShort:'Ən azı 2 hərf yaz', frSentT:x=>`@${x} istifadəçisinə istək göndərildi`, frNow:x=>`@${x} artıq dostundur`, sure:'Əminsən?',
