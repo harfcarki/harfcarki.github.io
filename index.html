@@ -2636,7 +2636,7 @@ function correct(k){
   return fuzzy(k) || k;
 }
 const isKnown = k => k.includes(' ') ? k.split(' ').every(isKnown1) : isKnown1(k);
-const isKnown1 = k => !NAMESET[lang] || NAMESET[lang].has(k) || FOLDSET[lang].has(fold(k));
+const isKnown1 = k => !NAMESET[lang] || NAMESET[lang].has(k);   // v193: listede birebir olmalı (yakın yazılış kabul/düzeltme yok)
 
 /* "Eee", "hmm", "şey" gibi isim olmayan sesler */
 const FILLER = new Set(('şey yani işte hani bir iki üç ve bu şu da de mi mı mu mü evet hayır tamam dur bekle sonra sen ben sıra sende bende sırada '+
@@ -3160,13 +3160,10 @@ function pickName(words){
   return best ? best.w : null;
 }
 function addPhrase(text){
-  const words = text.replace(/['’`][a-zçğıöşüə]+/gi,'').replace(/[.,!?"“”…:;()\-]/g,' ').split(/\s+/).filter(Boolean)
-    .filter(w => !isFiller(keyOf(w)));
+  // v193: klavyeyle yazılan isim olduğu gibi alınır (düzeltme yok), en fazla 2 kelime
+  const words = String(text).replace(/[.,!?"“”…:;()\-]/g, ' ').split(/\s+/).filter(Boolean).slice(0, 2);
   if (!words.length) return;
-  const chosen = (pickName(words) || (words.length <= 2 ? words : null) || []).slice(0, 2);
-  if (!chosen.length) chosen.length = 0;
-  if (!chosen.length){ $('interim').textContent = t('unclear') + words.slice(0, 6).join(' '); return; }
-  addName(chosen);
+  addName(words);
 }
 /* Yanlış duyulan ismi düzelt: SADECE listede olmayan kelimelerde, SADECE beklenen harfle başlayan isimler arasında.
    Sesçe yakın harfler eşitlenir (d/t, b/p, g/k, o/u, ə/a/e, ı/i…), sonra en fazla 1-2 harf farkına bakılır.
@@ -3189,10 +3186,7 @@ function addName(words){
   const loc = LANGS[lang].locale;
   const heardText = words.join(' ');
   let k;
-  const joined = correct(keyOf(words.join('')));             // "Adı gözel" → adıgözəl, "Abdul lah" → abdullah
-  if (words.length > 1 && NAMESET[lang] && NAMESET[lang].has(joined)) k = joined;
-  else k = words.map(w => correct(keyOf(w))).join(' ');      // çift isim: "Mustafa Kemal"
-  if (!k.includes(' ') && !isKnown(k)){ const nf = nearFix(k, expectedLetter()); if (nf) k = nf; }
+  k = words.map(w => keyOf(w)).join(' ');                    // v193: düzeltme yok, ne yazıldıysa o
   const pretty = k.split(' ').map(p => p.charAt(0).toLocaleUpperCase(loc) + p.slice(1)).join(' ');
   const heard = keyOf(heardText) !== k ? heardText : null;
   if (ONL){ onlineSay(k, pretty); return; }
@@ -3675,7 +3669,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '192';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '193';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -6778,8 +6772,7 @@ function kbOn(){
 function kbBuild(){
   const L = kbL(), R = KB_ROWS[L], k = c => `<div class="hkb-k" data-k="${c}">${c.toLocaleUpperCase(L)}</div>`;
   KB.lng = L;
-  KB.el.innerHTML = `<div class="hkb-sug" id="hkbSug"></div>`
-    + R.map((r, i) => `<div class="hkb-r">${[...r].map(k).join('')}${i === 2 ? `<div class="hkb-k fn bs" data-k="bs" aria-label="sil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7z"/><path d="M12 9.5l5 5M17 9.5l-5 5"/></svg></div>` : ''}</div>`).join('')
+  KB.el.innerHTML = R.map((r, i) => `<div class="hkb-r">${[...r].map(k).join('')}${i === 2 ? `<div class="hkb-k fn bs" data-k="bs" aria-label="sil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7z"/><path d="M12 9.5l5 5M17 9.5l-5 5"/></svg></div>` : ''}</div>`).join('')
     + `<div class="hkb-r"><div class="hkb-k fn sp" data-k="sp">${settings.ui === 'az' ? 'boşluq' : 'boşluk'}</div><div class="hkb-k en" data-k="en">${escH(ot('sendName'))}</div></div><canvas class="hkb-tr"></canvas>`;
   kbSug([]);
 }
@@ -6796,7 +6789,7 @@ function kbSync(){
 function kbSet(v){ const inp = kbInp(); if (!inp) return; inp.value = kbFmt(v); inp.scrollLeft = inp.scrollWidth; }
 function kbType(ch){
   const inp = kbInp(); if (!inp) return; let v = inp.value;
-  KB.sw = null; kbSet(v + ch); kbPrefix();
+  KB.sw = null; kbSet(v + ch);
 }
 function kbSpace(){
   const inp = kbInp(); if (!inp) return; const v = inp.value;
@@ -6806,9 +6799,10 @@ function kbSpace(){
 }
 function kbBack(word){
   const inp = kbInp(); if (!inp) return; let v = inp.value; if (!v) return;
+  if (KB.sw && !word){ v = KB.sw.base; KB.sw = null; inp.value = v; return; }   // kaydırıp yazılan isim tek dokunuşla silinir
   KB.sw = null;
   v = word ? v.replace(/\s*\S*\s*$/, '') : v.slice(0, -1);
-  inp.value = kbFmt(v) + (/ $/.test(v) && v.trim() ? ' ' : ''); kbPrefix();
+  inp.value = kbFmt(v) + (/ $/.test(v) && v.trim() ? ' ' : '');
 }
 function kbEnter(){
   const inp = kbInp(); if (!inp || !inp.value.trim()){ kbShake(); return; }
@@ -6829,7 +6823,8 @@ function kbPutWord(w){
 }
 /* ---- Öneri şeridi ---- */
 function kbSug(list, cur){
-  const el = $('hkbSug'); if (!el) return; KB.sugL = list;
+  KB.sugL = list; return;                                         // v193: öneri şeridi kapalı
+  const el = $('hkbSug'); if (!el) return;
   el.innerHTML = list.slice(0, 3).map((w, i) => `<button type="button" class="${w === cur || (!cur && i === 0 && KB.sw) ? 'best' : ''}" data-s="${escH(w)}">${escH(kbCapW(w))}</button>`).join('');
 }
 function kbDict(){
@@ -6886,28 +6881,32 @@ function kbIdeal(w){
   for (const c0 of w){ const c = G.ctr[c0] ? c0 : G.fixed[c0]; if (!c || !G.ctr[c]) return null; if (c === last) continue; last = c; pts.push(G.ctr[c]); }
   return pts;
 }
+/* v193 kaydırma çözücü: sadece parmağın çizdiği ize bakar (sıradaki harf, söylenmiş isim gibi "yardım"lar yok).
+   İzin şekli, her ismin tuşlardan geçen ideal çizgisiyle 64 noktada karşılaştırılır; parmağın döndüğü her köşe ismin bir harfine
+   denk gelmeli, ismin her harfi de izin yakınından geçmeli. En yakın isim yazılır; iz hiçbir isme benzemiyorsa hiçbir şey yazılmaz. */
 function kbDecode(raw){
-  const G = KB.geo, N = 32, P = raw.map(p => [p[0] / G.kw, p[1] / G.kw]), U = kbResample(P, N), uLen = kbLen(P);
+  const G = KB.geo, N = 64, P = raw.map(p => [p[0] / G.kw, p[1] / G.kw]), Uu = kbResample(P, N), uLen = kbLen(P);
   const near = (p, r) => Object.keys(G.ctr).filter(c => Math.hypot(G.ctr[c][0] - p[0], G.ctr[c][1] - p[1]) <= r);
   const F = new Set(near(P[0], 1.25)), E = new Set(near(P[P.length - 1], 1.25));
-  const exp = (expectedLetter() || '').toLocaleLowerCase(kbLoc()), first = !KB.sw && (() => { const v = (kbInp() || {}).value || ''; return !kbWords(v).length; })();
-  const saidH = new Set([...saidKeys()].map(headKey));
-  const res = [];
+  const R = kbResample(P, Math.max(8, Math.round(uLen / .12))), M = R.length, K = 3, corners = [], A = [];
+  for (let j = K; j < M - K; j++){ const ax = R[j][0]-R[j-K][0], ay = R[j][1]-R[j-K][1], bx = R[j+K][0]-R[j][0], by = R[j+K][1]-R[j][1];
+    A[j] = Math.acos(Math.max(-1, Math.min(1, (ax*bx+ay*by)/((Math.hypot(ax,ay)*Math.hypot(bx,by))||1)))); }
+  for (let j = K + 1; j < M - K - 1; j++) if (A[j] > .9 && A[j] >= A[j-1] && A[j] >= A[j+1] && !corners.some(c => Math.abs(c[2] - j) < 4)) corners.push([R[j][0], R[j][1], j]);
+  let best = null, bd = 1e9;
   for (const w of kbDict()){
-    if (!F.has(G.ctr[w[0]] ? w[0] : G.fixed[w[0]]) ) continue;
+    if (!F.has(G.ctr[w[0]] ? w[0] : G.fixed[w[0]])) continue;
     const lc = w[w.length - 1]; if (!E.has(G.ctr[lc] ? lc : G.fixed[lc])) continue;
     const id = kbIdeal(w); if (!id || id.length < 2) continue;
     const iLen = kbLen(id); if (iLen < uLen * 0.45 - .6 || iLen > uLen * 2.2 + .8) continue;
-    const I = kbResample(id, N); let d = 0; for (let i = 0; i < N; i++) d += Math.hypot(I[i][0] - U[i][0], I[i][1] - U[i][1]);
-    d /= N;
+    const I = kbResample(id, N); let d = 0; for (let i = 0; i < N; i++) d += Math.hypot(I[i][0] - Uu[i][0], I[i][1] - Uu[i][1]); d /= N;
     d += Math.hypot(id[0][0] - P[0][0], id[0][1] - P[0][1]) * .35 + Math.hypot(id[id.length - 1][0] - P[P.length - 1][0], id[id.length - 1][1] - P[P.length - 1][1]) * .35;
-    if (first && exp && w[0] === exp) d -= .18;          // sıradaki harfle başlayan isim öne
-    if (first && saidH.has(fold(w))) d += .25;            // bu turda söylenmiş olan geri
-    if (KB_COMMON.has(w)) d -= .12;
-    res.push([w, d]);
+    for (const c of corners){ let m = 9; for (const q of id) m = Math.min(m, Math.hypot(q[0] - c[0], q[1] - c[1])); if (m > .7) d += .25; }   // köşe bir harfe denk gelmeli
+    let mx = 0; for (const q of id){ let m = 9; for (const r of R) m = Math.min(m, Math.hypot(q[0] - r[0], q[1] - r[1])); mx = Math.max(mx, m); }
+    d += Math.max(0, mx - .45) * 2;                                                                                                   // her harfin tuşundan geçilmeli
+    if (KB_COMMON.has(w)) d -= .12;                                                                                                   // aynı çizgide eşitlik olursa yaygın isim
+    if (d < bd){ bd = d; best = w; }
   }
-  res.sort((a, b) => a[1] - b[1]);
-  return res.slice(0, 3).map(x => x[0]);
+  return best && bd < 2 ? [best] : [];
 }
 /* ---- İz (kaydırırken parmağın çizdiği çizgi) ---- */
 function kbTrail(){
@@ -6938,7 +6937,7 @@ function kbFinish(tr){
   kbFadeTrail();
   const out = kbDecode(tr.pts);
   if (!out.length){ kbShake(); return; }
-  const base = kbPutWord(out[0]); KB.sw = { base, w:out[0] }; kbSug(out, out[0]);
+  const base = kbPutWord(out[0]); KB.sw = { base, w:out[0] };
 }
 function kbInit(){
   if (KB.el) return;
@@ -6950,7 +6949,7 @@ function kbInit(){
     e.preventDefault(); if (!kbOn()){ kbShake(); return; }
     if (KB.tr) kbFinish(KB.tr);                                   // iki parmakla hızlı yazım: önceki dokunuşu hemen işle
     KB.geo = kbGeo(); const x = e.clientX - KB.geo.box.left, y = e.clientY - KB.geo.box.top, q = kbHit(x, y);
-    KB.tr = { id:e.pointerId, pts:[[x, y]], k0:q, last:q, moved:false, x0:x, y0:y };
+    KB.tr = { id:e.pointerId, pts:[[x, y, e.timeStamp]], k0:q, last:q, moved:false, x0:x, y0:y };
     try { KB.el.setPointerCapture(e.pointerId); } catch(_){}
     if (q){ kbPress(q); if (navigator.vibrate) try { navigator.vibrate(8); } catch(_){}
       if (q.k === 'bs'){ kbBack(); KB.rep = setTimeout(() => { KB.tr && (KB.tr.held = true); let n = 0; KB.repI = setInterval(() => { kbBack(++n > 8); }, 85); }, 420); } }
@@ -6958,7 +6957,8 @@ function kbInit(){
   KB.el.addEventListener('pointermove', e => {
     const tr = KB.tr; if (!tr || tr.id !== e.pointerId) return;
     const x = e.clientX - KB.geo.box.left, y = e.clientY - KB.geo.box.top;
-    tr.pts.push([x, y]);
+    if (e.getCoalescedEvents){ const ce = e.getCoalescedEvents(); for (const c of ce.slice(0, -1)) tr.pts.push([c.clientX - KB.geo.box.left, c.clientY - KB.geo.box.top, c.timeStamp]); }
+    tr.pts.push([x, y, e.timeStamp]);
     if (!tr.moved && tr.k0 && tr.k0.k.length === 1 && Math.hypot(x - tr.x0, y - tr.y0) > KB.geo.kw * .55){ tr.moved = true; kbRelease(); }
     if (tr.moved){ const q = kbHit(x, y); if (q && q !== tr.last && q.k.length === 1){ tr.last = q; } requestAnimationFrame(kbTrail); }
   });
