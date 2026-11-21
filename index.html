@@ -1249,12 +1249,6 @@
   body.playing .off-acts form.og-type:focus-within{border-color:var(--accent)}
   body.playing .off-acts form.og-type input{border:none;background:transparent;border-radius:999px;padding:0 6px 0 14px;height:auto;min-width:0}
   body.playing .off-acts form.og-type .abtn{height:auto;border-radius:999px;padding:0 16px;flex:none}
-  body.playing .off-acts #micBtn{order:2;flex:none;width:76px!important;padding:0;border-radius:999px;font-size:24px;display:grid;place-items:center}
-  body.playing .off-acts #micBtn.live{animation:micPulse 1s ease-in-out infinite}
-  body.playing .off-acts #micFix{order:3;flex:none;width:40px!important;padding:0;border-radius:999px;display:grid;place-items:center;color:var(--accent);background:var(--card);border:1px solid var(--line)}
-  body.playing .off-acts #micFix span,body.playing .off-acts #micFix .fx-ico{display:none}
-  #micFix .fx-svg{display:none;font-style:normal} body.playing #micFix .fx-svg{display:grid} body.playing #micFix svg{width:19px;height:19px}
-  #micFix .fx-ico{font-style:normal}
   body.playing .stage .row .btn.spin{padding:0;height:48px}
   body.playing #offTop{margin-top:-2px}
 
@@ -1974,6 +1968,119 @@
   body.playing .wheel-area.has-pcol,#roomPage.playing .og-wheel.has-pcol{grid-template-columns:min(34vw,156px) minmax(0,1fr)!important}
   .pcol{width:100%;max-width:none!important;justify-self:stretch!important}
   .pcol,.pcol *,.og-ps,.og-ps *{font-variant-numeric:tabular-nums}
+
+  /* ===== Gömülü klavye (v187) ===== */
+  .kb-slot{display:none}
+  body.playing .stage #offKbSlot,#roomPage.playing #ogKbSlot{display:block;flex:none}
+  .hkb{position:relative;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:3px 4px 5px;box-shadow:0 2px 10px rgba(0,0,0,.06);--kh:clamp(36px, 5.6dvh, 50px);transition:opacity .2s}
+  .hkb.off{opacity:.42}
+  .hkb.shk{animation:kbShk .28s ease}
+  @keyframes kbShk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .hkb-sug{display:flex;gap:4px;height:30px;align-items:center;justify-content:center;padding:0 1px}
+  .hkb-sug button{flex:1 1 0;max-width:33.3%;min-width:0;height:26px;border:none;border-radius:9px;background:var(--bg);color:var(--ink);font:inherit;font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px;cursor:pointer}
+  .hkb-sug button.best{background:var(--accent-2);color:var(--accent)}
+  .hkb-r{display:flex;gap:4px;margin-top:5px}
+  .hkb-r:nth-child(2){margin-top:1px}
+  .hkb-k{flex:1 1 0;min-width:0;height:var(--kh);display:grid;place-items:center;border-radius:9px;background:var(--bg);color:var(--ink);font-size:clamp(16px, 4.6vw, 22px);font-weight:600;line-height:1;box-shadow:0 1px 0 rgba(0,0,0,.14);position:relative;cursor:pointer}
+  :root[data-theme="dark"] .hkb-k{background:#26302c;box-shadow:0 1px 0 rgba(0,0,0,.5)}
+  :root[data-theme="dark"] .hkb-k.fn{background:#1d2522} :root[data-theme="dark"] .hkb-k.en{background:var(--grad);color:#fff} :root[data-theme="dark"] .hkb-k.on{background:var(--accent-2);color:var(--accent)}
+  .hkb-k.on{background:var(--accent-2);color:var(--accent)}
+  .hkb-k.pop::after{content:attr(data-k);position:absolute;left:50%;bottom:calc(100% + 4px);transform:translateX(-50%);min-width:44px;height:50px;padding:0 6px;box-sizing:border-box;border-radius:12px;background:var(--accent);color:#fff;font-size:28px;font-weight:700;display:grid;place-items:center;text-transform:uppercase;box-shadow:0 6px 16px rgba(0,0,0,.25);pointer-events:none;z-index:3}
+  .hkb-k.fn{background:var(--seg-bg);font-size:14px;font-weight:700;color:var(--muted)}
+  .hkb-k.bs{flex:1.5 1 0} .hkb-k.bs svg{width:24px;height:24px}
+  .hkb-k.sp{flex:4 1 0} .hkb-k.en{flex:1.7 1 0;background:var(--grad);color:#fff;font-size:15px;font-weight:800;box-shadow:0 3px 10px rgba(47,111,94,.3)}
+  .hkb-tr{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;transition:opacity .25s}
+  .hkb-tr.fd{opacity:0}
+  body.playing.has-kb .off-acts input,#roomPage.playing #ogIn{caret-color:transparent;cursor:default}
+  body.playing.has-kb .off-acts form.og-type .abtn,body.has-kb #ogActs .og-row .og-type .abtn{display:none}
+  /* Klavye açıkken: çark küçülür ama harfler okunur kalsın (harfler büyütülür) */
+  body.has-kb #wheel text,body.has-kb #ogWheel text{font-size:19px!important}
+  @media (max-width:599px){
+    body.playing.has-kb{--w:min(50vw, 21dvh, 200px)!important}
+    body.playing.has-kb .wheel-area.has-pcol{--w:min(48vw, 21dvh, 190px, calc(100vw - min(38vw,150px) - 84px))!important}
+    body.has-kb #roomPage.playing .og-wheel.has-pcol{--pw:min(48vw, 21dvh, 190px, calc(100vw - min(38vw,150px) - 88px))!important}
+    body.has-kb #roomPage.playing .og-wheel .wheel-wrap{--w:min(50vw, 21dvh, 200px)}
+    body.playing.has-kb .off-chat{min-height:56px!important;margin-bottom:6px!important}
+    body.has-kb #roomPage.playing .og-chat{min-height:56px!important}
+    body.playing.has-kb .stage{gap:6px}
+    body.has-kb #roomPage.playing .og{gap:6px}
+  }
+  @media (max-width:599px) and (max-height:720px){ .hkb{--kh:clamp(34px, 5.2dvh, 44px)} .hkb-sug{height:26px} .hkb-sug button{height:23px;font-size:13.5px} }
+
+  /* ===== v188: klavye açıkken her şey yukarı, mesaj kutusu tek satır ===== */
+  @media (max-width:599px){
+    body.playing.has-kb .stage{gap:4px!important}
+    body.has-kb .g-top .said-b{height:calc(2 * 28px + 6px)!important}
+    body.playing.has-kb #offStatus{margin-top:0!important;margin-bottom:0!important}
+    body.playing.has-kb .wheel-area{padding-top:0!important;padding-bottom:4px!important}
+    body.playing.has-kb .wheel-area .wcol > #tSec{margin-bottom:calc(var(--w) * .09 + 1px)!important;height:22px}
+    body.playing.has-kb .wheel-area .wcol > #tSec b{font-size:19px}
+    body.has-kb .hkb{--kh:clamp(34px, 5dvh, 46px);padding-top:2px}
+    body.has-kb .hkb-sug{height:26px} body.has-kb .hkb-sug button{height:23px}
+    body.has-kb .hkb-r{margin-top:4px} body.has-kb .hkb-r:nth-child(2){margin-top:1px}
+    /* Mesaj kutusu: başlık yok, tek mesaj satırı + yazma satırı */
+    body.playing.has-kb .off-chat{flex:1 1 auto!important;min-height:84px!important;margin-bottom:max(4px, env(safe-area-inset-bottom))!important}
+    body.playing.has-kb #offChat .rc-head{display:none!important}
+    body.playing.has-kb #offChat .rc-in{padding:4px 8px 6px!important}
+    body.playing.has-kb #offChat #offList{min-height:31px;margin-bottom:4px}
+    body.playing.has-kb #offChat .composer input,body.playing.has-kb #offChat .composer textarea{padding:8px 12px}
+    body.playing.has-kb #offChat .composer .abtn{padding:8px 12px}
+    body.playing.has-kb #offChat .composer{margin-top:0!important}
+    body.has-kb #roomPage.playing .og-chat .composer{margin-top:0!important}
+    body.playing.has-kb #offChat #offNote{margin:2px 0} body.playing.has-kb #offChat #offNote:empty{display:none}
+    /* Online oyun ekranı da aynı şekilde */
+    body.has-kb #roomPage.playing .og{gap:4px!important}
+    body.has-kb #roomPage.playing .og-status{margin:0!important}
+    body.has-kb #roomPage.playing .og-wheel{padding-bottom:6px!important}
+    body.has-kb #roomPage.playing .og-wheel .wcol > .t-sec{height:22px}
+    body.has-kb #roomPage.playing .og-chat{flex:1 1 auto!important;min-height:84px!important}
+    body.has-kb #roomPage.playing .og-chat .rc-head{display:none!important}
+    body.has-kb #roomPage.playing .og-chat .rc-in{padding:4px 8px 6px!important}
+    body.has-kb #roomPage.playing .og-chat #rcList{min-height:31px!important}
+    body.has-kb #roomPage.playing .s-body{padding-top:8px!important}
+  }
+  /* Kısa ekranlı telefonlar: çark ve tuşlar biraz daha küçük, söylenenler listesi 2 satır */
+  @media (max-width:599px) and (max-height:760px){
+    body.playing.has-kb .wheel-area.has-pcol{--w:min(44vw, 18dvh, 170px, calc(100vw - min(38vw,150px) - 84px))!important}
+    body.has-kb #roomPage.playing .og-wheel.has-pcol{--pw:min(44vw, 18dvh, 170px, calc(100vw - min(38vw,150px) - 88px))!important}
+    body.has-kb .hkb{--kh:clamp(32px, 4.8dvh, 40px)}
+    body.playing.has-kb .off-acts,body.playing.has-kb .off-acts > *{height:42px!important}
+    body.playing.has-kb .off-prow .btn.spin,body.playing.has-kb .off-prow #pbar .pchip.edit{height:42px!important;min-height:42px!important}
+    body.playing.has-kb .off-prow #pbar .pchip.edit{width:42px!important;min-width:42px!important;max-width:42px!important}
+    body.has-kb #ogActs .og-row,body.has-kb #ogActs .og-row > *{height:42px!important}
+    body.playing.has-kb .pcol,body.has-kb #roomPage.playing .og-ps.pcol{max-height:calc(18dvh + 30px)!important}
+  }
+
+  @media (max-width:599px) and (max-height:700px){
+    body.has-kb .g-top .said-b{height:calc(28px + 6px)!important}
+    body.playing.has-kb{padding-top:max(6px, env(safe-area-inset-top))!important;padding-bottom:max(2px, env(safe-area-inset-bottom))!important}
+    body.playing.has-kb .stage{gap:3px!important}
+    body.playing.has-kb .wheel-area.has-pcol{--w:min(40vw, 16dvh, 150px, calc(100vw - min(38vw,150px) - 84px))!important}
+    body.has-kb #roomPage.playing .og-wheel.has-pcol{--pw:min(40vw, 16dvh, 150px, calc(100vw - min(38vw,150px) - 88px))!important}
+    body.has-kb #wheel text,body.has-kb #ogWheel text{font-size:21px!important}
+    body.has-kb .hkb{--kh:clamp(30px, 4.6dvh, 36px)} body.has-kb .hkb-sug{height:22px} body.has-kb .hkb-sug button{height:20px;font-size:13px}
+    body.playing.has-kb #offStatus .og-pill,body.has-kb #roomPage.playing .og-pill{height:32px!important;line-height:32px!important}
+    body.playing.has-kb #offStatus,body.has-kb #roomPage.playing .og-status{min-height:32px!important}
+  }
+
+  /* ===== v190: çarkın halkasıyla Çarkı Çevir ve isim satırı arasında rahat boşluk ===== */
+  @media (max-width:599px){
+    body.playing.has-kb .wheel-area{padding-bottom:calc(var(--w) * .045 + 10px)!important}
+    body.has-kb #roomPage.playing .og-wheel{padding-bottom:calc(var(--pw, var(--w)) * .045 + 10px)!important}
+    body.playing.has-kb .off-prow .btn.spin,body.playing.has-kb.idle .off-prow .btn.spin{height:38px!important;min-height:38px!important;font-size:14.5px!important;padding:0 16px!important}
+    body.playing.has-kb .off-prow #pbar .pchip.edit,body.playing.has-kb .off-prow #pbar .pchip.edit:only-child{height:38px!important;width:38px!important;min-width:38px!important;max-width:38px!important}
+    body.playing.has-kb .off-prow #pbar .pchip.edit svg{width:19px;height:19px}
+    body.has-kb #ogActs #ogSpin{height:38px!important;min-height:38px!important;font-size:14.5px!important}
+    body.playing.has-kb .off-prow{margin-bottom:6px!important}
+  }
+
+  @media (max-width:599px) and (max-height:760px){
+    body.playing.has-kb .off-prow .btn.spin,body.playing.has-kb.idle .off-prow .btn.spin,body.playing.has-kb .off-prow #pbar .pchip.edit{height:36px!important;min-height:36px!important}
+    body.playing.has-kb .off-prow #pbar .pchip.edit{width:36px!important;min-width:36px!important;max-width:36px!important}
+    body.playing.has-kb .off-acts,body.playing.has-kb .off-acts > *,body.has-kb #ogActs .og-row,body.has-kb #ogActs .og-row > *{height:38px!important}
+    body.has-kb .hkb{--kh:clamp(29px, 4.3dvh, 36px)} body.has-kb .hkb-r{margin-top:3px}
+    body.playing.has-kb .wheel-area{padding-bottom:calc(var(--w) * .045 + 8px)!important}
+  }
 </style>
 </head>
 <body>
@@ -2020,9 +2127,7 @@
       
     </div>
     <div class="off-acts" id="offActs">
-      <button class="btn mic ptt" id="micBtn" type="button" disabled><span id="micLabel">🎤 Basılı tut ve konuş</span></button>
-      <form class="og-type" id="form" autocomplete="off"><input id="input" placeholder="Ya da ismi yaz…" data-i18n-ph="typeName" autocomplete="off" dir="auto"><button class="abtn ok" type="submit" data-i18n="sendName">Gönder</button></form>
-      <button class="btn ghost sm" id="micFix" type="button"><i class="fx-ico">🔧</i><i class="fx-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></i> <span data-i18n="micFix">Mikrofonu kontrol et</span></button>
+      <form class="og-type" id="form" autocomplete="off"><input id="input" placeholder="Kaydırarak ismi yaz…" data-i18n-ph="typeName" autocomplete="off" dir="auto"><button class="abtn ok" type="submit" data-i18n="sendName">Gönder</button></form>
     </div>
     <div class="off-chat" id="offChat"></div>
     <div class="timer" id="timer"><i id="timerBar"></i></div>
@@ -2448,6 +2553,8 @@ const NAMESET = {};
 const fold = k => k.replace(/ı/g,'i').replace(/ə/g,'e').replace(/x/g,'h').replace(/q/g,'k')
   .replace(/â/g,'a').replace(/î/g,'i').replace(/û/g,'u').replace(/d$/,'t').replace(/b$/,'p').replace(/c$/,'ç').replace(/g$/,'k');
 const FOLDSET = {};
+/* Tekrar kuralı: çift isimde sadece İLK isim sayılır ("Ahmet" söylendiyse "Ahmet Ali" de tekrar; "Mahmut" serbest) */
+const headKey = k => fold(String(k || '').trim().split(/\s+/)[0] || '');
 /* Ses tanıma Azerbaycan harflerini (ə, x, q…) yazamazsa doğru isme çevir */
 const loose = k => fold(k).replace(/ç/g,'c').replace(/ö/g,'o').replace(/ü/g,'u').replace(/[gğ]/g,'k').replace(/y$/,'');
 const FIXMAP = {};
@@ -2552,8 +2659,8 @@ const wheel = $('wheel'), hub = $('hub');
 /* ---------- Arayüz dili ---------- */
 const I18N = {
   tr: { sub:'Son harften devam et', reset:'Sıfırla', spin:'Çarkı Çevir', newLetter:'Yeni Harf', start:'Başlat', stop:'Durdur',
-    listTitle:'Söylenen isimler', empty:'Çarkı çevir. Harf çıkınca mikrofona basılı tutarak ismi söyle ya da yaz.', lgRep:'Tekrar / yanlış harf', lgUnk:'Listede yok', lgNext:'Sıradaki harf',
-    typeName:'Ya da ismi yaz…', add:'Ekle', timeUp:'Süre doldu!', cont:'Devam et', allUsed:'Tüm harfler kullanıldı',
+    listTitle:'Söylenen isimler', empty:'Çarkı çevir. Harf çıkınca ismi klavyeyle yaz.', lgRep:'Tekrar / yanlış harf', lgUnk:'Listede yok', lgNext:'Sıradaki harf',
+    typeName:'Kaydırarak ismi yaz…', add:'Ekle', timeUp:'Süre doldu!', cont:'Devam et', allUsed:'Tüm harfler kullanıldı',
     allUsedQ:'Bu oturumdaki bütün harfler çıktı. Yeni oturum başlatılsın mı?', cancel:'Vazgeç',
     left:n=>`${n} harf kaldı`, listening:l=>`🎤 ${l==='az'?'Azərbaycanca':'Türkçe'} dinleniyor`,
     next:'Sıradaki harf:', startLetter:'Başlangıç:', rep:'Tekrar', wrong:x=>`Yanlış harf · ${x} olmalı`, unk:'Listede yok', addList:'+ Listeye ekle', heard:'duyulan:',
@@ -2566,7 +2673,7 @@ const I18N = {
     nmAdded:x=>`"${x}" listeye eklendi`, nmExists:x=>`"${x}" zaten listede`, nmRemoved:x=>`"${x}" listeden çıkarıldı`,
     nmResetQ:'Bu dildeki tüm eklemeler ve çıkarmalar geri alınsın mı? Tekrar bas.', nmResetDone:'Liste varsayılana döndü',
     about:'Hakkında', aboutText:'Harf Çarkı, çocukken oynadığımız "son harften isim söyleme" oyununun sesli hâli. Çark ilk harfi seçer, isimleri söylersin, uygulama yazar ve kontrol eder.',
-    how1:'Çarkı çevir. Sıra sendeyken mikrofona basılı tutup ismi söyle, ya da yaz.', how2:'Her isim, bir önceki ismin son harfiyle başlamalı.', how3:'Tekrar eden ve yanlış harfli isimler kırmızı görünür.', how4:()=>`Her isim için 3 + ${settings.time} saniyen var. Süresi dolan elenir.`,
+    how1:'Çarkı çevir. Sıra sendeyken ismi klavyeyle yaz (dokunarak ya da kaydırarak).', how2:'Her isim, bir önceki ismin son harfiyle başlamalı.', how3:'Tekrar eden ve yanlış harfli isimler kırmızı görünür.', how4:()=>`Her isim için 3 + ${settings.time} saniyen var. Süresi dolan elenir.`,
     aboutVer:'Sürüm 2.0 · İsim listesi yönetici tarafından güncellenir.',
     how5:'Her geçerli isim 1 puan, turu kazanan +2 puan alır.',
     players:'Oyuncular', playersHint:'En fazla 11 oyuncu. Boş bırakırsan tek başına oynarsın.', addPlayer:'+ Oyuncu ekle', playerN:n=>`${n}. oyuncu`,
@@ -2581,8 +2688,8 @@ const I18N = {
     howBtn:'❓ Nasıl oynanır?', tutLocal:'📱 Tek telefon', tutOnline:'🌐 Online', tutSkip:'Atla', tutPrev:'Geri', tutNext:'İleri', tutGo:'Oynamaya başla',
     tut:{
       wheel:['🔤','Çark harfi seçer','<b>Çarkı Çevir</b> butonuna bas. Çıkan harfle başlayan bir isim söyleyerek tur başlar. Her harf bir kez çıkar.'],
-      local:['📱','Tek telefonda','Harf çıkınca süre başlar. Sırası gelen <b>🎤 düğmesine basılı tutup</b> ismi söyler, bırakınca gönderilir; istersen yazabilirsin. Oyuncular telefonu ortaya koyar ve <b>sırayla</b> isim söyler. Oyuncuları <b>Oyuncu ekle</b> ile yazarsın (2–11 kişi).'],
-      online:['🌐','Online oyunda','Herkes <b>kendi telefonundan</b> oynar. İlk turda çarkı <b>oda kurucusu</b>, sonraki turlarda <b>bir önceki turun kazananı</b> çevirir. <b>Başlat yok</b>: 3-2-1 sayılır, sırası gelenin mikrofonu kendiliğinden açılır. Oda kurucusu tur sayısını seçer: 5, 10 ya da harfler bitene kadar.'],
+      local:['📱','Tek telefonda','Harf çıkınca süre başlar. Sırası gelen ismi ekrandaki <b>klavyeyle</b> yazar: harflere dokunarak ya da parmağını harflerin üstünde kaydırarak. <b>Gönder</b> düğmesine basınca isim gider. Oyuncular telefonu ortaya koyar ve <b>sırayla</b> isim söyler. Oyuncuları <b>Oyuncu ekle</b> ile yazarsın (2–11 kişi).'],
+      online:['🌐','Online oyunda','Herkes <b>kendi telefonundan</b> oynar. İlk turda çarkı <b>oda kurucusu</b>, sonraki turlarda <b>bir önceki turun kazananı</b> çevirir. <b>Başlat yok</b>: 3-2-1 sayılır, sırası gelen ismi klavyeyle yazar. Oda kurucusu tur sayısını seçer: 5, 10 ya da harfler bitene kadar.'],
       chain:['🔗','Son harften devam','Her yeni isim, bir öncekinin <b>son harfiyle</b> başlar. <b>Mavi</b> harf sıradakidir. <b>ı</b> veya <b>ğ</b> ile biten isimde bir önceki harf geçer (Nazlı → Z).','<span>Al<i class="l">i</i></span><span>İlya<i class="l">s</i></span><span>Seli<i class="l">n</i></span>'],
       bad:['🚫','Geçmeyen isimler','<b>Kırmızı</b>: tekrar eden ya da yanlış harfle başlayan isim. <b>Sarı</b>: listede olmayan isim. Bunlar zinciri ilerletmez. Listede olmayan ismi <b>💡 Öner</b> ile yöneticiye gönderebilirsin.','<span class="r">Ali (tekrar)</span><span class="u">Sarpedon</span>'],
       time:['⏱','Süre ve elenme','Her isim için <b>3 sn hazırlık + seçtiğin süre</b> (15, 20, 30 ya da 40 sn) var. Son 5 saniye geri sayılır. Süresi biten <b>o tur için elenir</b>, tek kişi kalınca tur biter. Yeni turda herkes geri döner.'],
@@ -2605,8 +2712,8 @@ const I18N = {
       'auth/email-already-in-use':'Bu e-postayla zaten bir hesap var, giriş yapmayı dene', 'auth/weak-password':'Şifre en az 6 karakter olmalı', 'auth/too-many-requests':'Çok fazla deneme yapıldı, biraz sonra tekrar dene',
       'auth/network-request-failed':'İnternet bağlantısı yok', 'auth/popup-closed-by-user':'Google girişi kapatıldı', 'auth/unauthorized-domain':'Bu adres Firebase\'de izinli değil', other:'Bir sorun oldu, tekrar dene' } },
   az: { sub:'Son hərfdən davam et', reset:'Sıfırla', spin:'Çarxı fırlat', newLetter:'Yeni hərf', start:'Başla', stop:'Dayandır',
-    listTitle:'Deyilən adlar', empty:'Çarxı fırlat. Hərf çıxanda mikrofona basılı saxlayaraq adı de və ya yaz.', lgRep:'Təkrar / səhv hərf', lgUnk:'Siyahıda yoxdur', lgNext:'Növbəti hərf',
-    typeName:'Və ya adı yaz…', add:'Əlavə et', timeUp:'Vaxt bitdi!', cont:'Davam et', allUsed:'Bütün hərflər istifadə olundu',
+    listTitle:'Deyilən adlar', empty:'Çarxı fırlat. Hərf çıxanda adı klaviatura ilə yaz.', lgRep:'Təkrar / səhv hərf', lgUnk:'Siyahıda yoxdur', lgNext:'Növbəti hərf',
+    typeName:'Sürüşdürərək adı yaz…', add:'Əlavə et', timeUp:'Vaxt bitdi!', cont:'Davam et', allUsed:'Bütün hərflər istifadə olundu',
     allUsedQ:'Bu oyunda bütün hərflər çıxdı. Yeni oyun başlansın?', cancel:'Ləğv et',
     left:n=>`${n} hərf qaldı`, listening:l=>`🎤 ${l==='az'?'Azərbaycanca':'Türkcə'} dinlənilir`,
     next:'Növbəti hərf:', startLetter:'Başlanğıc:', rep:'Təkrar', wrong:x=>`Səhv hərf · ${x} olmalıdır`, unk:'Siyahıda yoxdur', addList:'+ Siyahıya əlavə et', heard:'eşidilən:',
@@ -2619,7 +2726,7 @@ const I18N = {
     nmAdded:x=>`"${x}" siyahıya əlavə olundu`, nmExists:x=>`"${x}" artıq siyahıdadır`, nmRemoved:x=>`"${x}" siyahıdan çıxarıldı`,
     nmResetQ:'Bu dildəki bütün dəyişikliklər geri qaytarılsın? Yenidən bas.', nmResetDone:'Siyahı ilkin vəziyyətə qaytarıldı',
     about:'Haqqında', aboutText:'Harf Çarkı uşaqlıqda oynadığımız "son hərfdən ad demə" oyununun səsli formasıdır. Çarx ilk hərfi seçir, sən adları deyirsən, tətbiq yazır və yoxlayır.',
-    how1:'Çarxı fırlat. Növbə səndə olanda mikrofona basılı saxlayıb adı de və ya yaz.', how2:'Hər ad əvvəlki adın son hərfi ilə başlamalıdır.', how3:'Təkrar və səhv hərfli adlar qırmızı görünür.', how4:()=>`Hər ad üçün 3 + ${settings.time} saniyən var. Vaxtı bitən oyundan çıxır.`,
+    how1:'Çarxı fırlat. Növbə səndə olanda adı klaviatura ilə yaz (toxunaraq və ya sürüşdürərək).', how2:'Hər ad əvvəlki adın son hərfi ilə başlamalıdır.', how3:'Təkrar və səhv hərfli adlar qırmızı görünür.', how4:()=>`Hər ad üçün 3 + ${settings.time} saniyən var. Vaxtı bitən oyundan çıxır.`,
     aboutVer:'Versiya 2.0 · Ad siyahısını idarəçi yeniləyir.',
     how5:'Hər düzgün ad 1 xal, raundu qazanan +2 xal alır.',
     players:'Oyunçular', playersHint:'Ən çox 11 oyunçu. Boş saxlasan tək oynayırsan.', addPlayer:'+ Oyunçu əlavə et', playerN:n=>`${n}. oyunçu`,
@@ -2634,8 +2741,8 @@ const I18N = {
     howBtn:'❓ Necə oynanılır?', tutLocal:'📱 Bir telefon', tutOnline:'🌐 Onlayn', tutSkip:'Keç', tutPrev:'Geri', tutNext:'İrəli', tutGo:'Oynamağa başla',
     tut:{
       wheel:['🔤','Çarx hərfi seçir','<b>Çarxı fırlat</b> düyməsinə bas. Çıxan hərflə başlayan ad deməklə raund başlayır. Hər hərf bir dəfə çıxır.'],
-      local:['📱','Bir telefonda','Hərf çıxanda vaxt başlayır. Növbəsi gələn <b>🎤 düyməsinə basılı saxlayıb</b> adı deyir, buraxanda göndərilir; istəsən yaza bilərsən. Oyunçular telefonu ortaya qoyur və <b>növbə ilə</b> ad deyir. Oyunçuları <b>Oyunçu əlavə et</b> ilə yazırsan (2–11 nəfər).'],
-      online:['🌐','Onlayn oyunda','Hər kəs <b>öz telefonundan</b> oynayır. İlk raundda çarxı <b>otağı quran</b>, sonrakı raundlarda <b>əvvəlki raundun qalibi</b> fırladır. <b>Başla düyməsi yoxdur</b>: 3-2-1 sayılır, növbəsi gələnin mikrofonu özü açılır. Otağı quran raund sayını seçir: 5, 10 və ya hərflər bitənədək.'],
+      local:['📱','Bir telefonda','Hərf çıxanda vaxt başlayır. Növbəsi gələn adı ekrandakı <b>klaviatura ilə</b> yazır: hərflərə toxunaraq və ya barmağını hərflərin üstündə sürüşdürərək. <b>Göndər</b> düyməsinə basanda ad gedir. Oyunçular telefonu ortaya qoyur və <b>növbə ilə</b> ad deyir. Oyunçuları <b>Oyunçu əlavə et</b> ilə yazırsan (2–11 nəfər).'],
+      online:['🌐','Onlayn oyunda','Hər kəs <b>öz telefonundan</b> oynayır. İlk raundda çarxı <b>otağı quran</b>, sonrakı raundlarda <b>əvvəlki raundun qalibi</b> fırladır. <b>Başla düyməsi yoxdur</b>: 3-2-1 sayılır, növbəsi gələn adı klaviatura ilə yazır. Otağı quran raund sayını seçir: 5, 10 və ya hərflər bitənədək.'],
       chain:['🔗','Son hərfdən davam','Hər yeni ad əvvəlkinin <b>son hərfi</b> ilə başlayır. <b>Göy</b> hərf növbətidir. <b>ı</b> və ya <b>ğ</b> ilə bitən adda ondan əvvəlki hərf keçir.','<span>Əl<i class="l">i</i></span><span>İlqa<i class="l">r</i></span><span>Rəşa<i class="l">d</i></span>'],
       bad:['🚫','Keçməyən adlar','<b>Qırmızı</b>: təkrar və ya səhv hərflə başlayan ad. <b>Sarı</b>: siyahıda olmayan ad. Bunlar zənciri irəlilətmir. Siyahıda olmayan adı <b>💡 Təklif et</b> ilə idarəçiyə göndərə bilərsən.','<span class="r">Əli (təkrar)</span><span class="u">Sarpedon</span>'],
       time:['⏱','Vaxt və mübarizədən çıxma','Hər ad üçün <b>3 san hazırlıq + seçdiyin vaxt</b> (15, 20, 30 və ya 40 san) var. Son 5 saniyə geri sayılır. Vaxtı bitən <b>həmin raund üçün çıxır</b>, bir nəfər qalanda raund bitir. Yeni raundda hamı geri qayıdır.'],
@@ -2670,7 +2777,6 @@ function applyI18n(){
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   $('spinLabel').textContent = t(current ? 'newLetter' : 'spin');
-  $('micLabel').textContent = t(listening ? 'stop' : 'start');
   drawWheel(); renderList();
   if ($('themeIco').innerHTML) updateThemeBtn();
   if ($('sheet').classList.contains('open')) renderGameSettings();
@@ -2874,7 +2980,7 @@ function endRound(winner){
     url: inClaude ? '' : (location.host + location.pathname).replace(/index\.html$/, '').replace(/\/$/, '')
   };
   $('sumModal').classList.add('show');
-  $('micBtn').disabled = true; setPlaying(); renderPbar();
+  setPlaying(); renderPbar();
   sfx(winner != null ? 'win' : 'out');
 }
 /* Ekran kararmasın */
@@ -2968,7 +3074,7 @@ function spin(){
   if (+settings.rounds && roundNo >= +settings.rounds && roundOver){ toast(ot('offNewGame')); resetSession(); return; }
   statFlush(); stopListening(); timerStop(); $('timeout').classList.remove('show');
   $('sumModal').classList.remove('show');
-  spinning = true; $('spinBtn').disabled = true; $('micBtn').disabled = true;
+  spinning = true; $('spinBtn').disabled = true;
   hub.textContent = '…';
   const pick = pool[Math.floor(Math.random()*pool.length)];
   const i = L.indexOf(pick), seg = 360/L.length;
@@ -2985,7 +3091,7 @@ function spin(){
     names = []; roundOver = false; statIdx = 0; statCounted = false;
     if (P()){ alive = settings.players.map(() => true); turn = startTurn % P(); startTurn++; }
     renderList(); drawWheel(); setPlaying(); keepAwake(true);
-    $('spinBtn').disabled = false; $('micBtn').disabled = false;
+    $('spinBtn').disabled = false;
     $('spinLabel').textContent = t('spin'); if (!ONL) timerStart();
   }, 4700);
 }
@@ -3009,7 +3115,7 @@ function resetSession(){
   osFlush(true); OS.counted = false;
   statFlush(); stopListening(); timerStop();
   used.clear(); current = null; roundNo = 0; names = []; statIdx = 0; statCounted = false; hub.textContent = '?'; roundOver = false; resetPlayers(); setPlaying(); keepAwake(false);
-  $('spinLabel').textContent = t('spin'); $('micBtn').disabled = true;
+  $('spinLabel').textContent = t('spin');
   $('legend').style.display = NAMESET[lang] ? 'flex' : 'none';
   drawWheel(); renderList();
 }
@@ -3030,11 +3136,8 @@ function pickName(words){
   if (words.length < 2) return null;
   const ks = words.map(w => correct(keyOf(w))), exp = expectedLetter();
   const ok = k => k && isKnown(k), starts = k => !exp || firstChar(k) === exp;
-  if (ks.length <= 3 && ks.every(ok) && starts(ks[0])) return words;   // 2-3 parçalı isim: Mustafa Kemal, Ali Rıza Can
-  // Uzun cümlenin içinde arka arkaya gelen 3 bilinen isim (en fazla 3 kelime)
-  for (let i = ks.length - 3; i >= 0; i--){
-    if (ok(ks[i]) && ok(ks[i+1]) && ok(ks[i+2]) && starts(ks[i]) && new Set(ks.slice(i, i+3)).size === 3) return words.slice(i, i+3);
-  }
+  if (ks.length === 2 && ks.every(ok) && starts(ks[0])) return words;   // çift isim: Mustafa Kemal, Muhammed Ali (üçlü isim yok)
+  if (ks.length > 2 && ok(ks[0]) && ok(ks[1]) && starts(ks[0]) && ks[0] !== ks[1]) return words.slice(0, 2);   // 3+ kelime: ilk ikisi alınır
   const cands = [];
   for (let i = 0; i < ks.length; i++){
     if (i + 1 < ks.length){
@@ -3051,7 +3154,7 @@ function addPhrase(text){
   const words = text.replace(/['’`][a-zçğıöşüə]+/gi,'').replace(/[.,!?"“”…:;()\-]/g,' ').split(/\s+/).filter(Boolean)
     .filter(w => !isFiller(keyOf(w)));
   if (!words.length) return;
-  const chosen = (pickName(words) || (words.length <= 2 ? words : null) || []).slice(0, 3);
+  const chosen = (pickName(words) || (words.length <= 2 ? words : null) || []).slice(0, 2);
   if (!chosen.length) chosen.length = 0;
   if (!chosen.length){ $('interim').textContent = t('unclear') + words.slice(0, 6).join(' '); return; }
   addName(chosen);
@@ -3091,7 +3194,7 @@ function addName(words){
   if (n.fast && !n.wrong && !n.unk && !n.rep) ptsFloat(2, true, $('wheel').parentNode);
   else sfx(n.wrong || n.unk || n.rep ? 'bad' : 'ok');
   { const ok = !n.wrong && !n.unk && !n.rep;
-    flashName($('wheel'), escH(n.text), { box:'offSaid', id:names.length - 1, f:n.rep ? fold(n.key) : '' }); }
+    flashName($('wheel'), escH(n.text), { box:'offSaid', id:names.length - 1, f:n.rep ? headKey(n.key) : '' }); }
   if (P() && !n.wrong && !n.rep && !n.unk){ turn = nextAlive(turn); renderPbar(); }
   if (navigator.vibrate){ if (n.wrong) navigator.vibrate([80,60,80]); else if (n.rep) navigator.vibrate(120); }
   $('timeout').classList.remove('show');
@@ -3103,7 +3206,7 @@ function recompute(){
   const seen = new Set();
   let exp = current || '';
   names.forEach(n => {
-    const f = fold(n.key);
+    const f = headKey(n.key);
     n.unk = !isKnown(n.key);
     n.wrong = !!exp && firstChar(n.key) !== exp; n.exp = exp;
     n.rep = !n.wrong && seen.has(f);
@@ -3136,7 +3239,7 @@ function nameHtml(n){
 function renderList(){
   try { if (!ONL && current && !roundOver && !spinning){ const nx = expectedLetter(); if (nx && hub.textContent !== nx){ hub.textContent = nx; hub.classList.add('pop'); setTimeout(() => hub.classList.remove('pop'), 300); } } } catch(_){}
   renderSaid('offSaid', names.map((n, i) => { const ok = !n.wrong && !n.unk && !n.rep, sg = lang + ':' + n.key;
-      return { id:i, f:ok ? fold(n.key) : '', k:n.wrong ? 'wrong' : n.rep ? 'rep' : n.unk ? 'unk' : 'ok', name:nameHtml(n),
+      return { id:i, f:ok ? headKey(n.key) : '', k:n.wrong ? 'wrong' : n.rep ? 'rep' : n.unk ? 'unk' : 'ok', name:nameHtml(n),
         by:n.by >= 0 && pname(n.by) ? escH(pname(n.by)) : '', tag:n.wrong ? escH(t('wrong', n.exp)) : n.rep ? escH(t('rep')) : n.unk ? escH(t('unk')) + ` <button class="sug" data-s="${i}"${sugSent.has(sg) ? ' disabled' : ''}>${sugSent.has(sg) ? escH(t('sugSent')) : '💡 ' + escH(t('sugBtn'))}</button>` : '',
         tools:`<button class="x" data-i="${i}" aria-label="Sil">×</button>` }; }).reverse(), names.filter(n => !n.wrong && !n.unk && !n.rep).length);
   { const ok3 = names.map((n, i) => [n, i]).slice(-3).reverse();
@@ -3264,446 +3367,21 @@ function timeUp(){
 }
 $('toBtn').onclick = () => { $('timeout').classList.remove('show'); if (current && !roundOver) timerStart(); };
 
-/* ---------- Speech ---------- */
-let listening = false, rec = null, dict = null, engine = null, dictFallback = {}, micLang = null;
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+/* ---------- Ses tanıma KALDIRILDI (v189): isimler sadece klavyeyle yazılır. Eski çağrılar bozulmasın diye boş karşılıklar ---------- */
+let listening = false, engine = null, micLang = null, rec = null, dict = null, webFin = false, webFinT = null, webIgnore = false, webReady = true, pressAt = 0, SAY_LAG = 0;
 const inClaude = typeof window.claude !== 'undefined';
-
-if (inClaude && window.claude.use){
-  window.claude.use('dictation').then(d => {
-    if (!d) return;
-    dict = d;
-    d.onPartial(({text}) => { $('interim').textContent = text; if (text) bumpPhrase(); });
-    d.onFinal(({text}) => { $('interim').textContent = ''; queuePhrase(text); });
-    d.onState(({state}) => { if (state === 'idle' && engine === 'dict') setListening(false); });
-  }).catch(()=>{});
-}
-
-function setListening(on){
-  listening = on;
-  $('micBtn').classList.toggle('live', on);
-  if (!on){ webFin = false; clearTimeout(webFinT); }
-  micLabel();
-  if (!on) micLang = null; drawWheel();
-  if (!on){ $('interim').textContent = ''; engine = null; }
-  if (typeof GR !== 'undefined' && OL.room) try { renderGame(); } catch(_){}
-}
-
-/* Google birkaç tahmin verir: listede olan ve beklenen harfle başlayanı seç */
-function bestAlt(alts){
-  const exp = expectedLetter();
-  let best = alts[0], bs = -1;
-  alts.forEach((t, i) => {
-    const w = t.split(/\s+/).filter(Boolean).map(x => correct(keyOf(x))).filter(x => !isFiller(x));
-    if (!w.length) return;
-    let sc = w.filter(x => isKnown(x)).length * 1.5 + (exp && firstChar(w[0]) === exp ? 0.4 : 0) - i * 1.2;   // ilk sonuç esas: başka seçenek ancak gerçekten isimse seçilir (uydurma olmasın)
-    if (sc > bs){ bs = sc; best = t; }
-  });
-  return best;
-}
-/* Android Chrome "bitti" sinyali vermeyebilir: kelime 0,7 sn değişmezse kendimiz kesinleştiriyoruz */
-let webIgnore = false, webIdleT = null, webLast = '', webFin = false, webFinT = null, webGot = false, webReady = false, srFails = 0;
-/* Uygulama içi ses tanıma olmayan telefonlar (iPhone ana ekran uygulaması, Samsung tarayıcısı vb.): klavyenin mikrofonuna yönlendir */
-function kbFallback(msg){
-  const inp = (typeof ONL !== 'undefined' && ONL && $('ogIn')) ? $('ogIn') : $('input');
-  $('msg').textContent = msg; toast(msg);
-  if (inp){ try { inp.focus(); inp.classList.add('kb-hint'); setTimeout(() => inp.classList.remove('kb-hint'), 2600); } catch(_){} }
-}
-/* Mikrofon iznini bir dokunuşla önceden al (bazı telefonlar izni ancak dokunma anında sorar) */
-let micPrimed = false;
-async function primeMic(){
-  if (micPrimed || !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) return; micPrimed = true;
-  try { if (navigator.permissions){ const st = await navigator.permissions.query({ name:'microphone' }); if (st.state === 'granted') return; } } catch(_){}
-  try { const st = await navigator.mediaDevices.getUserMedia({ audio:true }); st.getTracks().forEach(x => x.stop()); } catch(_){ micPrimed = false; }
-}
-const IS_ANDROID = /Android/i.test(navigator.userAgent);
-/* Bazı telefonlarda Azerbaycanca ses tanıma yok: o zaman Türkçe tanıma kullanılır, isim AZ listesine göre düzeltilir */
-const speechLangOf = l => (baseL(l) === 'az' && settings.azSR === 'tr') ? 'tr-TR' : LANGS[l].speech;
-function micLabel(){
-  if (!$('micLabel')) return;
-  { const prep = listening && (engine === 'web' || engine === 'cloud' || engine === 'tab') && !webReady, cmp = document.body.classList.contains('playing') && !ONL;
-    $('micLabel').textContent = cmp ? (webFin ? '⏳' : listening ? (prep ? '🎙' : '🔴') : '🎤') : (webFin ? '⏳ ' + ot('pttWait') : listening ? (prep ? '🎙 ' + ot('pttPrep') : '🔴 ' + ot('pttLive')) : '🎤 ' + ot('pttHold'));
-    $('micBtn').classList.toggle('live', listening); $('micBtn').title = webFin ? ot('pttWait') : listening ? (prep ? ot('pttPrep') : ot('pttLive')) : ot('pttHold'); }
-  if (typeof GR !== 'undefined' && OL.room) try { renderGame(); } catch(_){}
-}
-function finishWeb(){
-  if (!webFin) return; webFin = false; clearTimeout(webFinT); clearTimeout(webIdleT);
-  const it = $('interim').textContent.trim();
-  if (!webGot && it && !webIgnore) pend.push(it);
-  if (!webGot && !it && pressAt && Date.now() - pressAt > 1300){ if (++webEmpty >= 2) useCloud(true); } else if (webGot || it) webEmpty = 0;
-  flushPhrase(); listening = false; try { if (rec){ rec.onend = null; rec.abort(); } } catch(_){}
-  setListening(false);
-}
-function startWebSpeech(){
-  rec = new SR(); const sl = speechLangOf(lang);
-  rec.lang = sl; rec.continuous = !(IS_ANDROID || IS_TAB); rec.interimResults = true; rec.maxAlternatives = 5;
-  webFin = false; webGot = false; webReady = false;
-  rec.onstart = () => { micLabel(); };
-  rec.onaudiostart = () => { if (!webReady && navigator.vibrate) try { navigator.vibrate(25); } catch(_){} webReady = true; srFails = 0; micLabel(); };
-  rec.onresult = e => {
-    webReady = true;
-    if (webIgnore) return;
-    let interim = '', finals = [], lastAlts = null;
-    for (let i = e.resultIndex; i < e.results.length; i++){
-      const r = e.results[i];
-      if (r.isFinal) finals.push(bestAlt([...r].map(a => a.transcript)));
-      else { interim += r[0].transcript; lastAlts = [...r].map(a => a.transcript); }
-    }
-    if (finals.length){
-      clearTimeout(webIdleT); webLast = ''; webGot = true;
-      finals.forEach(f => queuePhrase(f));
-      if (webFin){ $('interim').textContent = ''; finishWeb(); return; }
-    }
-    $('interim').textContent = interim;
-    if (interim && interim.trim().split(/\s+/).length >= 4 && !webIgnore){
-      clearTimeout(webIdleT); webIgnore = true; webLast = ''; $('interim').textContent = '';
-      pend.push(bestAlt(lastAlts && e.results.length - e.resultIndex === 1 ? lastAlts : [interim])); flushPhrase();
-      try { rec.abort(); } catch(_){}
-      return;
-    }
-    if (interim){
-      bumpPhrase();
-      if (interim !== webLast){
-        webLast = interim; clearTimeout(webIdleT);
-        const alts = (lastAlts && e.results.length - e.resultIndex === 1) ? lastAlts : [interim];
-        webIdleT = setTimeout(() => {
-          webIgnore = true; webLast = '';
-          $('interim').textContent = '';
-          pend.push(bestAlt(alts)); flushPhrase();
-          try { rec.abort(); } catch(_){}
-        }, 700);
-      }
-    }
-  };
-  rec.onerror = e => {
-    const er = e.error;
-    if (er === 'no-speech' || er === 'aborted') return;
-    if (er === 'not-allowed'){ webFin = false; setListening(false); $('msg').textContent = t('micDenied'); toast(t('micDenied')); }
-    else if (er === 'service-not-allowed'){ webFin = false; setListening(false); if (useCloud(true)) return; kbFallback(t('srvNA')); }
-    else if (er === 'language-not-supported' && sl !== 'tr-TR'){
-      settings.azSR = 'tr'; saveSettings(); toast(ot('azSRFallback'));
-      const keep = listening; try { rec.onend = null; rec.abort(); } catch(_){} if (keep){ listening = false; setTimeout(() => { try { startWebSpeech(); } catch(_){} }, 150); }
-    }
-    else if (er === 'network'){ webFin = false; try { rec.onend = null; rec.abort(); } catch(_){} setListening(false); if (useCloud(false)){ $('msg').textContent = ot('srRetry'); toast(ot('srRetry')); } else { const m = navigator.onLine === false ? t('netErr') : ot('srRetry'); $('msg').textContent = m; toast(m); } }
-    else if (er === 'audio-capture'){ $('msg').textContent = ot('micBusy'); toast(ot('micBusy')); webFin = false; setListening(false); }
-  };
-  rec.onend = () => {
-    clearTimeout(webIdleT); webLast = ''; webIgnore = false;
-    if (webFin){ finishWeb(); return; }
-    if (listening && engine === 'web') {
-      if (!webReady && ++srFails >= 4){ webFin = false; setListening(false); if (useCloud(true)) return; kbFallback(t('kbHint')); return; }   // ses hiç açılamıyor: klavye mikrofonuna yönlendir
-      webReady = false; micLabel(); setTimeout(() => { if (listening && engine === 'web') try { rec.start(); } catch(_){} }, (IS_ANDROID || IS_TAB) ? 120 : 0); }
-  };
-  webIgnore = false;
-  rec.start(); engine = 'web'; micLang = sl === 'tr-TR' ? 'tr' : LANGS[lang].locale; setListening(true);
-}
-
-/* ---------- Sunucu ile ses tanıma: telefonun kendi ses tanıması çalışmazsa (Xiaomi, Honor, iPhone uygulaması vb.)
-   ses doğrudan mikrofondan kaydedilir, sunucuya gönderilir, yazıya çevrilip geri gelir ---------- */
-let pressAt = 0, webEmpty = 0;
-/* ===== Ses tanıma v2: ana motor sunucudaki Whisper (Google'a bağımlı değil, "internet" hatası vermez).
-   Mikrofon oyun boyunca sıcak tutulur, basmadan önceki 0,3 sn de kaydedilir (ilk hece kaçmaz),
-   baştaki/sondaki sessizlik kesilip gönderilir, hata olursa 1 kez yeniden denenir,
-   sunucu üst üste 2 kez yanıt vermezse 2 dakikalığına telefonun kendi tanımasına geçilir. ===== */
-let SAY_LAG = 0;   // sunucudan cevap gelene kadar geçen süre (hız bonusu bundan etkilenmesin)
-const STT_DEF = 'https://harfcarki-bildirim.harfcarki-app.workers.dev';
-const sttUrl = () => ((typeof PUSH !== 'undefined' && PUSH.url) || STT_DEF).replace(/\/+$/, '');
-const CL = { weak:0, stream:null, ctx:null, src:null, proc:null, chunks:[], pre:[], on:false, starting:null, keepT:null, rate:48000, fails:0, downUntil:0 };
-const cloudCap = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext));
-const cloudReady = () => cloudCap() && navigator.onLine !== false && settings.srMode !== 'web' && Date.now() > CL.downUntil;
-function useCloud(why){
-  if (!cloudCap() || navigator.onLine === false) return false;
-  if (settings.srMode === 'web'){ delete settings.srMode; saveSettings(); }
-  if (why && !settings.tabNoWeb){ settings.tabNoWeb = true; saveSettings(); }   // Google bu cihazda hiç açılamıyor: bir daha deneme
-  CL.downUntil = 0; if (why) toast(t('srCloud')); return true;
-}
-/* Samsung tabletlerde yankı/gürültü engelleme açıkken mikrofon sesi neredeyse sıfır geliyor ("anlaşılmadı").
-   Tabletlerde ham mikrofon kullanılır; bir cihazda üst üste 2 kez anlaşılmazsa diğer moda kendiliğinden geçilir ve hatırlanır. */
-/* Tablet tespiti: Samsung tabletlerde Chrome kendini masaüstü bilgisayar gibi tanıtıyor (Android yazmıyor).
-   Bu yüzden dokunmatik + büyük ekran da tablet sayılır. */
-const IS_TAB = (IS_ANDROID && !/Mobile/i.test(navigator.userAgent)) || ((navigator.maxTouchPoints || 0) > 0 && Math.min(screen.width, screen.height) >= 600 && !/iPhone|Mobile/i.test(navigator.userAgent));
-const micRaw = () => settings.micRaw != null ? !!settings.micRaw : IS_TAB;
-function clMiss(){ CL.miss = (CL.miss || 0) + 1; if (++CL.weak >= 2){ CL.weak = 0; settings.micRaw = !micRaw(); saveSettings(); clTeardown(true); }
-  if (CL.miss >= 4 && IS_TAB && SR && !inClaude){ CL.miss = 0; settings.srMode = 'web'; settings.tabNoWeb = false; saveSettings(); clTeardown(); toast(ot('srDevice')); } }   // iki ayarda da anlaşılmadı: cihazın kendi ses tanımasına geç
-async function clArm(){
-  if (CL.stream && CL.stream.active && CL.proc && CL.raw !== micRaw()) clTeardown(true);
-  if (CL.stream && CL.stream.active && CL.proc) return;
-  clTeardown(true);
-  const raw = micRaw(); CL.raw = raw;
-  try { CL.stream = await navigator.mediaDevices.getUserMedia({ audio: raw ? { echoCancellation:false, noiseSuppression:false, autoGainControl:false } : { echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1 } }); }
-  catch(e){ if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e; CL.stream = await navigator.mediaDevices.getUserMedia({ audio:true }); }   // bazı tabletler bu ayarları kabul etmiyor: sade haliyle dene
-  CL.ctx = CL.ctx || new (window.AudioContext || window.webkitAudioContext)();
-  CL.rate = CL.ctx.sampleRate;
-  CL.src = CL.ctx.createMediaStreamSource(CL.stream); CL.proc = CL.ctx.createScriptProcessor(4096, 2, 1);
-  try { CL.proc.channelCountMode = 'explicit'; CL.proc.channelInterpretation = 'discrete'; } catch(_){}
-  /* Tabletlerde 2 mikrofon var: karıştırınca sesler birbirini silebiliyor. Karıştırmadan, hangisi daha güçlüyse onu al */
-  CL.proc.onaudioprocess = e => { CL.got = (CL.got || 0) + 1; const ib = e.inputBuffer, c0 = ib.getChannelData(0), c1 = ib.numberOfChannels > 1 ? ib.getChannelData(1) : null;
-    let e0 = 0, e1 = 0; for (let i = 0; i < c0.length; i += 8){ e0 += c0[i] * c0[i]; if (c1) e1 += c1[i] * c1[i]; }
-    if (c1 && e1 > 0) CL.ch = (CL.ch || 0) * 0.8 + (e1 > e0 ? 0.2 : 0); const d = new Float32Array(c1 && CL.ch > 0.5 ? c1 : c0);
-    let q = 0; for (let i = 0; i < d.length; i += 4) q += d[i] * d[i]; const lv = Math.sqrt(q / (d.length / 4));
-    if (CL.on){ CL.chunks.push(d); clVad(lv, d.length / CL.rate); }
-    else { CL.pre.push(d); if (CL.pre.length > 5) CL.pre.shift(); CL.noise = CL.noise ? CL.noise * 0.9 + lv * 0.1 : lv; } };
-  CL.src.connect(CL.proc); CL.proc.connect(CL.ctx.destination);
-  try { CL.stream.getTracks()[0].onended = () => clTeardown(true); } catch(_){}
-}
-/* Konuşma bitti mi? Ses kesildikten 0,5 sn sonra parmağı beklemeden gönder (bırakmayı beklemek gecikme yaratıyordu) */
-function clVad(lv, dt){
-  const thr = Math.max(0.006, (CL.noise || 0) * 3);
-  if (lv > thr){ CL.voiced += dt; CL.quiet = 0; } else if (CL.voiced > 0) CL.quiet += dt;
-  if (CL.voiced >= 0.2 && (CL.quiet >= 0.42 || CL.voiced > 3.2) && !CL.sending && listening && engine === 'cloud' && !webFin){ CL.auto = true; setTimeout(cloudStop, 0); }
-  else if (CL.voiced === 0 && CL.chunks.length * dt > 6){ CL.auto = true; setTimeout(cloudStop, 0); }       // 6 sn hiç ses yoksa kapat
-}
-/* Sıra bana gelince: mikrofonu önceden aç (basınca anında kayıt) + ses modelini ısıt (ilk cevap gecikmesin) */
-let clModelAt = 0, clPrepKey = '';
-async function micPrep(key){
-  if (key && key === clPrepKey) return; clPrepKey = key || '';
-  if (!cloudReady() || document.hidden) return;
-  try { const st = navigator.permissions && await navigator.permissions.query({ name:'microphone' }); if (st && st.state === 'granted' && !tabMode() && !webFirst()) { await clArm(); CL.ctx && CL.ctx.state !== 'running' && CL.ctx.resume().catch(() => {}); clearTimeout(CL.keepT); CL.keepT = setTimeout(() => { if (!CL.on) clTeardown(); }, 45000); } } catch(_){}
-  if (!webFirst()) clWarm();
-  if (Date.now() - clModelAt > 50000){ clModelAt = Date.now();      // 0,3 sn sessizlik gönder: sunucudaki ses modeli uyanır
-    try { const n = 4800, buf = new ArrayBuffer(44 + n * 2), dv = new DataView(buf), w = (p, x) => { for (let i = 0; i < x.length; i++) dv.setUint8(p + i, x.charCodeAt(i)); };
-      w(0, 'RIFF'); dv.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true); dv.setUint32(24, 16000, true); dv.setUint32(28, 32000, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); w(36, 'data'); dv.setUint32(40, n * 2, true);
-      fetch(sttUrl() + '/stt?warm=1&lang=' + baseL(lang), { method:'POST', body:new Blob([buf], { type:'audio/wav' }), headers:{ 'Content-Type':'audio/wav' } }).catch(() => {}); } catch(_){} }
-}
-/* Sunucuya giden yolu sıcak tut (ilk istek yavaş olmasın) */
-let clWarmAt = 0;
-function clWarm(){ if (Date.now() - clWarmAt < 50000) return; clWarmAt = Date.now(); try { fetch(sttUrl() + '/', { mode:'no-cors', cache:'no-store' }).catch(() => {}); } catch(_){} }
-function clTeardown(keepCtx){
-  clearTimeout(CL.keepT); CL.on = false; CL.pre = [];
-  try { if (CL.proc){ CL.proc.disconnect(); CL.proc.onaudioprocess = null; } if (CL.src) CL.src.disconnect(); } catch(_){}
-  try { CL.stream && CL.stream.getTracks().forEach(x => x.stop()); } catch(_){}
-  CL.proc = CL.src = CL.stream = null;
-  if (!keepCtx && CL.ctx){ try { CL.ctx.suspend(); } catch(_){} }
-}
-document.addEventListener('visibilitychange', () => { if (document.hidden){ clTeardown(); sfxStop(); } });
-async function cloudStart(){
-  engine = 'cloud'; webReady = false; webFin = false; setListening(true);
-  CL.starting = (async () => {
-    clearTimeout(CL.keepT);
-    await clArm();
-    if (CL.ctx.state !== 'running') await CL.ctx.resume();
-    CL.chunks = CL.pre.slice(-4); CL.pre = []; CL.voiced = 0; CL.quiet = 0; CL.auto = false; CL.on = true; clWarm();          // basmadan hemen önceki ~0,3 sn de dahil
-    webReady = true; if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){} micLabel();
-    const g0 = CL.got || 0; clearTimeout(CL.dogT);
-    CL.dogT = setTimeout(() => { if (!(CL.on && listening && engine === 'cloud') || (CL.got || 0) > g0) return;   // ses akmıyor (bazı tabletler): telefonun kendi tanımasına geç
-      CL.on = false; clTeardown(); CL.downUntil = Date.now() + 10 * 60000; listening = false; setListening(false);
-      if (SR && !inClaude && GR.ptt){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
-      $('msg').textContent = ot('srRetry'); toast(ot('srRetry')); }, 900);
-  })();
-  try { await CL.starting; }
-  catch(e){ CL.starting = null; setListening(false); clTeardown(true);
-    if (e && e.name === 'NotAllowedError'){ $('msg').textContent = t('micDenied'); toast(t('micDenied')); return; }
-    if (SR && !inClaude){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
-    $('msg').textContent = ot('micBusy'); toast(ot('micBusy')); }
-}
-function cloudRelease(){ CL.on = false; clearTimeout(CL.keepT); CL.keepT = setTimeout(() => clTeardown(), 45000); }   // 45 sn kullanılmazsa mikrofon kapanır
-function toWav(chunks, rate){
-  const n = chunks.reduce((a, c) => a + c.length, 0), all = new Float32Array(n); let o = 0; chunks.forEach(c => { all.set(c, o); o += c.length; });
-  // sessizliği kes: 20 ms'lik parçaların ses seviyesine bak
-  const fr = Math.max(1, Math.round(rate * 0.02)), nf = Math.floor(n / fr), rms = new Float32Array(nf); let top = 0;
-  for (let f = 0; f < nf; f++){ let q = 0; for (let i = f * fr; i < (f + 1) * fr; i++) q += all[i] * all[i]; rms[f] = Math.sqrt(q / fr); if (rms[f] > top) top = rms[f]; }
-  const thr = Math.max(0.003, top * 0.1); let f0 = 0, f1 = nf - 1, voiced = 0;
-  while (f0 < nf && rms[f0] < thr) f0++; while (f1 > f0 && rms[f1] < thr) f1--;
-  for (let f = f0; f <= f1; f++) if (rms[f] >= thr) voiced++;
-  const pad = Math.round(rate * 0.25), st = Math.max(0, f0 * fr - pad), en = Math.min(n, (f1 + 1) * fr + pad);
-  const cut = nf ? all.subarray(st, en) : all, cn = cut.length;
-  const R = 16000, ratio = rate / R, m = Math.floor(cn / ratio), pcm = new Int16Array(m);
-  let peak = 0; for (let i = 0; i < cn; i++) peak = Math.max(peak, Math.abs(cut[i]));
-  const g = peak > 0.004 && peak < 0.6 ? 0.9 / peak : 1;            // sessiz kayıtları yükselt
-  for (let i = 0; i < m; i++){ const a = Math.floor(i * ratio), b = Math.min(cn, Math.floor((i + 1) * ratio)); let s = 0; for (let j = a; j < b; j++) s += cut[j]; const v = Math.max(-1, Math.min(1, (s / Math.max(1, b - a)) * g)); pcm[i] = v < 0 ? v * 0x8000 : v * 0x7fff; }
-  const buf = new ArrayBuffer(44 + pcm.length * 2), dv = new DataView(buf), w = (p, str) => { for (let i = 0; i < str.length; i++) dv.setUint8(p + i, str.charCodeAt(i)); };
-  w(0, 'RIFF'); dv.setUint32(4, 36 + pcm.length * 2, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
-  dv.setUint32(24, R, true); dv.setUint32(28, R * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); w(36, 'data'); dv.setUint32(40, pcm.length * 2, true);
-  new Int16Array(buf, 44).set(pcm); return { blob:new Blob([buf], { type:'audio/wav' }), secs:m / R, peak, voiced:voiced * 0.02 };
-}
-async function cloudSend(wav, l){
-  const ex = expectedLetter() || '', S = NAMESET[l], loc = LANGS[l] ? LANGS[l].locale : 'tr', used = saidKeys(), hint = [];
-  if (S && ex){ const all = [...S].filter(w => w[0] && w[0].toLocaleUpperCase(loc) === ex && !used.has(w)); for (let i = 0; i < 6 && all.length; i++){ const w = all.splice(Math.floor(Math.random() * all.length), 1)[0]; hint.push(w.split(' ').map(x => x[0].toLocaleUpperCase(loc) + x.slice(1)).join(' ')); } }
-  const q = `lang=${baseL(l)}&kind=${kindOf(l)}&letter=${encodeURIComponent(ex)}&hint=${encodeURIComponent(hint.join(', '))}`;
-  let last;
-  for (let k = 0; k < 2; k++){                                      // 1 kez yeniden dene
-    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), k ? 12000 : 10000);
-    try { const r = await fetch(sttUrl() + '/stt?' + q, { method:'POST', body:wav.blob, headers:{ 'Content-Type':'audio/wav' }, signal:ctl.signal });
-      const j = await r.json(); if (!j.ok){ const er = new Error(j.err || 'stt'); if (j.err === 'no-ai' || /izin yok/.test(j.err || '')) throw Object.assign(er, { hard:true }); throw er; }
-      return j.text || ''; }
-    catch(e){ last = e; if (e.hard || navigator.onLine === false) break; await new Promise(r => setTimeout(r, 350)); }
-    finally { clearTimeout(to); }
-  }
-  throw last;
-}
-async function cloudStop(){
-  if (CL.sending) return;
-  try { if (CL.starting) await CL.starting; } catch(_){}
-  if (CL.sending) return;
-  const chunks = CL.chunks; CL.chunks = []; cloudRelease();
-  if (!listening || engine !== 'cloud'){ return; }
-  CL.sending = true; const t0 = performance.now();
-  webFin = true; micLabel(); if (navigator.vibrate && CL.auto) try { navigator.vibrate(15); } catch(_){}
-  const wav = chunks.length ? toWav(chunks, CL.rate) : null;
-  return clDeliver(wav, t0, chunks.length > 8);
-}
-async function clDeliver(wav, t0, enough){
-  const dbg = w => { if ((typeof isAdminUser !== 'undefined' && isAdminUser) || IS_TAB) try { const m = '🔧 v' + APP_V + ' · ' + (CL.raw === 'tab' ? 'tablet' + (CL.decErr ? ' hata:' + CL.decErr : '') : CL.raw ? 'ham' : 'filtre') + ' · tepe ' + (w ? w.peak.toFixed(3) : '-') + ' · ses ' + (w ? w.voiced.toFixed(2) : '-') + 'sn · ' + CL.rate + 'Hz · kanal ' + (CL.ch > 0.5 ? 2 : 1) + ' · cevap: ' + (CL.lastTxt || '—'); $('msg').textContent = t('cloudNone') + '  ' + m; toast(m); } catch(_){} };
-  if (!wav || wav.voiced < 0.12 || wav.peak < 0.008){ CL.sending = false; webFin = false; setListening(false); if (wav && enough || !wav && CL.raw === 'tab'){ $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); dbg(wav); clMiss(); } return; }
-  CL.lastTxt = '';
-  try { let txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').replace(/\s+/g, ' ').trim();
-    CL.fails = 0; CL.lastTxt = txt;
-    // Whisper sessizlikte bilinen uydurma cümleler üretir: bunları at; kısa isim cevabında 4 kelimeden uzun cümleyi de kabul etme
-    txt = txt.replace(/^(isim|ad|şehir|şəhər|ülke|ölkə|isimler|adlar|şehirler|şəhərlər|ülkeler|ölkələr)\s+/i, '');
-    if (/altyaz|abone ol|izlediğiniz|teşekkür|takip et|M\s*K\b|subtit|amara|thank you|музыка|beğen/i.test(txt) || txt.split(/\s+/).length > 4) txt = '';
-    if (typeof isAdminUser !== 'undefined' && isAdminUser) try { toast('⏱ ' + ((performance.now() - t0) / 1000).toFixed(1) + ' sn · ' + (txt || '—')); } catch(_){}
-    if (txt){ CL.weak = 0; CL.miss = 0; SAY_LAG = performance.now() - t0; pend.push(txt); flushPhrase(); SAY_LAG = 0; } else { $('msg').textContent = t('cloudNone'); toast(t('cloudNone')); dbg(wav); clMiss(); }
-  } catch(e){
-    let m;
-    if (navigator.onLine === false) m = t('netErr');
-    else if (String(e && e.message) === 'no-ai'){ m = t('cloudOff'); settings.srMode = 'web'; saveSettings(); }
-    else m = ot('srRetry');
-    $('msg').textContent = m; toast(m);
-  }
-  CL.sending = false; webFin = false; setListening(false);
-}
-/* ===== Tablet için ayrı kayıt yolu: canlı ses işleme yerine cihazın kendi kaydedicisi (MediaRecorder).
-   Basınca mikrofon açılır, bırakınca kayıt biter, kayıt çözülüp sunucuya gönderilir. ===== */
-const TB = { st:null, mr:null, parts:[], t:null, starting:null };
-/* Her cihazda önce Google ses tanıması (doğrudan, sunucu köprüsü yok) */
-const webFirst = () => !!SR && !inClaude && !settings.tabNoWeb && navigator.onLine !== false;
-const tabMode = () => IS_TAB && !!window.MediaRecorder && settings.micTab !== false;
-function tabKill(){ clearTimeout(TB.t); try { if (TB.mr && TB.mr.state !== 'inactive') TB.mr.stop(); } catch(_){} try { TB.st && TB.st.getTracks().forEach(x => x.stop()); } catch(_){} TB.mr = TB.st = null; }
-async function tabStart(){
-  engine = 'tab'; webReady = false; webFin = false; setListening(true); CL.raw = 'tab'; CL.decErr = '';
-  TB.starting = (async () => {
-    let st; try { st = await navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:true } }); }
-    catch(e){ if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e; st = await navigator.mediaDevices.getUserMedia({ audio:true }); }
-    if (!listening || engine !== 'tab'){ st.getTracks().forEach(x => x.stop()); return; }
-    TB.st = st; TB.parts = []; const mr = new MediaRecorder(st); TB.mr = mr;
-    mr.ondataavailable = e => { if (e.data && e.data.size) TB.parts.push(e.data); };
-    mr.start(200); clWarm();
-    webReady = true; if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){} micLabel();
-    clearTimeout(TB.t); TB.t = setTimeout(() => { if (listening && engine === 'tab' && !webFin){ webFin = true; micLabel(); tabStop(); } }, 6000);   // en fazla 6 sn
-  })();
-  try { await TB.starting; }
-  catch(e){ TB.starting = null; tabKill(); setListening(false);
-    const m = e && e.name === 'NotAllowedError' ? t('micDenied') : ot('micBusy'); $('msg').textContent = m; toast(m); }
-}
-async function tabStop(){
-  if (CL.sending) return;
-  try { if (TB.starting) await TB.starting; } catch(_){ return; }
-  if (!listening || engine !== 'tab' || !TB.mr){ return; }
-  CL.sending = true; const t0 = performance.now(); webFin = true; micLabel();
-  const mr = TB.mr, done = new Promise(r => { mr.onstop = r; setTimeout(r, 1500); });
-  try { mr.requestData(); } catch(_){} try { mr.stop(); } catch(_){}
-  await done; const parts = TB.parts; TB.parts = []; const type = mr.mimeType || 'audio/webm'; tabKill();
-  let wav = null;
-  try { const ab = await new Blob(parts, { type }).arrayBuffer();
-    const ctx = CL.ctx || (CL.ctx = new (window.AudioContext || window.webkitAudioContext)());
-    const buf = await new Promise((res, rej) => { const p = ctx.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); });
-    let ch = buf.getChannelData(0); CL.ch = 0;
-    if (buf.numberOfChannels > 1){ const c1 = buf.getChannelData(1); let e0 = 0, e1 = 0; for (let i = 0; i < ch.length; i += 16){ e0 += ch[i] * ch[i]; e1 += c1[i] * c1[i]; } if (e1 > e0){ ch = c1; CL.ch = 1; } }
-    CL.rate = buf.sampleRate; wav = toWav([new Float32Array(ch)], buf.sampleRate);
-  } catch(e){ CL.decErr = (e && (e.name || e.message)) || 'çözülemedi'; }
-  return clDeliver(wav, t0, parts.length > 2);
-}
-function startListening(){
-  $('msg').textContent = '';
-  if (inClaude && dict){
-    engine = 'dict'; setListening(true);
-    // Claude'un ses tanıması Azerbaycancayı düzgün tanımıyor; Türkçe tanıma şiveye en yakını.
-    // Duyulan isim sonra Azerbaycan listesine göre doğru yazılışa çevriliyor.
-    const useLang = 'tr';
-    dict.start({ language: useLang }).then(() => { micLang = useLang; drawWheel(); }).catch(err => {
-      setListening(false);
-      const code = err && err.code;
-      if (code === 'unavailable' && baseL(useLang) === 'az'){
-        dictFallback.az = 'tr';
-        $('msg').textContent = t('azSRNo');
-      } else if (code === 'not_granted'){
-        $('msg').textContent = t('micDenied');
-      } else if (code !== 'stopped'){
-        $('msg').textContent = t('micNA');
-      }
-    });
-    return;
-  }
-  /* Tablet: önce cihazın kendi Google ses tanıması (Chrome'un yerleşik tanıması, büyük web oyunlarının da kullandığı yol).
-     O hiç açılamazsa bir daha denenmez, tablet kayıt yoluna geçilir. */
-  if (webFirst()){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
-  if (tabMode() && cloudReady()){ tabStart(); return; }
-  if (cloudReady()){ cloudStart(); return; }
-  if (SR && !inClaude){ try { srFails = 0; startWebSpeech(); return; } catch(_){} }
-  if (cloudCap()){ cloudStart(); return; }
-  kbFallback(t('kbHint'));
-}
-function stopListening(){
-  flushPhrase();
-  if (!listening) return;
-  if (engine === 'web' && rec){ listening = false; webFin = false; clearTimeout(webFinT); clearTimeout(webIdleT); try { rec.onend = null; rec.abort(); } catch(_){} }
-  if (engine === 'dict' && dict){ dict.stop().catch(()=>{}); }
-  if (engine === 'cloud'){ CL.chunks = []; CL.on = false; cloudRelease(); }
-  if (engine === 'tab') tabKill();
-  setListening(false);
-}
+const CL = { sending:false };
+const cloudReady = () => false;
+function setListening(){ listening = false; }
+function micLabel(){}
+function micPrep(){}
+function primeMic(){}
+function startListening(){}
+function stopListening(){ flushPhrase(); }
+function finishWeb(){} function cloudStop(){} function tabStop(){} function micFix(){}
 
 /* ---------- Events ---------- */
 $('spinBtn').onclick = spin;
-/* Mikrofon takılırsa: tanımayı tamamen kapatıp izni ve donanımı yokla, sonra yeniden aç */
-async function micFix(){
-  try { if (rec){ rec.onend = null; rec.abort(); } } catch(_){}
-  stopListening(); rec = null; webIgnore = false; clearTimeout(webIdleT); pend = []; $('interim').textContent = '';
-  if (settings.azSR){ delete settings.azSR; saveSettings(); }
-  const d = document.createElement('div'); d.className = 'nm-ask mic-diag';
-  d.innerHTML = `<div><p><b>${t('diagT')}</b></p><div class="dg-rows"></div><p class="dg-say"></p><p class="dg-heard"></p><p class="dg-res"></p><small class="dg-note"></small><div class="row2" style="margin-top:12px"><button class="no">${t('diagClose')}</button><button class="del again">${t('diagAgain')}</button></div></div>`;
-  document.body.appendChild(d);
-  const rows = d.querySelector('.dg-rows'), row = (k, v) => rows.insertAdjacentHTML('beforeend', `<div class="dg-row"><span>${k}</span><b>${v}</b></div>`);
-  let trec = null; const close = () => { try { if (trec){ trec.onend = null; trec.abort(); } } catch(_){} d.remove(); };
-  d.onclick = e => { if (e.target === d || e.target.closest('.no')) close(); else if (e.target.closest('.again')){ close(); micFix(); } };
-  const ua = navigator.userAgent, br = /SamsungBrowser/.test(ua) ? 'Samsung Internet' : /CriOS|Chrome/.test(ua) ? 'Chrome' : /Firefox|FxiOS/.test(ua) ? 'Firefox' : /Safari/.test(ua) ? 'Safari' : '?';
-  const os = /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android ' + ((ua.match(/Android ([\d.]+)/) || [])[1] || '') : '';
-  const standalone = window.matchMedia && matchMedia('(display-mode: standalone)').matches;
-  row('📱', `${os} · ${br}${standalone ? ' · app' : ''}`);
-  row(t('diagSR'), SR ? '✅ ' + t('diagYes') : '❌ ' + t('diagNo'));
-  let perm = '?';
-  try { const st = await navigator.mediaDevices.getUserMedia({ audio:true }); st.getTracks().forEach(x => x.stop()); perm = '✅'; micPrimed = true; } catch(e){ perm = '❌ ' + (e && e.name || ''); }
-  row(t('diagPerm'), perm);
-  const sl = speechLangOf(lang); row(t('diagLang'), sl);
-  if (!SR){ d.querySelector('.dg-res').textContent = t('kbHint'); d.querySelector('.dg-note').textContent = t('diagShot'); return; }
-  if (perm !== '✅'){ d.querySelector('.dg-res').textContent = t('micDenied'); d.querySelector('.dg-note').textContent = t('diagShot'); return; }
-  const say = d.querySelector('.dg-say'), heard = d.querySelector('.dg-heard'), res = d.querySelector('.dg-res'), log = [];
-  say.textContent = '🎙 ' + t('diagSay');
-  try {
-    trec = new SR(); trec.lang = sl; trec.continuous = false; trec.interimResults = true; trec.maxAlternatives = 3;
-    let got = '', fin = false;
-    const done = () => { if (fin) return; fin = true; say.textContent = '';
-      heard.innerHTML = `${t('diagHeard')}: <b>${escH(got || t('diagNone'))}</b>`;
-      if (got){ res.textContent = t('diagOk'); if (settings.srMode){ delete settings.srMode; saveSettings(); } row(t('diagMode'), t('diagModeWeb')); d.querySelector('.dg-note').textContent = '[' + log.join(' › ') + ']'; return; }
-      if (!cloudReady()){ res.textContent = t('diagBad'); d.querySelector('.dg-note').textContent = t('diagShot') + ' [' + log.join(' › ') + ']'; return; }
-      cloudTest(); };
-    const cloudTest = async () => {
-      say.textContent = '🎙 ' + t('diagCloudSay'); res.textContent = '';
-      try {
-        const st = await navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true, channelCount:1 } });
-        const ctx = new (window.AudioContext || window.webkitAudioContext)(); await ctx.resume();
-        const src = ctx.createMediaStreamSource(st), pr = ctx.createScriptProcessor(4096, 1, 1), ch = [];
-        pr.onaudioprocess = e => ch.push(new Float32Array(e.inputBuffer.getChannelData(0))); src.connect(pr); pr.connect(ctx.destination);
-        say.textContent = '🔴 ' + t('diagCloudSay'); if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){}
-        await new Promise(r => setTimeout(r, 4000));
-        pr.disconnect(); src.disconnect(); st.getTracks().forEach(x => x.stop()); const rate = ctx.sampleRate; try { ctx.close(); } catch(_){}
-        say.textContent = '⏳ ' + ot('pttWait');
-        const wav = toWav(ch, rate), txt = (await cloudSend(wav, lang)).replace(/[.,!?;:"“”]+/g, ' ').trim();
-        say.textContent = ''; heard.innerHTML = `${t('diagHeard')} (${t('diagCloud')}): <b>${escH(txt || t('diagNone'))}</b>`;
-        if (txt){ settings.srMode = 'cloud'; saveSettings(); res.textContent = t('diagOk'); row(t('diagMode'), t('diagModeCloud')); }
-        else res.textContent = t('cloudNone');
-        d.querySelector('.dg-note').textContent = '[' + log.join(' › ') + ' | cloud ' + wav.secs.toFixed(1) + 's ' + wav.peak.toFixed(2) + ']';
-      } catch(e){ say.textContent = ''; res.textContent = String(e && e.message) === 'no-ai' ? t('cloudOff') : t('cloudErr'); d.querySelector('.dg-note').textContent = t('diagShot') + ' [' + log.join(' › ') + ' | ' + (e && (e.name || e.message)) + ']'; }
-    };
-    ['start','audiostart','soundstart','speechstart','speechend','audioend'].forEach(ev => trec.addEventListener(ev, () => { log.push(ev.replace('start','↑').replace('end','↓')); if (ev === 'audiostart'){ say.textContent = '🔴 ' + t('diagSay'); if (navigator.vibrate) try { navigator.vibrate(25); } catch(_){} } }));
-    trec.onresult = e => { got = [...e.results].map(r => r[0].transcript).join(' ').trim(); heard.innerHTML = `${t('diagHeard')}: <b>${escH(got)}</b>`; };
-    trec.onerror = e => { log.push('err:' + e.error); if (e.error === 'service-not-allowed') res.textContent = t('srvNA'); };
-    trec.onend = () => { log.push('end'); done(); };
-    trec.start(); setTimeout(() => { try { trec.stop(); } catch(_){} setTimeout(done, 2500); }, 6000);
-  } catch(e){ log.push('ex:' + (e && e.message || e)); res.textContent = t('diagBad'); d.querySelector('.dg-note').textContent = t('diagShot') + ' [' + log.join(' › ') + ']'; }
-}
-$('micFix').onclick = () => micFix();
-
 $('resetBtn').onclick = resetSession;
 $('mYes').onclick = () => { $('modal').classList.remove('show'); resetSession(); };
 $('mNo').onclick = () => $('modal').classList.remove('show');
@@ -3988,7 +3666,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '186';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '190';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -4335,9 +4013,9 @@ async function admAnn(){
 }
 
 const OTX = {
-  tr:{crNameL:'Oda adı', crNamePh:'Örn: Akşam turnuvası', crVisL:'Giriş', visOpen:'🌍 Herkese açık', visLock:'🔒 Şifreli', crPinPh:'4 haneli şifre', errName:'Odaya bir ad ver (en az 2 harf)', errPin:'Şifre 4 rakam olmalı', pinAskT:'🔒 Bu oda şifreli', pinAskS:'Oda sahibinin verdiği 4 haneli şifreyi yaz', pinBad:'Şifre yanlış, tekrar dene', pinShow:'Şifre', roomsT:'Odalar', frTag:'Arkadaşın', ok:'Tamam', srDevice:'Ses tanıma cihazın kendi sistemine geçti', stLoseR:'TURU KAYBETTİN', tWonMe:'Takımın turu kazandı!', gWonMe:'Oyunu kazandın!', gLostMe:'Oyunu kaybettin', tHint:'Diğer takıma geçmek için o takımdaki boş alana çift dokun.', nJoin:x=>`👋 @${x} odaya katıldı`, nJoinT:(x,t)=>`👋 @${x} ${t} takımına katıldı`, nMove:(x,t)=>`⇄ @${x} ${t} takımına geçti`, nQuitR:x=>`🚪 @${x} odadan ayrıldı`, nQuitG:x=>`🚪 @${x} oyunu terk etti`, nKick:x=>`⛔ @${x} odadan çıkarıldı`, goNear:'Yanına git', noRoomSpace:'Odada yer yok', goNearT:(x,t)=>`@${x} odasına, ${t} takımına katılıyorsun…`, hostB:'Oda başkanı', rcLock:x=>`Mesajların sadece ${x} takımına gider, rakip takım göremez.`, rcToL:'Kime:', rcPhTo:x=>`${x} takımına yaz…`, rcAllT:'Herkese', rcPhAll:'Herkese yaz (iki takım da görür)…', rcPhTeam:x=>`Takımına yaz (${x})…`, endClose:'Kapat', endSee:'Sonuçlar', tCrNote:'İki takım: 🏔️ Kafkas ve 🌲 Toros. Her takımda 2–4 kişi. Sıra takımlar arasında döner: Kafkas, Toros, Kafkas, Toros…', typeL:'Oda türü', typeS:'👤 Herkes tek', typeT:'👥 Takım modu', tnA:'Kafkas', tnB:'Toros', tJoin:'Bu takıma geç', tEmpty:'Boş yer', tNeed:'Her takımda en az 2 kişi olmalı', tFull:'Bu takım dolu (en fazla 4 kişi)', tWonR:x=>`🏆 ${x} turu kazandı`, tWonG:x=>`🏆 ${x} kazandı!`, tTie:'🤝 Berabere!', tName:'Takım adı', tMove:'Diğer takıma al', tRoomT:'👥 Takım', tWinS:(x,n)=>`${x} takımına +${n} puan`, tPts:'takım puanı', tVs:'karşı', srRetry:'Anlaşılamadı, tekrar söyle.', srToWeb:'Ses sunucusu yanıt vermedi, telefonun kendi ses tanımasına geçildi. Tekrar söyle.', fastT:'Hızlı cevap!', cbT:'Oyunu kapat?', cbP:'Oyun bitecek, puanlar ve söylenenler silinecek.', cbNo:'Hayır', cbYes:'Evet, kapat', giTrU:'Ülkeler', giAzU:'Ülkeler · AZ', giTrK:'Karışık', giAzK:'Karışık · AZ', modeU:'🌍 Ülkeler', modeK:'🎲 Karışık', cat_n:'👤 Bu tur: İsim', cat_s:'🏙 Bu tur: Şehir', cat_u:'🌍 Bu tur: Ülke', mixCat:c=>c, giTrS:'Türk şehirleri', giAzS:'Azeri şehirleri', modeL:'Oyun türü', modeN:'👤 İsimler', modeS:'🏙 Şehirler', liteT:'⚡ Hafif görünüm', liteS:'Zayıf telefonlarda kasmayı önler (süsler kapanır)', invPickT:'Davet et', invSelAll:'Hepsini seç', invSelGo:n=>`Seçilenleri davet et${n ? ' (' + n + ')' : ''}`, invSelDone:n=>`${n} kişiye davet gönderildi`, invNone:'Davet edilebilecek kimse yok', offSetT:'Oyun ayarları', offStart:'▶ Başla', offNewGame:'Oyun bitti, yeni oyun başlıyor', offSpin:'🎡 Sıra sende: çarkı çevir!', offSpinP:a=>`🎡 Sıra: <b>${a}</b> · çarkı çevir!`, msgTitleD:'Mesajlar', dockAll:'Tümü', dockEmpty:'Yeni mesaj yok', offChatT:'Genel mesajlaşma', offChatPh:'Herkese mesaj yaz…', offChatLogin:'Mesajları görmek için giriş yap', offTagG:'Genel', offTagF:'Arkadaşlar', offTagP:'Özel', offTurn:(a,x)=>`🎤 Sıra: <b>${a}</b> · <b>${x}</b> harfiyle isim söyle`, secShort:'sn', hereY:'Odada', hereN:'Odada değil', startAbsent:x=>`${x} şu an odada değil. Onlar olmadan başlatmak için tekrar ▶ Başlat'a bas.`, gameStartedPull:'🎮 Oyun başladı!', pttPrep:'Hazırlanıyor… bir an bekle', pttWait:'Yazıya çevriliyor…', micNet:'Ses tanıma için internet gerekiyor. İsmi yazarak da gönderebilirsin.', micBusy:'Mikrofon başka bir uygulama tarafından kullanılıyor. O uygulamayı kapatıp tekrar dene.', azSRFallback:'Bu telefonda Azerbaycanca ses tanıma yok; Türkçe tanıma ile devam ediliyor, isimler Azerbaycan listesine göre düzeltilecek.', instT:'Uygulamayı yükle', instS:'Ana ekrana tam ekran uygulama olarak ekle', instGo:'Yükle', instDone:'Uygulama yüklendi 🎉', instHowT:'Uygulamayı yükle', instHow:'1. Ana ekrandaki eski <b>Harf Çarkı</b> simgesine basılı tut ve <b>Kaldır</b> de.<br>2. Chrome’da sağ üstteki <b>⋮</b> menüsüne bas.<br>3. <b>Uygulamayı yükle</b> (ya da Ana ekrana ekle) seç.', oldT:'Uygulamanın yeni sürümünü yükle', oldP:'Eski kısayoldan açtın. Üstteki şerit ve X olmadan tam ekran açılması için yeni sürümü yükle.', netWeak:'İnternet bağlantısı zayıf', netGood:'Bağlantı düzeldi', netDown:'İnternet bağlantısı kesildi', netRetry:n=>`Yeniden bağlanıyor… (${n}. deneme)`, netUp:'İnternete yeniden bağlandı', outConn:x=>`📶 @${x} bağlantısı koptu, oyundan çıkarıldı`, connKickT:'Bağlantın koptu', connKickP:'İnternet bağlantın uzun süre (1,5 dakikadan fazla) kesik kaldığı için oyundan çıkarıldın. Bağlantın düzelince tekrar katılabilirsin.', admWarn:'Uyar', admDelMsgs:'Açık mesajlarını sil', admWarnPh:'Uyarı mesajını yaz…', admWarnSend:'Uyarıyı gönder', admWarned:x=>`@${x} uyarıldı`, admMsgsDeleted:n=>`${n} mesaj silindi`, wp1:'Lütfen küfürlü ve kırıcı mesaj yazma.', wp2:'Spam yapma, aynı mesajı tekrar tekrar gönderme.', wp3:'Diğer oyunculara saygılı ol.', wp4:'Uygunsuz profil fotoğrafı kullanma.', ntWarn:x=>`⚠️ Yönetici uyarısı: ${x} Tekrarı halinde hesabına kısıtlama uygulanabilir.`, ntRepDone:x=>`👍 @${x} hakkındaki şikayetin incelendi ve gereken işlem yapıldı. Teşekkürler!`, ntEvWin:x=>`🏆 Tebrikler! «${x}» etkinliğinin kazananı oldun!`, dHist:'Ceza geçmişi', dNoHist:'Hiç işlem yapılmamış.', mtT:'Bakımdayız 🔧', mtP:'Uygulamayı daha iyi hale getiriyoruz. Kısa süre sonra geri döneceğiz!', mtLocal:'Bu sırada tek telefonda oyna', evTitle:'Etkinlikler', evTour:'Turnuva', evEvent:'Etkinlik', evLive:'Şimdi devam ediyor', evIn:x=>`${x} sonra başlıyor`, evDone:'Sona erdi', evWinner:'Kazanan', cdDH:(d,h)=>`${d} gün ${h} sa`, cdHM:(h,m)=>`${h} sa ${m} dk`, cdM:m=>`${m} dk`, ntT:'Bildirimler', ntS:'Yönetici duyuruları ve hesabınla ilgili bildirimler', ntNote:'Yöneticinin herkese gönderdiği duyurular ve hesabınla ilgili işlemler burada.', ntEmpty:'Henüz bildirim yok.', ntAnnT:'Duyuru', ntMeT:'Hesabınla ilgili', ntKick:r=>`🚪 Yönetici seni ${r} odasından çıkardı.`, ntBan:d=>`⛔ Hesabın kurallara uymadığı için ${d} tarihine kadar engellendi.`, ntBanInf:'⛔ Hesabın kurallara uymadığı için kalıcı olarak engellendi.', ntUnban:'✅ Hesabının engeli kaldırıldı. Tekrar hoş geldin!', ntMute:d=>`🔇 Yönetici seni ${d} tarihine kadar susturdu. Bu süre boyunca sohbetlere mesaj yazamazsın.`, ntRmute:r=>`🔇 Yönetici seni ${r} odasında susturdu. Oyun bitene ya da odadan çıkana kadar o odada yazamazsın.`, ntUnmute:'🔊 Susturman kaldırıldı, artık mesaj yazabilirsin.', ntNoPhoto:'🖼 Profil fotoğrafın kurallara uymadığı için yönetici tarafından kaldırıldı.', ntRename:n=>`✏️ Kullanıcı adın yönetici tarafından @${n} olarak değiştirildi.`, admInRoom:c=>`Şu an ${c} odasında`, admMuteAll:'Her yerde sustur', admBanAll:'Hesabı engelle', admProfile:'Profil', h1:'1 saat', h24:'24 saat', d7:'7 gün', d30:'30 gün', dInf:'Kalıcı', hostTools:'Oda yönetimi', muteBtn:'Odada sustur', unmuteBtn:'Susturmayı kaldır', kickBtn:'Odadan at', muteInfo:'Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamaz.', muteDone:x=>`@${x} susturuldu`, unmuteDone:x=>`@${x} artık yazabilir`, mutedRoomHost:'🔇 Oda kurucusu seni susturdu. Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamazsın.', mutedRoomAdm:'🔇 Yönetici tarafından susturuldunuz. Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamazsınız.', mutedG:d=>`🔇 Yönetici tarafından susturuldunuz. ${d} tarihine kadar hiçbir sohbette mesaj yazamazsınız.`, mutedUntilT:d=>`${d} tarihine kadar susturulmuş`, admRoomMute:c=>`Odada sustur (${c})`, admG1:'1 saat sustur', admG24:'24 saat sustur', admG7:'7 gün sustur', admGUnmute:'Susturmayı kaldır', admB:'Yönetici', resName:'Bu kullanıcı adı ayrılmış, başka bir ad seç', admTools:'Yönetici araçları', admDetail:'Detayları gör', admKick:c=>`Odadan at (${c})`, admBan7:'7 gün engelle', admBan30:'30 gün engelle', admBanInf:'Kalıcı engelle', admUnban:'Engeli kaldır', admNoPhoto:'Fotoğrafı kaldır', admRen:'Adını değiştir', admSave:'Kaydet', admKicked:x=>`@${x} odadan atıldı`, admBanned:x=>`@${x} engellendi`, admUnbanned:x=>`@${x} engeli kaldırıldı`, admPhotoDone:'Fotoğraf kaldırıldı', admBanForever:'Kalıcı olarak engelli', admBanUntil:d=>`${d} tarihine kadar engelli`, durM:m=>`${m} dk`, durHM:(h,m)=>`${h} sa ${m} dk`, dAcc:'Hesap', dJoined:'Katıldı', dSeen:'Son görülme', dWhere:'Şu an', dWhereRoom:c=>`🎮 ${c} odasında`, dWhereOn:'🟢 Çevrimiçi (lobide)', dWhereOff:'⚪ Çevrimdışı', dFriends:'Arkadaş sayısı', dGames:'Oyunlar', dG:'oyun', dP:'toplam puan', dW:'birincilik', dT:'oynama süresi', dAvg:'Oyun başına ortalama puan', dNote:'Puan ve birincilik online oyunlardan gelir. Tek telefon oyunları ve tur sayısı 16 Kasım 2026 güncellemesinden sonra sayılır.', dRank:'Sıralama ve kupalar', dReps:n=>`Hakkındaki şikayetler (${n})`, dNoReps:'Hakkında şikayet yok 👍', dBack:'Kişi kartına dön', giTr:'Türkçe isimler', giAz:'Azeri isimleri', giRound:n=>`Tur ${n}`, giRounds:n=>n ? `${n} tur` : 'Harfler bitene kadar', giTime:s=>`${s} sn`, giLeft:n=>`${n} harf kaldı`, cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
+  tr:{crNameL:'Oda adı', crNamePh:'Örn: Akşam turnuvası', crVisL:'Giriş', visOpen:'🌍 Herkese açık', visLock:'🔒 Şifreli', crPinPh:'4 haneli şifre', errName:'Odaya bir ad ver (en az 2 harf)', errPin:'Şifre 4 rakam olmalı', pinAskT:'🔒 Bu oda şifreli', pinAskS:'Oda sahibinin verdiği 4 haneli şifreyi yaz', pinBad:'Şifre yanlış, tekrar dene', pinShow:'Şifre', roomsT:'Odalar', frTag:'Arkadaşın', ok:'Tamam', srDevice:'Ses tanıma cihazın kendi sistemine geçti', stLoseR:'TURU KAYBETTİN', tWonMe:'Takımın turu kazandı!', gWonMe:'Oyunu kazandın!', gLostMe:'Oyunu kaybettin', tHint:'Diğer takıma geçmek için o takımdaki boş alana çift dokun.', nJoin:x=>`👋 @${x} odaya katıldı`, nJoinT:(x,t)=>`👋 @${x} ${t} takımına katıldı`, nMove:(x,t)=>`⇄ @${x} ${t} takımına geçti`, nQuitR:x=>`🚪 @${x} odadan ayrıldı`, nQuitG:x=>`🚪 @${x} oyunu terk etti`, nKick:x=>`⛔ @${x} odadan çıkarıldı`, goNear:'Yanına git', noRoomSpace:'Odada yer yok', goNearT:(x,t)=>`@${x} odasına, ${t} takımına katılıyorsun…`, hostB:'Oda başkanı', rcLock:x=>`Mesajların sadece ${x} takımına gider, rakip takım göremez.`, rcToL:'Kime:', rcPhTo:x=>`${x} takımına yaz…`, rcAllT:'Herkese', rcPhAll:'Herkese yaz (iki takım da görür)…', rcPhTeam:x=>`Takımına yaz (${x})…`, endClose:'Kapat', endSee:'Sonuçlar', tCrNote:'İki takım: 🏔️ Kafkas ve 🌲 Toros. Her takımda 2–4 kişi. Sıra takımlar arasında döner: Kafkas, Toros, Kafkas, Toros…', typeL:'Oda türü', typeS:'👤 Herkes tek', typeT:'👥 Takım modu', tnA:'Kafkas', tnB:'Toros', tJoin:'Bu takıma geç', tEmpty:'Boş yer', tNeed:'Her takımda en az 2 kişi olmalı', tFull:'Bu takım dolu (en fazla 4 kişi)', tWonR:x=>`🏆 ${x} turu kazandı`, tWonG:x=>`🏆 ${x} kazandı!`, tTie:'🤝 Berabere!', tName:'Takım adı', tMove:'Diğer takıma al', tRoomT:'👥 Takım', tWinS:(x,n)=>`${x} takımına +${n} puan`, tPts:'takım puanı', tVs:'karşı', srRetry:'Anlaşılamadı, tekrar söyle.', srToWeb:'Ses sunucusu yanıt vermedi, telefonun kendi ses tanımasına geçildi. Tekrar söyle.', fastT:'Hızlı cevap!', cbT:'Oyunu kapat?', cbP:'Oyun bitecek, puanlar ve söylenenler silinecek.', cbNo:'Hayır', cbYes:'Evet, kapat', giTrU:'Ülkeler', giAzU:'Ülkeler · AZ', giTrK:'Karışık', giAzK:'Karışık · AZ', modeU:'🌍 Ülkeler', modeK:'🎲 Karışık', cat_n:'👤 Bu tur: İsim', cat_s:'🏙 Bu tur: Şehir', cat_u:'🌍 Bu tur: Ülke', mixCat:c=>c, giTrS:'Türk şehirleri', giAzS:'Azeri şehirleri', modeL:'Oyun türü', modeN:'👤 İsimler', modeS:'🏙 Şehirler', liteT:'⚡ Hafif görünüm', liteS:'Zayıf telefonlarda kasmayı önler (süsler kapanır)', invPickT:'Davet et', invSelAll:'Hepsini seç', invSelGo:n=>`Seçilenleri davet et${n ? ' (' + n + ')' : ''}`, invSelDone:n=>`${n} kişiye davet gönderildi`, invNone:'Davet edilebilecek kimse yok', offSetT:'Oyun ayarları', offStart:'▶ Başla', offNewGame:'Oyun bitti, yeni oyun başlıyor', offSpin:'🎡 Sıra sende: çarkı çevir!', offSpinP:a=>`🎡 Sıra: <b>${a}</b> · çarkı çevir!`, msgTitleD:'Mesajlar', dockAll:'Tümü', dockEmpty:'Yeni mesaj yok', offChatT:'Genel mesajlaşma', offChatPh:'Herkese mesaj yaz…', offChatLogin:'Mesajları görmek için giriş yap', offTagG:'Genel', offTagF:'Arkadaşlar', offTagP:'Özel', offTurn:(a,x)=>`✍️ Sıra: <b>${a}</b> · <b>${x}</b> harfiyle isim söyle`, secShort:'sn', hereY:'Odada', hereN:'Odada değil', startAbsent:x=>`${x} şu an odada değil. Onlar olmadan başlatmak için tekrar ▶ Başlat'a bas.`, gameStartedPull:'🎮 Oyun başladı!', pttPrep:'Hazırlanıyor… bir an bekle', pttWait:'Yazıya çevriliyor…', micNet:'Ses tanıma için internet gerekiyor. İsmi yazarak da gönderebilirsin.', micBusy:'Mikrofon başka bir uygulama tarafından kullanılıyor. O uygulamayı kapatıp tekrar dene.', azSRFallback:'Bu telefonda Azerbaycanca ses tanıma yok; Türkçe tanıma ile devam ediliyor, isimler Azerbaycan listesine göre düzeltilecek.', instT:'Uygulamayı yükle', instS:'Ana ekrana tam ekran uygulama olarak ekle', instGo:'Yükle', instDone:'Uygulama yüklendi 🎉', instHowT:'Uygulamayı yükle', instHow:'1. Ana ekrandaki eski <b>Harf Çarkı</b> simgesine basılı tut ve <b>Kaldır</b> de.<br>2. Chrome’da sağ üstteki <b>⋮</b> menüsüne bas.<br>3. <b>Uygulamayı yükle</b> (ya da Ana ekrana ekle) seç.', oldT:'Uygulamanın yeni sürümünü yükle', oldP:'Eski kısayoldan açtın. Üstteki şerit ve X olmadan tam ekran açılması için yeni sürümü yükle.', netWeak:'İnternet bağlantısı zayıf', netGood:'Bağlantı düzeldi', netDown:'İnternet bağlantısı kesildi', netRetry:n=>`Yeniden bağlanıyor… (${n}. deneme)`, netUp:'İnternete yeniden bağlandı', outConn:x=>`📶 @${x} bağlantısı koptu, oyundan çıkarıldı`, connKickT:'Bağlantın koptu', connKickP:'İnternet bağlantın uzun süre (1,5 dakikadan fazla) kesik kaldığı için oyundan çıkarıldın. Bağlantın düzelince tekrar katılabilirsin.', admWarn:'Uyar', admDelMsgs:'Açık mesajlarını sil', admWarnPh:'Uyarı mesajını yaz…', admWarnSend:'Uyarıyı gönder', admWarned:x=>`@${x} uyarıldı`, admMsgsDeleted:n=>`${n} mesaj silindi`, wp1:'Lütfen küfürlü ve kırıcı mesaj yazma.', wp2:'Spam yapma, aynı mesajı tekrar tekrar gönderme.', wp3:'Diğer oyunculara saygılı ol.', wp4:'Uygunsuz profil fotoğrafı kullanma.', ntWarn:x=>`⚠️ Yönetici uyarısı: ${x} Tekrarı halinde hesabına kısıtlama uygulanabilir.`, ntRepDone:x=>`👍 @${x} hakkındaki şikayetin incelendi ve gereken işlem yapıldı. Teşekkürler!`, ntEvWin:x=>`🏆 Tebrikler! «${x}» etkinliğinin kazananı oldun!`, dHist:'Ceza geçmişi', dNoHist:'Hiç işlem yapılmamış.', mtT:'Bakımdayız 🔧', mtP:'Uygulamayı daha iyi hale getiriyoruz. Kısa süre sonra geri döneceğiz!', mtLocal:'Bu sırada tek telefonda oyna', evTitle:'Etkinlikler', evTour:'Turnuva', evEvent:'Etkinlik', evLive:'Şimdi devam ediyor', evIn:x=>`${x} sonra başlıyor`, evDone:'Sona erdi', evWinner:'Kazanan', cdDH:(d,h)=>`${d} gün ${h} sa`, cdHM:(h,m)=>`${h} sa ${m} dk`, cdM:m=>`${m} dk`, ntT:'Bildirimler', ntS:'Yönetici duyuruları ve hesabınla ilgili bildirimler', ntNote:'Yöneticinin herkese gönderdiği duyurular ve hesabınla ilgili işlemler burada.', ntEmpty:'Henüz bildirim yok.', ntAnnT:'Duyuru', ntMeT:'Hesabınla ilgili', ntKick:r=>`🚪 Yönetici seni ${r} odasından çıkardı.`, ntBan:d=>`⛔ Hesabın kurallara uymadığı için ${d} tarihine kadar engellendi.`, ntBanInf:'⛔ Hesabın kurallara uymadığı için kalıcı olarak engellendi.', ntUnban:'✅ Hesabının engeli kaldırıldı. Tekrar hoş geldin!', ntMute:d=>`🔇 Yönetici seni ${d} tarihine kadar susturdu. Bu süre boyunca sohbetlere mesaj yazamazsın.`, ntRmute:r=>`🔇 Yönetici seni ${r} odasında susturdu. Oyun bitene ya da odadan çıkana kadar o odada yazamazsın.`, ntUnmute:'🔊 Susturman kaldırıldı, artık mesaj yazabilirsin.', ntNoPhoto:'🖼 Profil fotoğrafın kurallara uymadığı için yönetici tarafından kaldırıldı.', ntRename:n=>`✏️ Kullanıcı adın yönetici tarafından @${n} olarak değiştirildi.`, admInRoom:c=>`Şu an ${c} odasında`, admMuteAll:'Her yerde sustur', admBanAll:'Hesabı engelle', admProfile:'Profil', h1:'1 saat', h24:'24 saat', d7:'7 gün', d30:'30 gün', dInf:'Kalıcı', hostTools:'Oda yönetimi', muteBtn:'Odada sustur', unmuteBtn:'Susturmayı kaldır', kickBtn:'Odadan at', muteInfo:'Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamaz.', muteDone:x=>`@${x} susturuldu`, unmuteDone:x=>`@${x} artık yazabilir`, mutedRoomHost:'🔇 Oda kurucusu seni susturdu. Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamazsın.', mutedRoomAdm:'🔇 Yönetici tarafından susturuldunuz. Bu oyun bitene ya da odadan çıkana kadar odada mesaj yazamazsınız.', mutedG:d=>`🔇 Yönetici tarafından susturuldunuz. ${d} tarihine kadar hiçbir sohbette mesaj yazamazsınız.`, mutedUntilT:d=>`${d} tarihine kadar susturulmuş`, admRoomMute:c=>`Odada sustur (${c})`, admG1:'1 saat sustur', admG24:'24 saat sustur', admG7:'7 gün sustur', admGUnmute:'Susturmayı kaldır', admB:'Yönetici', resName:'Bu kullanıcı adı ayrılmış, başka bir ad seç', admTools:'Yönetici araçları', admDetail:'Detayları gör', admKick:c=>`Odadan at (${c})`, admBan7:'7 gün engelle', admBan30:'30 gün engelle', admBanInf:'Kalıcı engelle', admUnban:'Engeli kaldır', admNoPhoto:'Fotoğrafı kaldır', admRen:'Adını değiştir', admSave:'Kaydet', admKicked:x=>`@${x} odadan atıldı`, admBanned:x=>`@${x} engellendi`, admUnbanned:x=>`@${x} engeli kaldırıldı`, admPhotoDone:'Fotoğraf kaldırıldı', admBanForever:'Kalıcı olarak engelli', admBanUntil:d=>`${d} tarihine kadar engelli`, durM:m=>`${m} dk`, durHM:(h,m)=>`${h} sa ${m} dk`, dAcc:'Hesap', dJoined:'Katıldı', dSeen:'Son görülme', dWhere:'Şu an', dWhereRoom:c=>`🎮 ${c} odasında`, dWhereOn:'🟢 Çevrimiçi (lobide)', dWhereOff:'⚪ Çevrimdışı', dFriends:'Arkadaş sayısı', dGames:'Oyunlar', dG:'oyun', dP:'toplam puan', dW:'birincilik', dT:'oynama süresi', dAvg:'Oyun başına ortalama puan', dNote:'Puan ve birincilik online oyunlardan gelir. Tek telefon oyunları ve tur sayısı 16 Kasım 2026 güncellemesinden sonra sayılır.', dRank:'Sıralama ve kupalar', dReps:n=>`Hakkındaki şikayetler (${n})`, dNoReps:'Hakkında şikayet yok 👍', dBack:'Kişi kartına dön', giTr:'Türkçe isimler', giAz:'Azeri isimleri', giRound:n=>`Tur ${n}`, giRounds:n=>n ? `${n} tur` : 'Harfler bitene kadar', giTime:s=>`${s} sn`, giLeft:n=>`${n} harf kaldı`, cupLabW:'HAFTA', cupLabM:'AY', chW:'Haftanın Şampiyonu', chM:'Ayın Şampiyonu', chWs:'Hafta şampiyonluğu', chMs:'Ay şampiyonluğu', chNone:'Henüz yok — ilk sen ol!', ptsN:n=>`${n} puan`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} galibiyet`, leadW:'Bu hafta lider', leadM:'Bu ay lider', leadNone:'henüz kimse yok', lbT:'Sıralama', lbWeek:'Bu hafta', lbMonth:'Bu ay', lbEnds:d=>`bitiş: ${d}`, lbEmpty:'Henüz kimse puan almadı. Online oyna, ilk sen ol! 🎡', prevW:'Geçen haftanın şampiyonu', prevM:'Geçen ayın şampiyonu', cupsT:'Kupalarım ve şampiyonluklarım', cupsS:'Ne zaman, hangi kupayı kazandın', cupsOf:x=>`@${x} kupaları`, cupsSee:'kupaları gör ›', cupsNone:'Henüz kupası yok.', cupsNoneMe:'Henüz kupan yok. Haftanın en çok puan toplayanı ol, ilk kupanı kazan! 🏆', stSemi:'YARI FİNAL', stSemiS:p=>`Son 4 kişi kaldınız · Her isim ${p} puan`, stSemiW:p=>`Son 4 kişi kaldı · Her isim ${p} puan`, stTop3:'SON 3', stTop3S:p=>`Son 3 kişi kaldınız · Her isim ${p} puan`, stTop3W:p=>`Son 3 kişi kaldı · Her isim ${p} puan`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ile sen kaldınız · Her isim ${p} puan`, stFinalW:(a,b,p)=>`@${a} ile @${b} karşı karşıya · Her isim ${p} puan`, stWin:'TUR BİRİNCİSİ', stWinMe:b=>`Turu sen kazandın! +${b} bonus puan`, stWinS:(x,b)=>`@${x} · +${b} bonus puan`, ptsChip:n=>`+${n} puan`, upUnf:'Arkadaşlıktan çıkar', upAdd:'Arkadaş ekle', upMsg:'Mesaj yaz', blk:'Engelle', blkSure:'Emin misin? Tekrar bas', unblk:'Engeli kaldır', blkInfo:'Bu kişiyi engelledin. Sana mesaj ve davet gönderemez.', blkDone:x=>`@${x} engellendi`, unblkDone:x=>`@${x} engeli kaldırıldı`, rep:'Şikayet et', repT:x=>`@${x} kişisini şikayet et`, repQ:'Sebebi nedir?', rr_abuse:'Küfür / hakaret', rr_photo:'Uygunsuz fotoğraf', rr_spam:'Spam / rahatsız ediyor', rr_cheat:'Hile yapıyor', rr_other:'Diğer', repPh:'İstersen kısaca açıkla (isteğe bağlı)', repCtx:'Şikayet edilen mesaj:', repSend:'Şikayeti gönder', repDone:'Şikayetin alındı. Teşekkürler 🙏', pvT:'Gizlilik ve engellenenler', pvS:'Kim davet edebilir, engellediğin kişiler', pvInv:'Beni sadece arkadaşlarım davet edebilsin', pvInvS:'Açıksa tanımadığın kişiler seni odaya çağıramaz', pvBlk:'Engellenenler', pvNone:'Kimseyi engellemedin.', pvOn:'Artık sadece arkadaşların davet edebilir', pvOff:'Herkes davet edebilir', phT:'Profil fotoğrafı', phHint:'Parmağınla sürükleyip kaydır, iki parmakla ya da çubukla büyüt', phSave:'Kaydet', phCancel:'Vazgeç', phOther:'Başka fotoğraf seç', phDel:'Fotoğrafı kaldır', phDone:'Profil fotoğrafın güncellendi 👍', phDelDone:'Fotoğraf kaldırıldı', phErr:'Bu fotoğraf açılamadı', onlN:n=>`${n} kişi çevrimiçi`, nowT:'Şu an uygulamada', nowOn:'çevrimiçi', nowRooms:'açık oda', nowInR:'kişi odalarda', nowNone:'Şu an açık oda yok.', roomAnon:i=>`Oda ${i}`, roomN:n=>`${n}/11 kişi`, stWait:'Bekliyor', stGame:'Oyunda', lobT:'Lobidekiler', lobNote:'Şu an uygulamada olan ve oyunda olmayan kişiler. Davet edebilirsin.', lobNone:'Şu an boşta kimse yok.', badName:'Bu kullanıcı adı uygun değil', invite:'Davet et', crEx:x=>`✂️ Çarktan çıkarılan harfler: ${x} (Ayarlar'dan değiştirebilirsin)`, pOn:'🟢 Çevrimiçi', pGame:'🎮 Oyunda', pOff:'Çevrimdışı', pAgoM:m=>`${m} dk önce görüldü`, pAgoH:h=>`${h} saat önce görüldü`, pAgoD:d=>`${d} gün önce görüldü`, invT:x=>`@${x} seni oyuna çağırıyor!`, invB:c=>`Oda: ${c}`, invJoin:'Katıl', invNo:'Yok say', msgAll:'Tümü', allTitle:'Herkese açık sohbet', allNote:'Uygulamadaki herkes görür. Saygılı ol 🙂 İsme dokunarak arkadaş ekleyebilir ya da yazabilirsin.', allEmpty:'Henüz mesaj yok. İlk merhabayı sen de 👋', allSlow:'Biraz yavaş: 5 saniyede bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Özel, arkadaşlar ve herkese açık sohbet', msgDm:'Özel', msgWall:'Arkadaşlar', msgLogin:'Mesajlaşmak için giriş yap', msgChats:'Sohbetler', msgNoChats:'Henüz sohbet yok. Aşağıdan bir arkadaşına yaz.', msgNew:'Yeni mesaj', wallPost:'Tüm arkadaşlarına yaz', wallNote:n=>`Bu mesajı ${n} arkadaşının hepsi görür.`, wallPh:'Ne söylemek istersin? 😊', wallFeed:'Arkadaş paylaşımları', reply:'Yanıtla', wallEmpty:'Henüz paylaşım yok.', wallSent:n=>`Mesaj ${n} arkadaşına gönderildi`, msgNotFriend:'Sadece arkadaşlarına mesaj gönderebilirsin', msgPh:'Mesaj yaz…', msgEmpty:'Henüz mesaj yok. İlk mesajı sen yaz 👋', rcTitle:'Oda sohbeti', rcEmpty:'Odadakilere bir şey yaz 👋', reInvite:'🔁 Tekrar davet et', stRoom:'🟡 Başka bir odada', stPlay:'🎮 Şu an oyunda', busyRoom:x=>`@${x} şu an başka bir odada. Davetin yine de iletildi.`, busyPlay:x=>`@${x} şu an başka bir oyunda. Oyunu bitince davetini görecek.`, delAcc:'Hesabımı sil', delAccS:'Hesabın ve tüm bilgilerin kalıcı olarak silinir', delT:'Hesabını silmek istiyor musun?', delP:'Kullanıcı adın, arkadaş listen, arkadaşlık istekleri ve bildirim kayıtların kalıcı olarak silinir. Bu işlem geri alınamaz.', delPwPh:'Onay için şifreni yaz', delGo:'Evet, hesabımı sil', delNo:'Vazgeç', delDone:'Hesabın silindi. Hoşça kal 👋', delErr:'Silinemedi. Tekrar giriş yapıp yeniden dene.', delPwBad:'Şifre yanlış', privLink:'🔒 Gizlilik politikası',
     kickQ:x=>`@${x} oyundan atılsın mı? Tekrar bas.`, outKick:x=>`⛔ @${x} oda kurucusu tarafından atıldı`, fbMine:'Mesajların ve cevaplar', fbReply:'Yönetici cevabı', fbNoReply:'Henüz cevap yok', frMenuS:'Ekle, kabul et, yönet', shareMenuS:'Uygulama linkini WhatsApp vb. ile paylaş', outQ:'Çıkış yapmak için tekrar bas', shareApp:'Arkadaşlarını davet et', shareAppText:'Harf Çarkı\'nı dene! Çarkı çevir, son harften isim söyle, arkadaşlarınla online yarış 🎡', frLogin:'Arkadaşlarını görmek için giriş yap', pushT:'Bildirimleri aç', pushS:'Davetler ve arkadaşlık istekleri telefon kilitliyken bile gelsin', pushBtn:'Aç', pushOn:'🔔 Bildirimler açıldı', pushDenied:'Bildirim izni kapalı. Tarayıcı ayarlarından bu site için bildirimlere izin ver.', pushNo:'Bu tarayıcı bildirimleri desteklemiyor', ogTitle:'Oyun', micErr:'Mikrofon açılamadı. Tarayıcı ayarlarından mikrofon izni ver ve "Mikrofonu aç"a bas.', ogRound:(a,b)=>`Tur ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlıyor', ogFirst:x=>`İlk isim ${x} harfiyle başlamalı`, ogWon:x=>`🏆 Turu <b>@${x}</b> kazandı (+2)`, ogYouSpin:'🎡 Sıra sende: çarkı çevir!<span class="pv"> (20 sn içinde çevirmezsen kendiliğinden döner)</span>', ogSpinBtn:'Çarkı Çevir', ogWaitSpin:x=>`<b>@${x}</b> çarkı çevirecek…`, ogSpinning:'Çark dönüyor…',
-    ogYourTurn:x=>`🎤 Sıra sende! <b>${x}</b> harfiyle bir isim söyle`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, pttHold:'Basılı tut ve konuş', pttLive:'Dinliyorum… bırakınca gönderilir', typeName:'ya da ismi yaz…', sendName:'Gönder', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu kapat',
+    ogYourTurn:x=>`✍️ Sıra sende! <b>${x}</b> harfiyle bir isim söyle`, ogTheirTurn:(a,b)=>`Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu turdan elendin. Sıra <b>@${a}</b>'de · harf: <b>${b}</b>`, pttHold:'Basılı tut ve konuş', pttLive:'Dinliyorum… bırakınca gönderilir', typeName:'Kaydırarak ismi yaz…', sendName:'Gönder', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu kapat',
     outTime:x=>`⏱ @${x} süresi doldu, elendi`, outLeft:x=>`🚫 @${x} uygulamadan çıktı, elendi`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitti', pts:'puan', ogAgain:'Tekrar oyna', ogWaitAgain:x=>`@${x} yeni oyun başlatabilir`, ogShare:'Sonucu paylaş',
     leftT1:'Bu turdan elendin', leftP1:n=>`Oyun sırasında uygulamadan çıktığın için bu turdan elendin (${n}/3). 3. kez çıkarsan odadan atılırsın.`,
     fbTitle:'Bize bildir', fbNote:'Bir hata mı buldun, bir önerin mi var? Yaz, istersen ekran görüntüsü ekle.', fbPh:'Mesajını yaz…', fbImg:'Fotoğraf ekle', fbSend:'Gönder', fbMax:'En fazla 2 fotoğraf eklenebilir', fbImgErr:'Fotoğraf açılamadı', fbEmpty:'Bir mesaj yaz ya da fotoğraf ekle', fbLogin:'Göndermek için giriş yap', fbWait:'Biraz bekle, az önce gönderdin', fbThanks:'Teşekkürler! Mesajın bize ulaştı 🙏',
@@ -4354,9 +4032,9 @@ const OTX = {
     rmTitle:'Bekleme odası', rmCode:'ODA KODU', rmShare:'Linki paylaş', rmCopy:'Kopyala', rmPlayers:'Oyuncular', kick:'Çıkar', you:'sen', rmInvite:'Arkadaşlarını davet et', invite:'Davet et', invSent:'Gönderildi ✓', invSentT:x=>`@${x} davet edildi`,
     rmStart:'Oyunu başlat', rmNeed2:'Başlatmak için en az 2 kişi gerekli', rmWaitHost:x=>`@${x} oyunu başlatınca oyun başlayacak`, rmClose:'Odayı kapat', rmLeave:'Odadan çık',
     shareText:c=>`Harf Çarkı'nda benimle oyna! Oda: ${c}`, copied:'Link kopyalandı', linkLogin:'Odaya katılmak için önce giriş yap' },
-  az:{crNameL:'Otaq adı', crNamePh:'Məs: Axşam turniri', crVisL:'Giriş', visOpen:'🌍 Hamıya açıq', visLock:'🔒 Şifrəli', crPinPh:'4 rəqəmli şifrə', errName:'Otağa ad ver (ən az 2 hərf)', errPin:'Şifrə 4 rəqəm olmalıdır', pinAskT:'🔒 Bu otaq şifrəlidir', pinAskS:'Otaq sahibinin verdiyi 4 rəqəmli şifrəni yaz', pinBad:'Şifrə səhvdir, yenidən yoxla', pinShow:'Şifrə', roomsT:'Otaqlar', frTag:'Dostun', ok:'Oldu', srDevice:'Səs tanıma cihazın öz sisteminə keçdi', stLoseR:'RAUNDU UDUZDUN', tWonMe:'Komandan raundu qazandı!', gWonMe:'Oyunu qazandın!', gLostMe:'Oyunu uduzdun', tHint:'O biri komandaya keçmək üçün oradakı boş yerə iki dəfə toxun.', nJoin:x=>`👋 @${x} otağa qoşuldu`, nJoinT:(x,t)=>`👋 @${x} ${t} komandasına qoşuldu`, nMove:(x,t)=>`⇄ @${x} ${t} komandasına keçdi`, nQuitR:x=>`🚪 @${x} otaqdan çıxdı`, nQuitG:x=>`🚪 @${x} oyunu tərk etdi`, nKick:x=>`⛔ @${x} otaqdan çıxarıldı`, goNear:'Yanına get', noRoomSpace:'Otaqda yer yoxdur', goNearT:(x,t)=>`@${x} otağına, ${t} komandasına qoşulursan…`, hostB:'Otaq başçısı', rcLock:x=>`Mesajların yalnız ${x} komandasına gedir, rəqib komanda görə bilməz.`, rcToL:'Kimə:', rcPhTo:x=>`${x} komandasına yaz…`, rcAllT:'Hamıya', rcPhAll:'Hamıya yaz (iki komanda da görür)…', rcPhTeam:x=>`Komandana yaz (${x})…`, endClose:'Bağla', endSee:'Nəticələr', tCrNote:'İki komanda: 🏔️ Qafqaz və 🌲 Toros. Hər komandada 2–4 nəfər. Növbə komandalar arasında dəyişir: Qafqaz, Toros, Qafqaz, Toros…', typeL:'Otaq növü', typeS:'👤 Hər kəs tək', typeT:'👥 Komanda rejimi', tnA:'Qafqaz', tnB:'Toros', tJoin:'Bu komandaya keç', tEmpty:'Boş yer', tNeed:'Hər komandada ən azı 2 nəfər olmalıdır', tFull:'Bu komanda doludur (ən çox 4 nəfər)', tWonR:x=>`🏆 ${x} raundu qazandı`, tWonG:x=>`🏆 ${x} qazandı!`, tTie:'🤝 Heç-heçə!', tName:'Komanda adı', tMove:'O biri komandaya keçir', tRoomT:'👥 Komanda', tWinS:(x,n)=>`${x} komandasına +${n} xal`, tPts:'komanda xalı', tVs:'qarşı', srRetry:'Anlaşılmadı, yenidən de.', srToWeb:'Səs serveri cavab vermədi, telefonun öz səs tanımasına keçildi. Yenidən de.', fastT:'Sürətli cavab!', cbT:'Oyun bağlansın?', cbP:'Oyun bitəcək, xallar və deyilənlər silinəcək.', cbNo:'Xeyr', cbYes:'Bəli, bağla', giTrU:'Ölkələr · TR', giAzU:'Ölkələr', giTrK:'Qarışıq · TR', giAzK:'Qarışıq', modeU:'🌍 Ölkələr', modeK:'🎲 Qarışıq', cat_n:'👤 Bu raund: Ad', cat_s:'🏙 Bu raund: Şəhər', cat_u:'🌍 Bu raund: Ölkə', mixCat:c=>c, giTrS:'Türk şəhərləri', giAzS:'Azərbaycan şəhərləri', modeL:'Oyun növü', modeN:'👤 Adlar', modeS:'🏙 Şəhərlər', liteT:'⚡ Yüngül görünüş', liteS:'Zəif telefonlarda donmanın qarşısını alır (bəzəklər bağlanır)', invPickT:'Dəvət et', invSelAll:'Hamısını seç', invSelGo:n=>`Seçilənləri dəvət et${n ? ' (' + n + ')' : ''}`, invSelDone:n=>`${n} nəfərə dəvət göndərildi`, invNone:'Dəvət ediləcək kimsə yoxdur', offSetT:'Oyun ayarları', offStart:'▶ Başla', offNewGame:'Oyun bitdi, yeni oyun başlayır', offSpin:'🎡 Növbə səndədir: çarxı fırlat!', offSpinP:a=>`🎡 Növbə: <b>${a}</b> · çarxı fırlat!`, msgTitleD:'Mesajlar', dockAll:'Hamısı', dockEmpty:'Yeni mesaj yoxdur', offChatT:'Ümumi yazışma', offChatPh:'Hamıya mesaj yaz…', offChatLogin:'Mesajları görmək üçün daxil ol', offTagG:'Ümumi', offTagF:'Dostlar', offTagP:'Şəxsi', offTurn:(a,x)=>`🎤 Növbə: <b>${a}</b> · <b>${x}</b> hərfi ilə ad de`, secShort:'san', hereY:'Otaqdadır', hereN:'Otaqda deyil', startAbsent:x=>`${x} hazırda otaqda deyil. Onlarsız başlatmaq üçün yenidən ▶ Başlat düyməsinə bas.`, gameStartedPull:'🎮 Oyun başladı!', pttPrep:'Hazırlanır… bir an gözlə', pttWait:'Yazıya çevrilir…', micNet:'Səs tanıma üçün internet lazımdır. Adı yazaraq da göndərə bilərsən.', micBusy:'Mikrofon başqa tətbiq tərəfindən istifadə olunur. O tətbiqi bağlayıb yenidən cəhd et.', azSRFallback:'Bu telefonda Azərbaycanca səs tanıma yoxdur; Türkcə tanıma ilə davam edilir, adlar Azərbaycan siyahısına görə düzəldiləcək.', instT:'Tətbiqi yüklə', instS:'Ana ekrana tam ekran tətbiq kimi əlavə et', instGo:'Yüklə', instDone:'Tətbiq yükləndi 🎉', instHowT:'Tətbiqi yüklə', instHow:'1. Ana ekrandakı köhnə <b>Harf Çarkı</b> nişanına basılı saxla və <b>Sil</b> de.<br>2. Chrome-da sağ yuxarıdakı <b>⋮</b> menyusuna bas.<br>3. <b>Tətbiqi quraşdır</b> (və ya Ana ekrana əlavə et) seç.', oldT:'Tətbiqin yeni versiyasını yüklə', oldP:'Köhnə qısayoldan açdın. Yuxarıdakı zolaq və X olmadan tam ekran açılması üçün yeni versiyanı yüklə.', netWeak:'İnternet bağlantısı zəifdir', netGood:'Bağlantı düzəldi', netDown:'İnternet bağlantısı kəsildi', netRetry:n=>`Yenidən qoşulur… (${n}. cəhd)`, netUp:'İnternetə yenidən qoşuldu', outConn:x=>`📶 @${x} bağlantısı kəsildi, oyundan çıxarıldı`, connKickT:'Bağlantın kəsildi', connKickP:'İnternet bağlantın uzun müddət (1,5 dəqiqədən çox) kəsik qaldığı üçün oyundan çıxarıldın. Bağlantın düzələndə yenidən qoşula bilərsən.', admWarn:'Xəbərdar et', admDelMsgs:'Açıq mesajlarını sil', admWarnPh:'Xəbərdarlıq mesajını yaz…', admWarnSend:'Xəbərdarlığı göndər', admWarned:x=>`@${x} xəbərdar edildi`, admMsgsDeleted:n=>`${n} mesaj silindi`, wp1:'Xahiş edirik söyüşlü və kobud mesaj yazma.', wp2:'Spam etmə, eyni mesajı təkrar-təkrar göndərmə.', wp3:'Digər oyunçulara hörmətli ol.', wp4:'Uyğunsuz profil şəkli istifadə etmə.', ntWarn:x=>`⚠️ İdarəçi xəbərdarlığı: ${x} Təkrarlansa hesabına məhdudiyyət tətbiq edilə bilər.`, ntRepDone:x=>`👍 @${x} haqqındakı şikayətin yoxlanıldı və lazımi tədbir görüldü. Təşəkkürlər!`, ntEvWin:x=>`🏆 Təbriklər! «${x}» tədbirinin qalibi oldun!`, dHist:'Cəza tarixçəsi', dNoHist:'Heç bir əməliyyat edilməyib.', mtT:'Texniki işlər gedir 🔧', mtP:'Tətbiqi daha yaxşı edirik. Tezliklə qayıdacağıq!', mtLocal:'Bu vaxt bir telefonda oyna', evTitle:'Tədbirlər', evTour:'Turnir', evEvent:'Tədbir', evLive:'İndi davam edir', evIn:x=>`${x} sonra başlayır`, evDone:'Başa çatdı', evWinner:'Qalib', cdDH:(d,h)=>`${d} gün ${h} saat`, cdHM:(h,m)=>`${h} saat ${m} dəq`, cdM:m=>`${m} dəq`, ntT:'Bildirişlər', ntS:'İdarəçi elanları və hesabınla bağlı bildirişlər', ntNote:'İdarəçinin hamıya göndərdiyi elanlar və hesabınla bağlı əməliyyatlar burada.', ntEmpty:'Hələ bildiriş yoxdur.', ntAnnT:'Elan', ntMeT:'Hesabınla bağlı', ntKick:r=>`🚪 İdarəçi səni ${r} otağından çıxardı.`, ntBan:d=>`⛔ Hesabın qaydalara uyğun olmadığı üçün ${d} tarixinədək bloklandı.`, ntBanInf:'⛔ Hesabın qaydalara uyğun olmadığı üçün həmişəlik bloklandı.', ntUnban:'✅ Hesabının bloku götürüldü. Yenidən xoş gəldin!', ntMute:d=>`🔇 İdarəçi səni ${d} tarixinədək susdurdu. Bu müddətdə söhbətlərə mesaj yaza bilməzsən.`, ntRmute:r=>`🔇 İdarəçi səni ${r} otağında susdurdu. Oyun bitənə və ya otaqdan çıxana qədər o otaqda yaza bilməzsən.`, ntUnmute:'🔊 Susdurman götürüldü, artıq mesaj yaza bilərsən.', ntNoPhoto:'🖼 Profil şəklin qaydalara uyğun olmadığı üçün idarəçi tərəfindən silindi.', ntRename:n=>`✏️ İstifadəçi adın idarəçi tərəfindən @${n} olaraq dəyişdirildi.`, admInRoom:c=>`Hazırda ${c} otağında`, admMuteAll:'Hər yerdə sustur', admBanAll:'Hesabı blokla', admProfile:'Profil', h1:'1 saat', h24:'24 saat', d7:'7 gün', d30:'30 gün', dInf:'Həmişəlik', hostTools:'Otaq idarəsi', muteBtn:'Otaqda sustur', unmuteBtn:'Susdurmanı götür', kickBtn:'Otaqdan çıxar', muteInfo:'Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməz.', muteDone:x=>`@${x} susduruldu`, unmuteDone:x=>`@${x} artıq yaza bilər`, mutedRoomHost:'🔇 Otağı quran səni susdurdu. Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməzsən.', mutedRoomAdm:'🔇 İdarəçi tərəfindən susduruldunuz. Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməzsiniz.', mutedG:d=>`🔇 İdarəçi tərəfindən susduruldunuz. ${d} tarixinədək heç bir söhbətdə mesaj yaza bilməzsiniz.`, mutedUntilT:d=>`${d} tarixinədək susdurulub`, admRoomMute:c=>`Otaqda sustur (${c})`, admG1:'1 saat sustur', admG24:'24 saat sustur', admG7:'7 gün sustur', admGUnmute:'Susdurmanı götür', admB:'İdarəçi', resName:'Bu istifadəçi adı ayrılıb, başqa ad seç', admTools:'İdarəçi alətləri', admDetail:'Ətraflı bax', admKick:c=>`Otaqdan çıxar (${c})`, admBan7:'7 gün blokla', admBan30:'30 gün blokla', admBanInf:'Həmişəlik blokla', admUnban:'Bloku götür', admNoPhoto:'Şəkli sil', admRen:'Adını dəyiş', admSave:'Yadda saxla', admKicked:x=>`@${x} otaqdan çıxarıldı`, admBanned:x=>`@${x} bloklandı`, admUnbanned:x=>`@${x} blokdan çıxarıldı`, admPhotoDone:'Şəkil silindi', admBanForever:'Həmişəlik bloklanıb', admBanUntil:d=>`${d} tarixinədək bloklanıb`, durM:m=>`${m} dəq`, durHM:(h,m)=>`${h} saat ${m} dəq`, dAcc:'Hesab', dJoined:'Qoşulub', dSeen:'Son görünmə', dWhere:'Hazırda', dWhereRoom:c=>`🎮 ${c} otağında`, dWhereOn:'🟢 Onlayn (lobbidə)', dWhereOff:'⚪ Oflayn', dFriends:'Dost sayı', dGames:'Oyunlar', dG:'oyun', dP:'ümumi xal', dW:'birincilik', dT:'oyun müddəti', dAvg:'Oyun başına orta xal', dNote:'Xal və birincilik onlayn oyunlardan gəlir. Tək telefon oyunları və raund sayı 16 Noyabr 2026 yeniləməsindən sonra sayılır.', dRank:'Sıralama və kuboklar', dReps:n=>`Haqqında şikayətlər (${n})`, dNoReps:'Haqqında şikayət yoxdur 👍', dBack:'Şəxs kartına qayıt', giTr:'Türk adları', giAz:'Azərbaycan adları', giRound:n=>`Raund ${n}`, giRounds:n=>n ? `${n} raund` : 'Hərflər bitənədək', giTime:s=>`${s} san`, giLeft:n=>`${n} hərf qaldı`, cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
+  az:{crNameL:'Otaq adı', crNamePh:'Məs: Axşam turniri', crVisL:'Giriş', visOpen:'🌍 Hamıya açıq', visLock:'🔒 Şifrəli', crPinPh:'4 rəqəmli şifrə', errName:'Otağa ad ver (ən az 2 hərf)', errPin:'Şifrə 4 rəqəm olmalıdır', pinAskT:'🔒 Bu otaq şifrəlidir', pinAskS:'Otaq sahibinin verdiyi 4 rəqəmli şifrəni yaz', pinBad:'Şifrə səhvdir, yenidən yoxla', pinShow:'Şifrə', roomsT:'Otaqlar', frTag:'Dostun', ok:'Oldu', srDevice:'Səs tanıma cihazın öz sisteminə keçdi', stLoseR:'RAUNDU UDUZDUN', tWonMe:'Komandan raundu qazandı!', gWonMe:'Oyunu qazandın!', gLostMe:'Oyunu uduzdun', tHint:'O biri komandaya keçmək üçün oradakı boş yerə iki dəfə toxun.', nJoin:x=>`👋 @${x} otağa qoşuldu`, nJoinT:(x,t)=>`👋 @${x} ${t} komandasına qoşuldu`, nMove:(x,t)=>`⇄ @${x} ${t} komandasına keçdi`, nQuitR:x=>`🚪 @${x} otaqdan çıxdı`, nQuitG:x=>`🚪 @${x} oyunu tərk etdi`, nKick:x=>`⛔ @${x} otaqdan çıxarıldı`, goNear:'Yanına get', noRoomSpace:'Otaqda yer yoxdur', goNearT:(x,t)=>`@${x} otağına, ${t} komandasına qoşulursan…`, hostB:'Otaq başçısı', rcLock:x=>`Mesajların yalnız ${x} komandasına gedir, rəqib komanda görə bilməz.`, rcToL:'Kimə:', rcPhTo:x=>`${x} komandasına yaz…`, rcAllT:'Hamıya', rcPhAll:'Hamıya yaz (iki komanda da görür)…', rcPhTeam:x=>`Komandana yaz (${x})…`, endClose:'Bağla', endSee:'Nəticələr', tCrNote:'İki komanda: 🏔️ Qafqaz və 🌲 Toros. Hər komandada 2–4 nəfər. Növbə komandalar arasında dəyişir: Qafqaz, Toros, Qafqaz, Toros…', typeL:'Otaq növü', typeS:'👤 Hər kəs tək', typeT:'👥 Komanda rejimi', tnA:'Qafqaz', tnB:'Toros', tJoin:'Bu komandaya keç', tEmpty:'Boş yer', tNeed:'Hər komandada ən azı 2 nəfər olmalıdır', tFull:'Bu komanda doludur (ən çox 4 nəfər)', tWonR:x=>`🏆 ${x} raundu qazandı`, tWonG:x=>`🏆 ${x} qazandı!`, tTie:'🤝 Heç-heçə!', tName:'Komanda adı', tMove:'O biri komandaya keçir', tRoomT:'👥 Komanda', tWinS:(x,n)=>`${x} komandasına +${n} xal`, tPts:'komanda xalı', tVs:'qarşı', srRetry:'Anlaşılmadı, yenidən de.', srToWeb:'Səs serveri cavab vermədi, telefonun öz səs tanımasına keçildi. Yenidən de.', fastT:'Sürətli cavab!', cbT:'Oyun bağlansın?', cbP:'Oyun bitəcək, xallar və deyilənlər silinəcək.', cbNo:'Xeyr', cbYes:'Bəli, bağla', giTrU:'Ölkələr · TR', giAzU:'Ölkələr', giTrK:'Qarışıq · TR', giAzK:'Qarışıq', modeU:'🌍 Ölkələr', modeK:'🎲 Qarışıq', cat_n:'👤 Bu raund: Ad', cat_s:'🏙 Bu raund: Şəhər', cat_u:'🌍 Bu raund: Ölkə', mixCat:c=>c, giTrS:'Türk şəhərləri', giAzS:'Azərbaycan şəhərləri', modeL:'Oyun növü', modeN:'👤 Adlar', modeS:'🏙 Şəhərlər', liteT:'⚡ Yüngül görünüş', liteS:'Zəif telefonlarda donmanın qarşısını alır (bəzəklər bağlanır)', invPickT:'Dəvət et', invSelAll:'Hamısını seç', invSelGo:n=>`Seçilənləri dəvət et${n ? ' (' + n + ')' : ''}`, invSelDone:n=>`${n} nəfərə dəvət göndərildi`, invNone:'Dəvət ediləcək kimsə yoxdur', offSetT:'Oyun ayarları', offStart:'▶ Başla', offNewGame:'Oyun bitdi, yeni oyun başlayır', offSpin:'🎡 Növbə səndədir: çarxı fırlat!', offSpinP:a=>`🎡 Növbə: <b>${a}</b> · çarxı fırlat!`, msgTitleD:'Mesajlar', dockAll:'Hamısı', dockEmpty:'Yeni mesaj yoxdur', offChatT:'Ümumi yazışma', offChatPh:'Hamıya mesaj yaz…', offChatLogin:'Mesajları görmək üçün daxil ol', offTagG:'Ümumi', offTagF:'Dostlar', offTagP:'Şəxsi', offTurn:(a,x)=>`✍️ Növbə: <b>${a}</b> · <b>${x}</b> hərfi ilə ad de`, secShort:'san', hereY:'Otaqdadır', hereN:'Otaqda deyil', startAbsent:x=>`${x} hazırda otaqda deyil. Onlarsız başlatmaq üçün yenidən ▶ Başlat düyməsinə bas.`, gameStartedPull:'🎮 Oyun başladı!', pttPrep:'Hazırlanır… bir an gözlə', pttWait:'Yazıya çevrilir…', micNet:'Səs tanıma üçün internet lazımdır. Adı yazaraq da göndərə bilərsən.', micBusy:'Mikrofon başqa tətbiq tərəfindən istifadə olunur. O tətbiqi bağlayıb yenidən cəhd et.', azSRFallback:'Bu telefonda Azərbaycanca səs tanıma yoxdur; Türkcə tanıma ilə davam edilir, adlar Azərbaycan siyahısına görə düzəldiləcək.', instT:'Tətbiqi yüklə', instS:'Ana ekrana tam ekran tətbiq kimi əlavə et', instGo:'Yüklə', instDone:'Tətbiq yükləndi 🎉', instHowT:'Tətbiqi yüklə', instHow:'1. Ana ekrandakı köhnə <b>Harf Çarkı</b> nişanına basılı saxla və <b>Sil</b> de.<br>2. Chrome-da sağ yuxarıdakı <b>⋮</b> menyusuna bas.<br>3. <b>Tətbiqi quraşdır</b> (və ya Ana ekrana əlavə et) seç.', oldT:'Tətbiqin yeni versiyasını yüklə', oldP:'Köhnə qısayoldan açdın. Yuxarıdakı zolaq və X olmadan tam ekran açılması üçün yeni versiyanı yüklə.', netWeak:'İnternet bağlantısı zəifdir', netGood:'Bağlantı düzəldi', netDown:'İnternet bağlantısı kəsildi', netRetry:n=>`Yenidən qoşulur… (${n}. cəhd)`, netUp:'İnternetə yenidən qoşuldu', outConn:x=>`📶 @${x} bağlantısı kəsildi, oyundan çıxarıldı`, connKickT:'Bağlantın kəsildi', connKickP:'İnternet bağlantın uzun müddət (1,5 dəqiqədən çox) kəsik qaldığı üçün oyundan çıxarıldın. Bağlantın düzələndə yenidən qoşula bilərsən.', admWarn:'Xəbərdar et', admDelMsgs:'Açıq mesajlarını sil', admWarnPh:'Xəbərdarlıq mesajını yaz…', admWarnSend:'Xəbərdarlığı göndər', admWarned:x=>`@${x} xəbərdar edildi`, admMsgsDeleted:n=>`${n} mesaj silindi`, wp1:'Xahiş edirik söyüşlü və kobud mesaj yazma.', wp2:'Spam etmə, eyni mesajı təkrar-təkrar göndərmə.', wp3:'Digər oyunçulara hörmətli ol.', wp4:'Uyğunsuz profil şəkli istifadə etmə.', ntWarn:x=>`⚠️ İdarəçi xəbərdarlığı: ${x} Təkrarlansa hesabına məhdudiyyət tətbiq edilə bilər.`, ntRepDone:x=>`👍 @${x} haqqındakı şikayətin yoxlanıldı və lazımi tədbir görüldü. Təşəkkürlər!`, ntEvWin:x=>`🏆 Təbriklər! «${x}» tədbirinin qalibi oldun!`, dHist:'Cəza tarixçəsi', dNoHist:'Heç bir əməliyyat edilməyib.', mtT:'Texniki işlər gedir 🔧', mtP:'Tətbiqi daha yaxşı edirik. Tezliklə qayıdacağıq!', mtLocal:'Bu vaxt bir telefonda oyna', evTitle:'Tədbirlər', evTour:'Turnir', evEvent:'Tədbir', evLive:'İndi davam edir', evIn:x=>`${x} sonra başlayır`, evDone:'Başa çatdı', evWinner:'Qalib', cdDH:(d,h)=>`${d} gün ${h} saat`, cdHM:(h,m)=>`${h} saat ${m} dəq`, cdM:m=>`${m} dəq`, ntT:'Bildirişlər', ntS:'İdarəçi elanları və hesabınla bağlı bildirişlər', ntNote:'İdarəçinin hamıya göndərdiyi elanlar və hesabınla bağlı əməliyyatlar burada.', ntEmpty:'Hələ bildiriş yoxdur.', ntAnnT:'Elan', ntMeT:'Hesabınla bağlı', ntKick:r=>`🚪 İdarəçi səni ${r} otağından çıxardı.`, ntBan:d=>`⛔ Hesabın qaydalara uyğun olmadığı üçün ${d} tarixinədək bloklandı.`, ntBanInf:'⛔ Hesabın qaydalara uyğun olmadığı üçün həmişəlik bloklandı.', ntUnban:'✅ Hesabının bloku götürüldü. Yenidən xoş gəldin!', ntMute:d=>`🔇 İdarəçi səni ${d} tarixinədək susdurdu. Bu müddətdə söhbətlərə mesaj yaza bilməzsən.`, ntRmute:r=>`🔇 İdarəçi səni ${r} otağında susdurdu. Oyun bitənə və ya otaqdan çıxana qədər o otaqda yaza bilməzsən.`, ntUnmute:'🔊 Susdurman götürüldü, artıq mesaj yaza bilərsən.', ntNoPhoto:'🖼 Profil şəklin qaydalara uyğun olmadığı üçün idarəçi tərəfindən silindi.', ntRename:n=>`✏️ İstifadəçi adın idarəçi tərəfindən @${n} olaraq dəyişdirildi.`, admInRoom:c=>`Hazırda ${c} otağında`, admMuteAll:'Hər yerdə sustur', admBanAll:'Hesabı blokla', admProfile:'Profil', h1:'1 saat', h24:'24 saat', d7:'7 gün', d30:'30 gün', dInf:'Həmişəlik', hostTools:'Otaq idarəsi', muteBtn:'Otaqda sustur', unmuteBtn:'Susdurmanı götür', kickBtn:'Otaqdan çıxar', muteInfo:'Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməz.', muteDone:x=>`@${x} susduruldu`, unmuteDone:x=>`@${x} artıq yaza bilər`, mutedRoomHost:'🔇 Otağı quran səni susdurdu. Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməzsən.', mutedRoomAdm:'🔇 İdarəçi tərəfindən susduruldunuz. Bu oyun bitənə və ya otaqdan çıxana qədər otaqda mesaj yaza bilməzsiniz.', mutedG:d=>`🔇 İdarəçi tərəfindən susduruldunuz. ${d} tarixinədək heç bir söhbətdə mesaj yaza bilməzsiniz.`, mutedUntilT:d=>`${d} tarixinədək susdurulub`, admRoomMute:c=>`Otaqda sustur (${c})`, admG1:'1 saat sustur', admG24:'24 saat sustur', admG7:'7 gün sustur', admGUnmute:'Susdurmanı götür', admB:'İdarəçi', resName:'Bu istifadəçi adı ayrılıb, başqa ad seç', admTools:'İdarəçi alətləri', admDetail:'Ətraflı bax', admKick:c=>`Otaqdan çıxar (${c})`, admBan7:'7 gün blokla', admBan30:'30 gün blokla', admBanInf:'Həmişəlik blokla', admUnban:'Bloku götür', admNoPhoto:'Şəkli sil', admRen:'Adını dəyiş', admSave:'Yadda saxla', admKicked:x=>`@${x} otaqdan çıxarıldı`, admBanned:x=>`@${x} bloklandı`, admUnbanned:x=>`@${x} blokdan çıxarıldı`, admPhotoDone:'Şəkil silindi', admBanForever:'Həmişəlik bloklanıb', admBanUntil:d=>`${d} tarixinədək bloklanıb`, durM:m=>`${m} dəq`, durHM:(h,m)=>`${h} saat ${m} dəq`, dAcc:'Hesab', dJoined:'Qoşulub', dSeen:'Son görünmə', dWhere:'Hazırda', dWhereRoom:c=>`🎮 ${c} otağında`, dWhereOn:'🟢 Onlayn (lobbidə)', dWhereOff:'⚪ Oflayn', dFriends:'Dost sayı', dGames:'Oyunlar', dG:'oyun', dP:'ümumi xal', dW:'birincilik', dT:'oyun müddəti', dAvg:'Oyun başına orta xal', dNote:'Xal və birincilik onlayn oyunlardan gəlir. Tək telefon oyunları və raund sayı 16 Noyabr 2026 yeniləməsindən sonra sayılır.', dRank:'Sıralama və kuboklar', dReps:n=>`Haqqında şikayətlər (${n})`, dNoReps:'Haqqında şikayət yoxdur 👍', dBack:'Şəxs kartına qayıt', giTr:'Türk adları', giAz:'Azərbaycan adları', giRound:n=>`Raund ${n}`, giRounds:n=>n ? `${n} raund` : 'Hərflər bitənədək', giTime:s=>`${s} san`, giLeft:n=>`${n} hərf qaldı`, cupLabW:'HƏFTƏ', cupLabM:'AY', chW:'Həftənin Çempionu', chM:'Ayın Çempionu', chWs:'Həftə çempionluğu', chMs:'Ay çempionluğu', chNone:'Hələ yoxdur — ilk sən ol!', ptsN:n=>`${n} xal`, gamesN:n=>`${n} oyun`, winsN:n=>`${n} qələbə`, leadW:'Bu həftə lider', leadM:'Bu ay lider', leadNone:'hələ heç kim yoxdur', lbT:'Sıralama', lbWeek:'Bu həftə', lbMonth:'Bu ay', lbEnds:d=>`bitir: ${d}`, lbEmpty:'Hələ heç kim xal almayıb. Onlayn oyna, ilk sən ol! 🎡', prevW:'Keçən həftənin çempionu', prevM:'Keçən ayın çempionu', cupsT:'Kuboklarım və çempionluqlarım', cupsS:'Nə vaxt, hansı kuboku qazandın', cupsOf:x=>`@${x} kubokları`, cupsSee:'kuboklara bax ›', cupsNone:'Hələ kuboku yoxdur.', cupsNoneMe:'Hələ kubokun yoxdur. Həftənin ən çox xal toplayanı ol, ilk kubokunu qazan! 🏆', stSemi:'YARIMFİNAL', stSemiS:p=>`Son 4 nəfər qaldınız · Hər ad ${p} xal`, stSemiW:p=>`Son 4 nəfər qaldı · Hər ad ${p} xal`, stTop3:'SON 3', stTop3S:p=>`Son 3 nəfər qaldınız · Hər ad ${p} xal`, stTop3W:p=>`Son 3 nəfər qaldı · Hər ad ${p} xal`, stFinal:'FİNAL', stFinalMe:(x,p)=>`@${x} ilə sən qaldınız · Hər ad ${p} xal`, stFinalW:(a,b,p)=>`@${a} ilə @${b} üz-üzə · Hər ad ${p} xal`, stWin:'RAUND BİRİNCİSİ', stWinMe:b=>`Raundu sən qazandın! +${b} bonus xal`, stWinS:(x,b)=>`@${x} · +${b} bonus xal`, ptsChip:n=>`+${n} xal`, upUnf:'Dostluqdan çıxar', upAdd:'Dost əlavə et', upMsg:'Mesaj yaz', blk:'Blokla', blkSure:'Əminsən? Yenə bas', unblk:'Bloku götür', blkInfo:'Bu şəxsi blokladın. Sənə mesaj və dəvət göndərə bilməz.', blkDone:x=>`@${x} bloklandı`, unblkDone:x=>`@${x} blokdan çıxarıldı`, rep:'Şikayət et', repT:x=>`@${x} haqqında şikayət`, repQ:'Səbəb nədir?', rr_abuse:'Söyüş / təhqir', rr_photo:'Uyğunsuz şəkil', rr_spam:'Spam / narahat edir', rr_cheat:'Hiylə edir', rr_other:'Digər', repPh:'İstəsən qısaca izah et (istəyə bağlı)', repCtx:'Şikayət edilən mesaj:', repSend:'Şikayəti göndər', repDone:'Şikayətin qəbul edildi. Təşəkkürlər 🙏', pvT:'Məxfilik və bloklananlar', pvS:'Kim dəvət edə bilər, blokladığın şəxslər', pvInv:'Məni yalnız dostlarım dəvət edə bilsin', pvInvS:'Açıqdırsa tanımadığın şəxslər səni otağa çağıra bilməz', pvBlk:'Bloklananlar', pvNone:'Heç kimi bloklamamısan.', pvOn:'İndi yalnız dostların dəvət edə bilər', pvOff:'Hər kəs dəvət edə bilər', phT:'Profil şəkli', phHint:'Barmağınla sürüşdür, iki barmaqla və ya çubuqla böyüt', phSave:'Yadda saxla', phCancel:'İmtina', phOther:'Başqa şəkil seç', phDel:'Şəkli sil', phDone:'Profil şəklin yeniləndi 👍', phDelDone:'Şəkil silindi', phErr:'Bu şəkil açılmadı', onlN:n=>`${n} nəfər onlayn`, nowT:'Hazırda tətbiqdə', nowOn:'onlayn', nowRooms:'açıq otaq', nowInR:'nəfər otaqlarda', nowNone:'Hazırda açıq otaq yoxdur.', roomAnon:i=>`Otaq ${i}`, roomN:n=>`${n}/11 nəfər`, stWait:'Gözləyir', stGame:'Oyunda', lobT:'Lobbidəkilər', lobNote:'Hazırda tətbiqdə olan və oyunda olmayan insanlar. Dəvət edə bilərsən.', lobNone:'Hazırda boşda heç kim yoxdur.', badName:'Bu istifadəçi adı uyğun deyil', invite:'Dəvət et', crEx:x=>`✂️ Çarxdan çıxarılan hərflər: ${x} (Ayarlardan dəyişə bilərsən)`, pOn:'🟢 Onlayn', pGame:'🎮 Oyunda', pOff:'Oflayn', pAgoM:m=>`${m} dəq əvvəl görünüb`, pAgoH:h=>`${h} saat əvvəl görünüb`, pAgoD:d=>`${d} gün əvvəl görünüb`, invT:x=>`@${x} səni oyuna çağırır!`, invB:c=>`Otaq: ${c}`, invJoin:'Qoşul', invNo:'Keç', msgAll:'Hamısı', allTitle:'Hamıya açıq söhbət', allNote:'Tətbiqdəki hər kəs görür. Hörmətli ol 🙂 Ada toxunaraq dost əlavə edə və ya yaza bilərsən.', allEmpty:'Hələ mesaj yoxdur. İlk salamı sən ver 👋', allSlow:'Bir az yavaş: 5 saniyədə bir mesaj', del:'sil',  msgTitle:'Mesajlar', msgMenuS:'Şəxsi, dostlar və hamıya açıq söhbət', msgDm:'Şəxsi', msgWall:'Dostlar', msgLogin:'Mesajlaşmaq üçün daxil ol', msgChats:'Söhbətlər', msgNoChats:'Hələ söhbət yoxdur. Aşağıdan bir dostuna yaz.', msgNew:'Yeni mesaj', wallPost:'Bütün dostlarına yaz', wallNote:n=>`Bu mesajı ${n} dostunun hamısı görəcək.`, wallPh:'Nə demək istəyirsən? 😊', wallFeed:'Dost paylaşımları', reply:'Cavab ver', wallEmpty:'Hələ paylaşım yoxdur.', wallSent:n=>`Mesaj ${n} dostuna göndərildi`, msgNotFriend:'Yalnız dostlarına mesaj göndərə bilərsən', msgPh:'Mesaj yaz…', msgEmpty:'Hələ mesaj yoxdur. İlk mesajı sən yaz 👋', rcTitle:'Otaq söhbəti', rcEmpty:'Otaqdakılara nəsə yaz 👋', reInvite:'🔁 Yenidən dəvət et', stRoom:'🟡 Başqa otaqdadır', stPlay:'🎮 Hazırda oyundadır', busyRoom:x=>`@${x} hazırda başqa otaqdadır. Dəvətin yenə də göndərildi.`, busyPlay:x=>`@${x} hazırda başqa oyundadır. Oyun bitəndə dəvətini görəcək.`, delAcc:'Hesabımı sil', delAccS:'Hesabın və bütün məlumatların həmişəlik silinir', delT:'Hesabını silmək istəyirsən?', delP:'İstifadəçi adın, dost siyahın, dostluq istəkləri və bildiriş qeydlərin həmişəlik silinir. Bu əməliyyat geri qaytarılmır.', delPwPh:'Təsdiq üçün şifrəni yaz', delGo:'Bəli, hesabımı sil', delNo:'İmtina et', delDone:'Hesabın silindi. Sağ ol 👋', delErr:'Silinmədi. Yenidən daxil olub təkrar cəhd et.', delPwBad:'Şifrə səhvdir', privLink:'🔒 Məxfilik siyasəti',
     kickQ:x=>`@${x} oyundan çıxarılsın? Yenidən bas.`, outKick:x=>`⛔ @${x} otağı quran tərəfindən çıxarıldı`, fbMine:'Mesajların və cavablar', fbReply:'İdarəçi cavabı', fbNoReply:'Hələ cavab yoxdur', frMenuS:'Əlavə et, qəbul et, idarə et', shareMenuS:'Tətbiq linkini WhatsApp və s. ilə paylaş', outQ:'Çıxış etmək üçün yenidən bas', shareApp:'Dostlarını dəvət et', shareAppText:'Harf Çarkı-nı yoxla! Çarxı fırlat, son hərfdən ad de, dostlarınla onlayn yarış 🎡', frLogin:'Dostlarını görmək üçün daxil ol', pushT:'Bildirişləri aç', pushS:'Dəvətlər və dostluq istəkləri telefon kilidli olanda belə gəlsin', pushBtn:'Aç', pushOn:'🔔 Bildirişlər açıldı', pushDenied:'Bildiriş icazəsi bağlıdır. Brauzer ayarlarından bu sayt üçün bildirişlərə icazə ver.', pushNo:'Bu brauzer bildirişləri dəstəkləmir', ogTitle:'Oyun', micErr:'Mikrofon açılmadı. Brauzer ayarlarından mikrofon icazəsi ver və "Mikrofonu aç" düyməsinə bas.', ogRound:(a,b)=>`Raund ${a}${b ? '/' + b : ''}`, ogReady:'Oyun başlayır', ogFirst:x=>`İlk ad ${x} hərfi ilə başlamalıdır`, ogWon:x=>`🏆 Raundu <b>@${x}</b> qazandı (+2)`, ogYouSpin:'🎡 Növbə səndədir: çarxı fırlat!<span class="pv"> (20 san ərzində fırlatmasan özü dönəcək)</span>', ogSpinBtn:'Çarxı fırlat', ogWaitSpin:x=>`<b>@${x}</b> çarxı fırladacaq…`, ogSpinning:'Çarx fırlanır…',
-    ogYourTurn:x=>`🎤 Növbə səndədir! <b>${x}</b> hərfi ilə ad de`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, pttHold:'Basılı saxla və danış', pttLive:'Dinləyirəm… buraxanda göndərilir', typeName:'və ya adı yaz…', sendName:'Göndər', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu bağla',
+    ogYourTurn:x=>`✍️ Növbə səndədir! <b>${x}</b> hərfi ilə ad de`, ogTheirTurn:(a,b)=>`Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, ogOutWatch:(a,b)=>`Bu raunddan çıxdın. Növbə <b>@${a}</b>-dadır · hərf: <b>${b}</b>`, pttHold:'Basılı saxla və danış', pttLive:'Dinləyirəm… buraxanda göndərilir', typeName:'Sürüşdürərək adı yaz…', sendName:'Göndər', ogMic:'Mikrofonu aç', ogMicOff:'Mikrofonu bağla',
     outTime:x=>`⏱ @${x} vaxtı bitdi, çıxdı`, outLeft:x=>`🚫 @${x} tətbiqdən çıxdı, raunddan çıxarıldı`, outQuit:x=>`🚪 @${x} oyundan ayrıldı`, ogEnd:'Oyun bitdi', pts:'xal', ogAgain:'Yenidən oyna', ogWaitAgain:x=>`@${x} yeni oyun başlada bilər`, ogShare:'Nəticəni paylaş',
     leftT1:'Bu raunddan çıxdın', leftP1:n=>`Oyun zamanı tətbiqdən çıxdığın üçün bu raunddan çıxarıldın (${n}/3). 3-cü dəfə çıxsan otaqdan çıxarılacaqsan.`,
     fbTitle:'Bizə yaz', fbNote:'Xəta tapdın, təklifin var? Yaz, istəsən ekran şəkli əlavə et.', fbPh:'Mesajını yaz…', fbImg:'Şəkil əlavə et', fbSend:'Göndər', fbMax:'Ən çox 2 şəkil əlavə etmək olar', fbImgErr:'Şəkil açılmadı', fbEmpty:'Mesaj yaz və ya şəkil əlavə et', fbLogin:'Göndərmək üçün daxil ol', fbWait:'Bir az gözlə, az öncə göndərdin', fbThanks:'Təşəkkürlər! Mesajın bizə çatdı 🙏',
@@ -4486,7 +4164,7 @@ function ot(k, ...a){ const v = (OTX[settings.ui] || OTX.tr)[k] ?? OTX.tr[k]; co
 /* Şehir modunda oyun yazılarında "isim" yerine "şehir" */
 function catHi(k, r){
   if (typeof r !== 'string' || !r.includes('<b>')) return r;
-  const kd = kindOf(lang); if (!isMix(gameMode) && kd === 'n') return r.replace(/^🎤 (Sıra: |Növbə: )?/, m => `<span class="pv">${m}</span>`);
+  const kd = kindOf(lang); if (!isMix(gameMode) && kd === 'n') return r.replace(/^✍️ (Sıra: |Növbə: )?/, m => `<span class="pv">${m}</span>`);
   const W = { n:['isim','ad','👤'], s:['şehir','şəhər','🏙'], u:['ülke','ölkə','🌍'] }[kd] || ['isim','ad','👤'];
   const az = settings.ui === 'az', w = az ? W[1] : W[0], badge = `<span class="catw">${W[2]} ${w.toLocaleUpperCase(az ? 'az' : 'tr')}</span>`;
   const re = new RegExp(`(^|[\\s>])(${w})(?= söyle| de)`);
@@ -4494,7 +4172,7 @@ function catHi(k, r){
   if (re2.test(r)) r = r.replace(re2, (m, a, x, v) => a + badge + `<span class="pv"> ${v}</span>`);
   else if (re.test(r)) r = r.replace(re, (m, a) => a + badge);
   else return r + ' · ' + badge;
-  return r.replace(/^🎤 (Sıra: |Növbə: )?/, (m, x) => `<span class="pv">${m}</span>`);
+  return r.replace(/^✍️ (Sıra: |Növbə: )?/, (m, x) => `<span class="pv">${m}</span>`);
 }
 function countryize(x){ return x.replace(/bir isim/g, 'bir ülke').replace(/isim söyle/g, 'ülke söyle').replace(/İsim söyle/g, 'Ülke söyle').replace(/ismi yaz/gi, m => m[0] === 'İ' ? 'Ülkeyi yaz' : 'ülkeyi yaz')
   .replace(/harfiyle isim/g, 'harfiyle ülke').replace(/ad de/g, 'ölkə de').replace(/adı yaz/gi, m => m[0] === 'A' ? 'Ölkəni yaz' : 'ölkəni yaz'); }
@@ -6004,8 +5682,8 @@ async function onlineSay(k, pretty){
     await F.runTransaction(db, async tx => {
       const s = await tx.get(roomRef()); if (!s.exists()) return;
       const r = s.data(); if (r.phase !== 'turn' || r.turn !== me.uid || srvNow() < r.turnAt - 800) return;
-      const seen = new Set((r.names || []).filter(n => n.s === 'ok').map(n => fold(n.k)));
-      const st = firstChar(k) !== r.need ? 'wrong' : !isKnown(k) ? 'unk' : seen.has(fold(k)) ? 'rep' : 'ok';
+      const seen = new Set((r.names || []).filter(n => n.s === 'ok').map(n => headKey(n.k)));
+      const st = firstChar(k) !== r.need ? 'wrong' : !isKnown(k) ? 'unk' : seen.has(headKey(k)) ? 'rep' : 'ok';
       const fast = st === 'ok' && srvNow() - lag - r.turnAt <= FAST_MS, pv = ptsOf(r) + (fast ? 1 : 0);
       const names = [...(r.names || []), { k, t:pretty, by:me.uid, s:st, need:r.need, ...(st === 'ok' ? { p:pv } : {}), ...(fast ? { fast:1 } : {}) }].slice(-80);
       const upd = { names };
@@ -6131,7 +5809,7 @@ function placeChat(inGame){
   if (inGame && slot){ if (c.parentNode !== slot) slot.appendChild(c); }
   else { const b = $('rmBody'); if (b && c.parentNode !== b.parentNode) b.parentNode.insertBefore(c, b.nextSibling); }
 }
-function ogRow(off){ return `<div class="og-row${off ? ' off' : ''}"><form class="og-type" id="ogType" autocomplete="off"><input id="ogIn"${off ? ' disabled' : ''} placeholder="${escH(ot('typeName'))}" autocomplete="off" dir="auto"><button class="abtn ok" type="submit"${off ? ' disabled' : ''}>${ot('sendName')}</button></form><button class="btn mic ptt og-mic" id="ogMic" type="button"${off ? ' disabled' : ''} aria-label="${escH(ot('pttHold'))}"></button><button class="og-fix" id="ogMicFix" type="button" title="${escH(t('micFix'))}" aria-label="${escH(t('micFix'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button></div>`; }
+function ogRow(off){ return `<div class="og-row${off ? ' off' : ''}"><form class="og-type" id="ogType" autocomplete="off"><input id="ogIn"${off ? ' disabled' : ''} placeholder="${escH(ot('typeName'))}" autocomplete="off" dir="auto"><button class="abtn ok" type="submit"${off ? ' disabled' : ''}>${ot('sendName')}</button></form></div>`; }
 function buildGameUI(){
   placeChat(false);
   $('rmBody').innerHTML = `<div class="og">
@@ -6203,11 +5881,11 @@ function renderGame(){
     if ($('ogRecent').innerHTML !== rc) $('ogRecent').innerHTML = rc; }
   { const said = names.filter(n => n.s !== 'out'), k = r.gid + ':' + said.length;
     if (GR.flashK && GR.flashK !== k && GR.flashK.split(':')[0] === String(r.gid) && said.length > +GR.flashK.split(':')[1]){ const n = said[said.length - 1];
-      flashName($('ogWheel'), escH(n.t), { box:'ogSaid', id:names.lastIndexOf(n), f:n.s === 'rep' ? fold(n.k) : '' }); if (!(n.s === 'ok' && n.fast)) sfx(n.s === 'ok' ? 'ok' : 'bad'); }
+      flashName($('ogWheel'), escH(n.t), { box:'ogSaid', id:names.lastIndexOf(n), f:n.s === 'rep' ? headKey(n.k) : '' }); if (!(n.s === 'ok' && n.fast)) sfx(n.s === 'ok' ? 'ok' : 'bad'); }
     GR.flashK = k; }
   renderSaid('ogSaid', names.map((n, i) => n.s === 'out'
       ? { id:i, k:'out', name:escH(ot(n.why === 'left' ? 'outLeft' : n.why === 'quit' ? 'outQuit' : n.why === 'kick' ? 'outKick' : n.why === 'conn' ? 'outConn' : 'outTime', n.nm || pname2(r, n.by))) }
-      : { id:i, f:n.s === 'ok' ? fold(n.k) : '', k:n.s, name:n.s === 'ok' && n.k ? nameHtml({ text:n.t, key:n.k }) : escH(n.t), by:'@' + escH(pname2(r, n.by)), pts:n.s === 'ok' ? (n.p || 1) : 0,
+      : { id:i, f:n.s === 'ok' ? headKey(n.k) : '', k:n.s, name:n.s === 'ok' && n.k ? nameHtml({ text:n.t, key:n.k }) : escH(n.t), by:'@' + escH(pname2(r, n.by)), pts:n.s === 'ok' ? (n.p || 1) : 0,
           tag:n.s === 'wrong' ? escH(t('wrong', n.need)) : n.s === 'rep' ? escH(t('rep')) : n.s === 'unk' ? escH(t('unk')) : '' }).reverse(), names.filter(n => n.s === 'ok').length);
   const ol = $('ogList'); ol.parentElement.scrollTop = ol.parentElement.scrollHeight;
   // Eylem ve durum
@@ -6252,15 +5930,10 @@ function renderGame(){
   if (GR.acts !== acts){ GR.acts = acts; $('ogActs').innerHTML = acts;
     if ($('ogSpin')) $('ogSpin').onclick = () => { $('ogSpin').disabled = true; ensureAudio(); doSpin(); };
     requestAnimationFrame(ogSpinCenter);
-    if ($('ogMic')) pttBind($('ogMic'));
     if ($('ogType')) $('ogType').onsubmit = e => { e.preventDefault(); const v = $('ogIn').value.trim(); if (!v) return; $('ogIn').value = ''; addPhrase(v); };
-    if ($('ogMicFix')) $('ogMicFix').onclick = () => micFix();
     if ($('ogAgain')) $('ogAgain').onclick = playAgain;
     if ($('ogShare')) $('ogShare').onclick = () => shareResult(r);
   }
-  const mb = $('ogMic'); if (mb){ mb.classList.toggle('live', listening); const prep = listening && (engine === 'web' || engine === 'cloud' || engine === 'tab') && !webReady;
-    mb.classList.toggle('prep', prep || webFin); const lb = webFin ? '⏳' : listening ? (prep ? '🎙' : '🔴') : '🎤'; if (mb.textContent !== lb) mb.textContent = lb;
-    mb.title = webFin ? ot('pttWait') : listening ? (prep ? ot('pttPrep') : ot('pttLive')) : ot('pttHold'); }
   syncMic(r);
   stageWatch(r);
 }
@@ -6293,36 +5966,6 @@ function syncMic(r){
   if (mine && GR.buzz !== r.turnAt){ GR.buzz = r.turnAt; if (navigator.vibrate) navigator.vibrate(150); }
   if (!mine && listening && ONL){ stopListening(); }
 }
-/* Bas-konuş: basılı tuttukça dinler, bırakınca son duyulanı gönderip kapanır */
-function pttBind(btn){
-  const down = e => { e.preventDefault(); if (GR.ptt || (typeof CL !== 'undefined' && CL.sending)) return; GR.ptt = true; clearTimeout(GR.pttT); pressAt = Date.now();
-    if (webFin){ webFin = false; clearTimeout(webFinT); micLabel(); }   // bitirirken tekrar basıldı: dinlemeye devam
-    ensureAudio(); try { if (typeof CL !== 'undefined' && cloudReady()){ CL.ctx = CL.ctx || new (window.AudioContext || window.webkitAudioContext)(); if (CL.ctx.state !== 'running') CL.ctx.resume(); } } catch(_){}
-    if (!listening) startListening(); if (navigator.vibrate) navigator.vibrate(30); };
-  btn.addEventListener('pointerdown', down);
-  btn.addEventListener('click', () => primeMic());
-  btn.addEventListener('contextmenu', e => e.preventDefault());
-}
-function pttUp(){
-  if (!GR.ptt) return; GR.ptt = false;
-  clearTimeout(GR.pttT);
-  if (engine === 'cloud' && listening){ if (CL.sending || webFin) return; webFin = true; micLabel(); GR.pttT = setTimeout(cloudStop, 160); return; }
-  if (engine === 'tab' && listening){ if (CL.sending || webFin) return; webFin = true; micLabel(); GR.pttT = setTimeout(tabStop, 250); return; }
-  if (engine === 'web' && rec && listening){
-    // Bırakınca hemen kesme: son heceyi al, sonra tanımayı nazikçe bitir ve sonucu bekle (bazı telefonlar sonucu ancak bitince verir)
-    webFin = true; micLabel();
-    GR.pttT = setTimeout(() => { try { rec.stop(); } catch(_){ finishWeb(); return; } clearTimeout(webFinT); webFinT = setTimeout(finishWeb, 2500); }, 300);
-    return;
-  }
-  GR.pttT = setTimeout(() => {           // son kelimenin yazıya dönmesi için kısa bekleme
-    const it = $('interim').textContent.trim();
-    if (it && !webIgnore) pend.push(it);
-    if (listening) stopListening();
-  }, 650);
-}
-['pointerup', 'pointercancel'].forEach(ev => document.addEventListener(ev, pttUp));
-pttBind($('micBtn')); setListening(listening);
-document.addEventListener('visibilitychange', () => { if (document.hidden) pttUp(); });
 /* Saniye saniye: geri sayım, süre çubuğu, otomatik çark ve hakemlik */
 function gameTick(){
   const r = OL.room; if (!r || r.status !== 'play' || !$('ogWheel')) return;
@@ -6916,7 +6559,7 @@ function relang(){
   try { if ($('dayCard')) showDayCard(true); } catch(_){}
   try { if (isOpen('adminPage')){ ADM_STATIC(); admShow(admTab); } } catch(_){}
 }
-function showHome(){ sfxStop(); if (spinning){ clearTimeout(spinT); spinning = false; $('spinBtn').disabled = false; $('micBtn').disabled = true; hub.textContent = '?'; } statFlush(); stopListening(); timerStop(); $('home').classList.remove('hide'); renderAcct(); }
+function showHome(){ sfxStop(); if (spinning){ clearTimeout(spinT); spinning = false; $('spinBtn').disabled = false; hub.textContent = '?'; } statFlush(); stopListening(); timerStop(); $('home').classList.remove('hide'); renderAcct(); }
 setTimeout(() => { try { $('home').classList.remove('intro'); } catch(_){} }, 1400);   // giriş animasyonu yalnız ilk açılışta (sayfa değişince titreme olmasın)
 function hideHome(){ $('home').classList.add('hide'); try { setPlaying(); } catch(_){} try { alignProw(); setTimeout(alignProw, 500); } catch(_){} }
 function navTop(){
@@ -7102,6 +6745,237 @@ const _applyI18n = applyI18n;
 applyI18n = function(){ _applyI18n(); setAuthMode(authMode); renderAcct(); if (FB) FB.auth.languageCode = settings.ui; };
 setAuthMode('in');
 fbInit();
+</script>
+<script>
+/* ===================== GÖMÜLÜ KLAVYE: dokunarak ve kaydırarak yazma ===================== */
+/* Sadece harfler + sil + boşluk + Gönder. Telefonun kendi klavyesi hiç açılmaz. Kaydırmalı yazı isim listesinden tahmin eder. */
+const KB_ROWS = { tr:['qwertyuıopğü', 'asdfghjklşi', 'zxcvbnmöç'], az:['qüertyuiopöğ', 'asdfghjklıə', 'zxcvbnmçş'] };
+/* Sık kullanılan isimler: aynı çizgiye düşen kaydırmalarda (Adil / Asil / Afil) yaygın olan öne geçer */
+const KB_COMMON = new Set(('ahmet mehmet mustafa ali hüseyin hasan ibrahim ismail osman yusuf murat ömer ramazan halil süleyman abdullah mahmut recep salih fatih kadir emre hakan adem adil kemal yaşar bekir musa metin orhan serkan burak uğur kenan selim sinan cem can deniz efe emir eren yiğit arda kerem berk baran enes furkan onur volkan tolga erkan ercan erdem engin özgür gökhan cengiz cihan levent tarık ilhan ilker irfan idris ilyas yunus yakup yasin yavuz zeki zafer veli vedat umut tayfun taner şahin şener selçuk sedat savaş nuri necati nihat mesut mert kaan hamza hikmet harun faruk ferhat fikret erol ekrem ertuğrul erdoğan erhan doğan davut cemal cevdet celal bülent barış aydın ayhan alper adnan muhammed muhammet mahir nazım rıza rasim sami taha tahsin tamer timur turan turgut tuğrul yılmaz zekeriya '
+  + 'ayşe fatma emine hatice zeynep elif meryem şerife zehra sultan hanife merve özlem yasemin hülya esra leyla gül melek büşra kübra sevgi sevim songül tuğba ebru derya dilek canan gülsüm hacer havva nur nuray nurcan pınar seda selin sibel şeyma tülay yıldız zeliha aysel ayten aynur aslı aylin beyza buse cansu damla ece ela eda ezgi gamze gizem hande irem melis nazlı neslihan rabia sena serap sinem tuba yağmur asiye arzu bahar berna betül burcu cemile dilara duygu emel esma feride figen filiz gülay gülşen ilknur kader lale naciye necla nermin nesrin nilgün nihal reyhan safiye saliha semra serpil sevda sevil şükran türkan yeter zübeyde '
+  + 'əli məhəmməd hüseyn həsən elçin elnur orxan rəşad tural vüqar ramil anar elvin nicat kamran fərid ruslan cavid murad rauf samir səbuhi tofiq vüsal yusif zaur əhməd ismayıl kərim namiq ilqar fuad nurlan xəyal vaqif rəhim sərxan günel nərmin aytən səbinə könül lalə xədicə fatimə zəhra ülviyyə sevinc nigar məryəm günay aygün şəbnəm zərifə gülnar nərgiz ilahə lamiyə aidə rəna şəhla vüsalə').split(' '));
+const KB = { el:null, lng:'', tr:null, geo:null, sw:null, rep:null, idx:{}, list:{}, fade:0 };
+const kbL = () => baseL(typeof lang !== 'undefined' ? lang : 'tr') === 'az' ? 'az' : 'tr';
+const kbLoc = () => kbL() === 'az' ? 'az' : 'tr';
+const kbInp = () => (typeof ONL !== 'undefined' && ONL && $('ogIn')) ? $('ogIn') : $('input');
+const kbCapW = w => w ? w.charAt(0).toLocaleUpperCase(kbLoc()) + w.slice(1) : w;
+const kbFmt = v => v.toLocaleLowerCase(kbLoc()).replace(/\s+/g, ' ').replace(/^ /, '').split(' ').map(kbCapW).join(' ');
+const kbWords = v => v.trim() ? v.trim().split(/\s+/) : [];
+function kbOn(){
+  const inp = kbInp(); if (!inp || inp.disabled) return false;
+  if (typeof ONL !== 'undefined' && ONL) return true;
+  return document.body.classList.contains('playing') && !!current && !roundOver && !spinning;
+}
+function kbBuild(){
+  const L = kbL(), R = KB_ROWS[L], k = c => `<div class="hkb-k" data-k="${c}">${c.toLocaleUpperCase(L)}</div>`;
+  KB.lng = L;
+  KB.el.innerHTML = `<div class="hkb-sug" id="hkbSug"></div>`
+    + R.map((r, i) => `<div class="hkb-r">${[...r].map(k).join('')}${i === 2 ? `<div class="hkb-k fn bs" data-k="bs" aria-label="sil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7z"/><path d="M12 9.5l5 5M17 9.5l-5 5"/></svg></div>` : ''}</div>`).join('')
+    + `<div class="hkb-r"><div class="hkb-k fn sp" data-k="sp">${settings.ui === 'az' ? 'boşluq' : 'boşluk'}</div><div class="hkb-k en" data-k="en">${escH(ot('sendName'))}</div></div><canvas class="hkb-tr"></canvas>`;
+  kbSug([]);
+}
+function kbSync(){
+  if (!KB.el) return;
+  const on = typeof ONL !== 'undefined' && ONL, slot = on ? $('ogKbSlot') : null, host = slot || $('offKbSlot');
+  if (host && KB.el.parentNode !== host) host.appendChild(KB.el);
+  document.body.classList.toggle('has-kb', on ? !!slot : document.body.classList.contains('playing'));
+  if (KB.lng !== kbL()) kbBuild();
+  KB.el.classList.toggle('off', !kbOn());
+  ['input', 'ogIn'].forEach(id => { const x = $(id); if (x && !x.readOnly){ x.readOnly = true; x.setAttribute('inputmode', 'none'); x.setAttribute('autocomplete', 'off'); } });
+}
+/* ---- Yazma işlemleri ---- */
+function kbSet(v){ const inp = kbInp(); if (!inp) return; inp.value = kbFmt(v); inp.scrollLeft = inp.scrollWidth; }
+function kbType(ch){
+  const inp = kbInp(); if (!inp) return; let v = inp.value;
+  KB.sw = null; kbSet(v + ch); kbPrefix();
+}
+function kbSpace(){
+  const inp = kbInp(); if (!inp) return; const v = inp.value;
+  KB.sw = null;
+  if (!v.trim() || / $/.test(v) || kbWords(v).length >= 2){ kbShake(); return; }   // en fazla 2 kelime, çift boşluk yok
+  inp.value = v + ' '; kbSug([]);
+}
+function kbBack(word){
+  const inp = kbInp(); if (!inp) return; let v = inp.value; if (!v) return;
+  KB.sw = null;
+  v = word ? v.replace(/\s*\S*\s*$/, '') : v.slice(0, -1);
+  inp.value = kbFmt(v) + (/ $/.test(v) && v.trim() ? ' ' : ''); kbPrefix();
+}
+function kbEnter(){
+  const inp = kbInp(); if (!inp || !inp.value.trim()){ kbShake(); return; }
+  const f = inp.form; KB.sw = null; kbSug([]);
+  if (f){ if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event('submit', { cancelable:true, bubbles:true })); }
+}
+function kbShake(){ KB.el.classList.remove('shk'); void KB.el.offsetWidth; KB.el.classList.add('shk'); }
+/* Kaydırılan kelimeyi yerleştir: ilk isimden sonra boşluk kendiliğinden gelir, 2. isim varsa değiştirilir */
+function kbPutWord(w){
+  const inp = kbInp(); if (!inp) return; const v = inp.value, ws = kbWords(v);
+  let base;
+  if (KB.sw && KB.sw.base != null) base = KB.sw.base;
+  else if (!ws.length) base = '';
+  else if (/ $/.test(v)) base = v;
+  else if (ws.length === 1) base = v + ' ';
+  else base = ws[0] + ' ';
+  kbSet(base + w); return base;
+}
+/* ---- Öneri şeridi ---- */
+function kbSug(list, cur){
+  const el = $('hkbSug'); if (!el) return; KB.sugL = list;
+  el.innerHTML = list.slice(0, 3).map((w, i) => `<button type="button" class="${w === cur || (!cur && i === 0 && KB.sw) ? 'best' : ''}" data-s="${escH(w)}">${escH(kbCapW(w))}</button>`).join('');
+}
+function kbDict(){
+  const S = NAMESET[lang]; if (!S) return [];
+  const key = lang + ':' + S.size;
+  if (!KB.list[key]) KB.list[key] = [...S].filter(w => !w.includes(' ') && w.length > 1).sort((a, b) => a.length - b.length || a.localeCompare(b, kbLoc()));
+  return KB.list[key];
+}
+function kbPrefix(){
+  const inp = kbInp(); if (!inp) return; const v = inp.value;
+  if (!v || / $/.test(v)){ kbSug([]); return; }
+  const ws = kbWords(v), p = ws[ws.length - 1].toLocaleLowerCase(kbLoc()); if (!p){ kbSug([]); return; }
+  const said = saidKeys(), saidH = new Set([...said].map(headKey));
+  const all = kbDict().filter(w => w.startsWith(p) && w !== p);
+  const fresh = ws.length === 1 ? all.filter(w => !saidH.has(fold(w))) : all;
+  kbSug((fresh.length ? fresh : all).slice(0, 3));
+}
+function kbPickSug(w){
+  const inp = kbInp(); if (!inp) return;
+  if (KB.sw){ kbSet(KB.sw.base + w); KB.sw.w = w; kbSug(KB.sugL, w); return; }
+  const v = inp.value, ws = kbWords(v);
+  if (!ws.length || / $/.test(v)) kbSet(v + w); else kbSet(ws.slice(0, -1).concat(w).join(' '));
+  kbSug([]);
+}
+/* ---- Klavye geometrisi ve kaydırma çözücü ---- */
+function kbGeo(){
+  const box = KB.el.getBoundingClientRect(), keys = [...KB.el.querySelectorAll('.hkb-k')].map(el => { const r = el.getBoundingClientRect(); return { k:el.dataset.k, el, x:r.left - box.left, y:r.top - box.top, w:r.width, h:r.height, cx:r.left - box.left + r.width / 2, cy:r.top - box.top + r.height / 2 }; });
+  const kw = (keys.find(q => q.k.length === 1) || { w:30 }).w + 4, ctr = {};
+  keys.forEach(q => { if (q.k.length === 1) ctr[q.k] = [q.cx / kw, q.cy / kw]; });
+  return { box, keys, kw, ctr, fixed:{ 'â':'a', 'î':'i', 'û':'u', 'w':'v', 'x':'h', 'q':'k' } };
+}
+function kbHit(x, y){
+  const G = KB.geo; let best = null, bd = 1e9;
+  for (const q of G.keys){ if (x >= q.x - 2 && x <= q.x + q.w + 2 && y >= q.y - 3 && y <= q.y + q.h + 3) return q;
+    const d = (x - q.cx) ** 2 + (y - q.cy) ** 2; if (d < bd){ bd = d; best = q; } }
+  return bd < (G.kw * 1.2) ** 2 ? best : null;
+}
+function kbResample(P, n){
+  if (P.length === 1) return Array(n).fill(P[0]);
+  let len = 0; for (let i = 1; i < P.length; i++) len += Math.hypot(P[i][0] - P[i-1][0], P[i][1] - P[i-1][1]);
+  if (len < 1e-6) return Array(n).fill(P[0]);
+  const step = len / (n - 1), out = [P[0]]; let acc = 0, prev = P[0];
+  for (let i = 1; i < P.length && out.length < n; i++){
+    let cur = P[i], d = Math.hypot(cur[0] - prev[0], cur[1] - prev[1]);
+    while (acc + d >= step && out.length < n){ const t = (step - acc) / d, q = [prev[0] + t * (cur[0] - prev[0]), prev[1] + t * (cur[1] - prev[1])]; out.push(q); d -= step - acc; prev = q; acc = 0; }
+    acc += d; prev = cur;
+  }
+  while (out.length < n) out.push(P[P.length - 1]);
+  return out;
+}
+const kbLen = P => { let s = 0; for (let i = 1; i < P.length; i++) s += Math.hypot(P[i][0] - P[i-1][0], P[i][1] - P[i-1][1]); return s; };
+function kbIdeal(w){
+  const G = KB.geo, pts = []; let last = '';
+  for (const c0 of w){ const c = G.ctr[c0] ? c0 : G.fixed[c0]; if (!c || !G.ctr[c]) return null; if (c === last) continue; last = c; pts.push(G.ctr[c]); }
+  return pts;
+}
+function kbDecode(raw){
+  const G = KB.geo, N = 32, P = raw.map(p => [p[0] / G.kw, p[1] / G.kw]), U = kbResample(P, N), uLen = kbLen(P);
+  const near = (p, r) => Object.keys(G.ctr).filter(c => Math.hypot(G.ctr[c][0] - p[0], G.ctr[c][1] - p[1]) <= r);
+  const F = new Set(near(P[0], 1.25)), E = new Set(near(P[P.length - 1], 1.25));
+  const exp = (expectedLetter() || '').toLocaleLowerCase(kbLoc()), first = !KB.sw && (() => { const v = (kbInp() || {}).value || ''; return !kbWords(v).length; })();
+  const saidH = new Set([...saidKeys()].map(headKey));
+  const res = [];
+  for (const w of kbDict()){
+    if (!F.has(G.ctr[w[0]] ? w[0] : G.fixed[w[0]]) ) continue;
+    const lc = w[w.length - 1]; if (!E.has(G.ctr[lc] ? lc : G.fixed[lc])) continue;
+    const id = kbIdeal(w); if (!id || id.length < 2) continue;
+    const iLen = kbLen(id); if (iLen < uLen * 0.45 - .6 || iLen > uLen * 2.2 + .8) continue;
+    const I = kbResample(id, N); let d = 0; for (let i = 0; i < N; i++) d += Math.hypot(I[i][0] - U[i][0], I[i][1] - U[i][1]);
+    d /= N;
+    d += Math.hypot(id[0][0] - P[0][0], id[0][1] - P[0][1]) * .35 + Math.hypot(id[id.length - 1][0] - P[P.length - 1][0], id[id.length - 1][1] - P[P.length - 1][1]) * .35;
+    if (first && exp && w[0] === exp) d -= .18;          // sıradaki harfle başlayan isim öne
+    if (first && saidH.has(fold(w))) d += .25;            // bu turda söylenmiş olan geri
+    if (KB_COMMON.has(w)) d -= .12;
+    res.push([w, d]);
+  }
+  res.sort((a, b) => a[1] - b[1]);
+  return res.slice(0, 3).map(x => x[0]);
+}
+/* ---- İz (kaydırırken parmağın çizdiği çizgi) ---- */
+function kbTrail(){
+  const cv = KB.el.querySelector('.hkb-tr'); if (!cv) return; const tr = KB.tr, g = cv.getContext('2d'), dpr = devicePixelRatio || 1;
+  const W = KB.el.clientWidth, H = KB.el.clientHeight;
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)){ cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  if (!tr || !tr.moved) return;
+  const P = tr.pts, n = P.length; if (n < 2) return;
+  const col = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#2f6f5e';
+  g.lineCap = g.lineJoin = 'round'; g.strokeStyle = col;
+  for (let i = Math.max(1, n - 60); i < n; i++){ const a = (i - (n - 60)) / 60; g.globalAlpha = Math.max(.15, Math.min(.85, a)); g.lineWidth = 3 + 4 * Math.max(0, a);
+    g.beginPath(); g.moveTo(P[i-1][0], P[i-1][1]); g.lineTo(P[i][0], P[i][1]); g.stroke(); }
+  g.globalAlpha = 1;
+}
+function kbFadeTrail(){ const cv = KB.el && KB.el.querySelector('.hkb-tr'); if (!cv) return; cv.classList.add('fd'); clearTimeout(KB.fade); KB.fade = setTimeout(() => { cv.classList.remove('fd'); const g = cv.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height); }, 260); }
+/* ---- Dokunma olayları ---- */
+function kbPress(q){ q.el.classList.add('on'); if (q.k.length === 1){ q.el.classList.add('pop'); } }
+function kbRelease(){ KB.el.querySelectorAll('.hkb-k.on,.hkb-k.pop').forEach(x => x.classList.remove('on', 'pop')); }
+function kbFinish(tr){
+  if (!tr) return; clearTimeout(KB.rep); clearInterval(KB.repI); kbRelease();
+  const k = tr.k0 && tr.k0.k;
+  if (!k){ kbFadeTrail(); return; }
+  if (k === 'bs') return;                                       // silme basınca yapıldı (basılı tutunca hızlanır)
+  if (k === 'sp'){ kbSpace(); return; }
+  if (k === 'en'){ kbEnter(); return; }
+  if (!tr.moved){ kbType(k); return; }
+  kbFadeTrail();
+  const out = kbDecode(tr.pts);
+  if (!out.length){ kbShake(); return; }
+  const base = kbPutWord(out[0]); KB.sw = { base, w:out[0] }; kbSug(out, out[0]);
+}
+function kbInit(){
+  if (KB.el) return;
+  KB.el = document.createElement('div'); KB.el.className = 'hkb'; KB.el.id = 'hkb';
+  const oa = $('offActs'); if (oa){ const s = document.createElement('div'); s.id = 'offKbSlot'; s.className = 'kb-slot'; oa.after(s); }
+  kbBuild();
+  KB.el.addEventListener('pointerdown', e => {
+    const sb = e.target.closest('.hkb-sug button'); if (sb){ e.preventDefault(); if (kbOn()) kbPickSug(sb.dataset.s); return; }
+    e.preventDefault(); if (!kbOn()){ kbShake(); return; }
+    if (KB.tr) kbFinish(KB.tr);                                   // iki parmakla hızlı yazım: önceki dokunuşu hemen işle
+    KB.geo = kbGeo(); const x = e.clientX - KB.geo.box.left, y = e.clientY - KB.geo.box.top, q = kbHit(x, y);
+    KB.tr = { id:e.pointerId, pts:[[x, y]], k0:q, last:q, moved:false, x0:x, y0:y };
+    try { KB.el.setPointerCapture(e.pointerId); } catch(_){}
+    if (q){ kbPress(q); if (navigator.vibrate) try { navigator.vibrate(8); } catch(_){}
+      if (q.k === 'bs'){ kbBack(); KB.rep = setTimeout(() => { KB.tr && (KB.tr.held = true); let n = 0; KB.repI = setInterval(() => { kbBack(++n > 8); }, 85); }, 420); } }
+  });
+  KB.el.addEventListener('pointermove', e => {
+    const tr = KB.tr; if (!tr || tr.id !== e.pointerId) return;
+    const x = e.clientX - KB.geo.box.left, y = e.clientY - KB.geo.box.top;
+    tr.pts.push([x, y]);
+    if (!tr.moved && tr.k0 && tr.k0.k.length === 1 && Math.hypot(x - tr.x0, y - tr.y0) > KB.geo.kw * .55){ tr.moved = true; kbRelease(); }
+    if (tr.moved){ const q = kbHit(x, y); if (q && q !== tr.last && q.k.length === 1){ tr.last = q; } requestAnimationFrame(kbTrail); }
+  });
+  const up = e => { const tr = KB.tr; if (!tr || tr.id !== e.pointerId) return; KB.tr = null; kbFinish(tr); };
+  KB.el.addEventListener('pointerup', up); KB.el.addEventListener('pointercancel', e => { const tr = KB.tr; if (!tr || tr.id !== e.pointerId) return; KB.tr = null; clearTimeout(KB.rep); clearInterval(KB.repI); kbRelease(); kbFadeTrail(); });
+  KB.el.addEventListener('contextmenu', e => e.preventDefault());
+  /* Bilgisayar klavyesiyle de yazılabilsin (yazı kutusu salt okunur olduğu için) */
+  document.addEventListener('keydown', e => {
+    if (!KB.el.isConnected || !KB.el.offsetParent || e.ctrlKey || e.metaKey || e.altKey) return;
+    const a = document.activeElement; if (a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && !a.readOnly))) return;
+    if (!kbOn()) return;
+    if (e.key === 'Enter'){ e.preventDefault(); kbEnter(); }
+    else if (e.key === 'Backspace'){ e.preventDefault(); kbBack(); }
+    else if (e.key === ' '){ e.preventDefault(); kbSpace(); }
+    else if (e.key.length === 1 && /\p{L}/u.test(e.key)){ e.preventDefault(); kbType(e.key.toLocaleLowerCase(kbLoc())); }
+  });
+  kbSync();
+}
+/* Online oyun ekranı her kurulduğunda klavyeyi oraya taşı, çıkınca geri getir */
+try {
+  const _bg = buildGameUI; buildGameUI = function(){ _bg.apply(this, arguments); const a = $('ogActs'); if (a && !$('ogKbSlot')){ const s = document.createElement('div'); s.id = 'ogKbSlot'; s.className = 'kb-slot'; a.after(s); } kbSync(); };
+  const _rg = renderGame; renderGame = function(){ const r = _rg.apply(this, arguments); kbSync(); return r; };
+  const _sp = setPlaying; setPlaying = function(){ const r = _sp.apply(this, arguments); kbSync(); return r; };
+} catch(e){ console.warn('kb hook', e); }
+kbInit(); setInterval(kbSync, 500);
+['form'].forEach(id => { const f = $(id); if (f) f.addEventListener('submit', () => setTimeout(() => kbSug([]), 0)); });
 </script>
 </body>
 </html>
