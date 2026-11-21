@@ -2081,6 +2081,15 @@
     body.has-kb .hkb{--kh:clamp(29px, 4.3dvh, 36px)} body.has-kb .hkb-r{margin-top:3px}
     body.playing.has-kb .wheel-area{padding-bottom:calc(var(--w) * .045 + 8px)!important}
   }
+
+  /* ===== v192: web sayfası gibi değil, uygulama gibi davran ===== */
+  html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
+  *{-webkit-touch-callout:none}
+  img,svg,a{-webkit-user-drag:none;user-drag:none}
+  input:not([readonly]),textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+  #input,#ogIn{-webkit-user-select:none;user-select:none}
+  ::selection{background:transparent}
+  input:not([readonly])::selection,textarea::selection{background:color-mix(in srgb, var(--accent) 35%, transparent)}
 </style>
 </head>
 <body>
@@ -3666,7 +3675,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '191';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '192';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -6976,6 +6985,15 @@ try {
 } catch(e){ console.warn('kb hook', e); }
 kbInit(); setInterval(kbSync, 500);
 ['form'].forEach(id => { const f = $(id); if (f) f.addEventListener('submit', () => setTimeout(() => kbSug([]), 0)); });
+</script>
+<script>
+/* v192: uzun basınca çıkan Chrome menüsü, metin seçme ve sürükleme kapalı (yazı kutuları hariç) */
+(() => {
+  const editable = t => t && t.closest && t.closest('input:not([readonly]),textarea,[contenteditable="true"]');
+  document.addEventListener('contextmenu', e => { if (!editable(e.target)) e.preventDefault(); }, { capture:true });
+  document.addEventListener('selectstart', e => { if (!editable(e.target)) e.preventDefault(); }, { capture:true });
+  document.addEventListener('dragstart', e => { if (!editable(e.target)) e.preventDefault(); }, { capture:true });
+})();
 </script>
 </body>
 </html>
