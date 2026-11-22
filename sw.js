@@ -1,6 +1,7 @@
 // İsim Zinciri: önce internetten yeni sürümü al, internet yoksa kayıtlı sürümü aç
-const C = 'isim-zinciri-v195', WPC = 'iz-duvar-v1';
-self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './manifest.json', './logo2-192.png', './logo2-512.png', './logo2-maskable.png', './logo2-apple.png'].map(u => new Request(u, { cache:'reload' }))))); });
+const C = 'isim-zinciri-v196', WPC = 'iz-duvar-v1';
+self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(['./', './index.html', './manifest.json', './logo2-192.png', './logo2-512.png', './logo2-maskable.png', './logo2-apple.png'].map(u => new Request(u, { cache:'reload' })))
+    .then(() => Promise.all(['./sozluk-tr.txt', './sozluk-az.txt'].map(u => c.add(new Request(u, { cache:'reload' })).catch(() => {})))))); });   // sözlükler: Tek harfle devam et modu internetsiz de çalışsın
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;

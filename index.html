@@ -3693,7 +3693,7 @@ try { updateThemeBtn(); } catch(_){} resetPlayers(); try { applyI18n(); } catch(
 // Uygulama olarak kurulabilmesi için (Claude içinde çalışmaz, sorun değil)
 if ('serviceWorker' in navigator && !inClaude){ try { navigator.serviceWorker.register('sw.js').catch(()=>{}); } catch(_){} }
 /* Hangi sürüm açık: ayarların en altında görünür (güncelleme geldi mi kontrolü için) */
-const APP_V = '195';   // her teslimde sw.js ile birlikte artırılır
+const APP_V = '196';   // her teslimde sw.js ile birlikte artırılır
 try { caches.keys().then(k => { const v = k.map(x => (x.match(/^isim-zinciri-v(\d+)$/) || [])[1]).filter(Boolean).map(Number).sort((a, b) => b - a)[0]; const e = document.getElementById('appVer'); if (e) e.textContent = 'v' + APP_V + (v && String(v) !== APP_V ? ' (önbellek v' + v + ')' : '') + ' · ' + location.host; }).catch(() => {}); } catch(_){}
 </script>
 <script>
@@ -7069,13 +7069,13 @@ const THX = {
     q:(a,b)=>`Soru ${a}/${b}`, pts:'Puan', spin:'🎡 Çarkı Çevir', spinHint:'Çarkı çevir. Çıkan harfle bütün sorulara cevap vereceksin.', ph:'Cevabını yaz…', sec:'sn',
     max3:'En fazla 3 kelime yazabilirsin. Cevap kabul edilmedi (puan düşmedi).', warn:x=>`⚠️ Cevap ${x} harfiyle başlamalı! Bu ilk uyarı, bundan sonraki yanlışlarda puan düşecek.`, minus:x=>`❌ Cevap ${x} harfiyle başlamalı! −1 puan`,
     ok:'✅ +1 puan', late:'⏰ Süre doldu, puan yok', endT:'Oyun bitti', endOk:'doğru', endBad:'yanlış harf', endLate:'süresi dolan', again:'Tekrar oyna', settings:'Ayarlar', close:'Kapat', letterIs:x=>`Harfin: ${x}`, howT:'Nasıl oynanır?',
-    how:['Çarkı çevir; çıkan harf bütün oyun boyunca senin harfin.','Her soruya bu harfle başlayan 1–3 kelimelik bir cevap yaz ve Gönder\'e bas.','Her doğru cevap +1 puan. Süre biterse puan yok, sonraki soruya geçilir.','Yanlış harfle başlarsan cevap kabul edilmez: ilk seferde sadece uyarı, sonraki her yanlışta −1 puan.','3 kelimeden uzun cevap kabul edilmez ama puan da düşmez.'] },
+    how:['Çarkı çevir; çıkan harf bütün oyun boyunca senin harfin.','Her soruya bu harfle başlayan 1–3 kelimelik bir cevap yaz ve Gönder\'e bas.','Her doğru cevap +1 puan. Süre biterse puan yok, sonraki soruya geçilir.','Yanlış harfle başlarsan cevap kabul edilmez: ilk seferde sadece uyarı, sonraki her yanlışta −1 puan.','3 kelimeden uzun cevap kabul edilmez ama puan da düşmez.','Var olmayan ya da yanlış yazılmış kelimeler kabul edilmez; puan düşmez, düzeltip tekrar gönderebilirsin.'], bad:w=>`🤔 "${w}" kelimesini tanımadım. Yazımını kontrol et (puan düşmedi).` },
   az:{ modeT:'Bir telefonda oyna', m1:'Harf Çarkı', m1s:'Son hərfdən ad zənciri, növbə ilə oyna', m2:'Bir hərflə davam et', m2s:'Çarx bir hərf seçir, bütün suallara o hərflə cavab ver',
     setT:'Bir hərflə davam et', lang:'Dil', time:'Hər sual üçün vaxt', cnt:'Neçə sual verilsin?', all:'Suallar bitənədək', start:'▶ Başla', title:'Eyni hərflə davam et',
     q:(a,b)=>`Sual ${a}/${b}`, pts:'Xal', spin:'🎡 Çarxı fırlat', spinHint:'Çarxı fırlat. Çıxan hərflə bütün suallara cavab verəcəksən.', ph:'Cavabını yaz…', sec:'san',
     max3:'Ən çox 3 söz yaza bilərsən. Cavab qəbul olunmadı (xal düşmədi).', warn:x=>`⚠️ Cavab ${x} hərfi ilə başlamalıdır! Bu ilk xəbərdarlıqdır, sonrakı səhvlərdə xal düşəcək.`, minus:x=>`❌ Cavab ${x} hərfi ilə başlamalıdır! −1 xal`,
     ok:'✅ +1 xal', late:'⏰ Vaxt bitdi, xal yoxdur', endT:'Oyun bitdi', endOk:'düzgün', endBad:'səhv hərf', endLate:'vaxtı bitən', again:'Yenidən oyna', settings:'Ayarlar', close:'Bağla', letterIs:x=>`Hərfin: ${x}`, howT:'Necə oynanılır?',
-    how:['Çarxı fırlat; çıxan hərf bütün oyun boyu sənin hərfindir.','Hər suala bu hərflə başlayan 1–3 sözlük cavab yaz və Göndər düyməsinə bas.','Hər düzgün cavab +1 xal. Vaxt bitsə xal yoxdur, növbəti suala keçilir.','Səhv hərflə başlasan cavab qəbul olunmur: ilk dəfə yalnız xəbərdarlıq, sonrakı hər səhvdə −1 xal.','3 sözdən uzun cavab qəbul olunmur, amma xal da düşmür.'] }
+    how:['Çarxı fırlat; çıxan hərf bütün oyun boyu sənin hərfindir.','Hər suala bu hərflə başlayan 1–3 sözlük cavab yaz və Göndər düyməsinə bas.','Hər düzgün cavab +1 xal. Vaxt bitsə xal yoxdur, növbəti suala keçilir.','Səhv hərflə başlasan cavab qəbul olunmur: ilk dəfə yalnız xəbərdarlıq, sonrakı hər səhvdə −1 xal.','3 sözdən uzun cavab qəbul olunmur, amma xal da düşmür.','Mövcud olmayan və ya səhv yazılmış sözlər qəbul olunmur; xal düşmür, düzəldib yenidən göndərə bilərsən.'], bad:w=>`🤔 "${w}" sözünü tanımadım. Yazılışını yoxla (xal düşmədi).` }
 };
 const thx = (k, ...a) => { const v = (THX[settings.ui] || THX.tr)[k]; return typeof v === 'function' ? v(...a) : v; };
 const thHow = () => `<b>📖 ${escH(thx('howT'))}</b>${thx('how').map((x, i) => `<div class="th-li"><span>${i + 1}.</span><span>${escH(x)}</span></div>`).join('')}`;
@@ -7083,6 +7083,55 @@ var TH = { on:false, lang:'tr', time:30, count:15, letter:'', qs:[], i:0, score:
 try { const s0 = JSON.parse(localStorage.getItem('iz-th') || '{}'); if (s0.lang) TH.lang = s0.lang; if ([20,30,40].includes(s0.time)) TH.time = s0.time; if ([15,30,40,0].includes(s0.count)) TH.count = s0.count; } catch(_){}
 const thSave = () => { try { localStorage.setItem('iz-th', JSON.stringify({ lang:TH.lang, time:TH.time, count:TH.count })); } catch(_){} };
 const BACK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
+/* v196: Kelime kontrolü — sözlükte kök + bilinen ekler (uydurma kelimeyi reddeder, ekli kelimeyi kabul eder) */
+const THD = { tr:null, az:null, loading:{} };
+const TH_SUF = {
+  tr:('lar ler m ım im um üm n ın in un ün ı i u ü sı si su sü mız miz muz müz nız niz nuz nüz a e ya ye na ne yı yi yu yü nı ni nu nü da de ta te nda nde dan den tan ten ndan nden nın nin nun nün la le yla yle ca ce ça çe ki '
+    + 'dır dir dur dür tır tir tur tür yım yim yum yüm sın sin sun sün sınız siniz sunuz sünüz ız iz uz üz yız yiz yuz yüz k dı di du dü tı ti tu tü ydı ydi ydu ydü mış miş muş müş ymış ymiş ymuş ymüş sa se ysa yse ken yken '
+    + 'yor ıyor iyor uyor üyor r ar er ır ir ur ür maz mez mam mem ma me ama eme yama yeme mak mek ması mesi acak ecek yacak yecek acağ eceğ yacağ yeceğ malı meli ış iş uş üş yış yiş an en yan yen '
+    + 'dık dik duk dük tık tik tuk tük dığ diğ duğ düğ tığ tiğ tuğ tüğ arak erek yarak yerek ıp ip up üp yıp yip yup yüp ınca ince unca ünce yınca yince abil ebil yabil yebil ıl il ul ül l t '
+    + 'lım lim lum lüm alım elim yalım yelim ınız iniz unuz ünüz yın yin yun yün lı li lu lü sız siz suz süz lık lik luk lük lığ liğ luğ lüğ cı ci cu cü çı çi çu çü cık cik cuk cük cağız ceğiz sal sel daş deş gil msı msi msu msü laş leş lan len mı mi mu mü').split(' '),
+  az:('lar lər m ım im um üm n ın in un ün ı i u ü sı si su sü mız miz muz müz nız niz nuz nüz a ə ya yə na nə yı yi yu yü nı ni nu nü da də ta tə nda ndə dan dən tan tən ndan ndən nın nin nun nün la lə yla ylə ca cə ça çə kı ki dakı dəki '
+    + 'dır dir dur dür tır tir tur tür am əm yam yəm san sən ıq ik uq ük yıq yik yuq yük sınız siniz sunuz sünüz sız siz suz süz k dı di du dü tı ti tu tü ydı ydi ydu ydü mış miş muş müş ymış ymiş ymuş ymüş sa sə ysa ysə kən ykən '
+    + 'ır ir ur ür yır yir yur yür ar ər maz məz ma mə yma ymə maq mək ması məsi acaq əcək yacaq yəcək acağ əcəy yacağ yəcəy malı məli ış iş uş üş yış yiş an ən yan yən '
+    + 'dıq dik duq dük dığ diy duğ düy araq ərək yaraq yərək ıb ib ub üb yıb yib yub yüb anda əndə yanda yəndə abil əbil yabil yəbil ıl il ul ül l t '
+    + 'aq ək yaq yək ım im ın in yın yin lı li lu lü sız siz suz süz lıq lik luq lük lığ liy luğ lüy çı çi çu çü cı ci cu cü laş ləş lan lən mı mi mu mü ca cə').split(' ')
+};
+const TH_SUFSET = { tr:new Set(TH_SUF.tr), az:new Set(TH_SUF.az) };
+const TH_VOW = { tr:'aeıioöuü', az:'aeəıioöuü' };
+const TH_SOFT = { tr:{ b:'p', c:'ç', d:'t', ğ:'k', g:'k' }, az:{ ğ:'q', y:'k', d:'t' } };
+function thSufOK(rest, L){
+  const S = TH_SUFSET[L], V = TH_VOW[L], n = rest.length, ok = new Array(n + 1).fill(99); ok[0] = 0;
+  for (let i = 0; i < n; i++){ if (ok[i] > 7) continue;
+    for (let j = i + 1; j <= Math.min(n, i + 7); j++){ const m = rest.slice(i, j); if (!S.has(m)) continue;
+      if (m.length === 1 && !V.includes(m)){ const prev = i ? rest[i - 1] : thSufOK.last; if (!V.includes(prev)) continue; }   // tek ünsüzlük ek (m, n, r, k, l, t) sadece ünlüden sonra gelir
+      ok[j] = Math.min(ok[j], ok[i] + 1); } }
+  return ok[n] <= 7;
+}
+function thStemCands(s, L){
+  const c = [s], V = TH_VOW[L], last = s[s.length - 1], soft = TH_SOFT[L][last];
+  if (soft) c.push(s.slice(0, -1) + soft);
+  if (s.length >= 3 && !V.includes(last) && !V.includes(s[s.length - 2])) for (const v of (L === 'az' ? 'ıiuü' : 'ıiuü')) c.push(s.slice(0, -1) + v + last);   // ağz → ağız, burn → burun
+  if (!V.includes(last)) for (const v of (L === 'az' ? 'aə' : 'ae')) c.push(s + v);                                              // bekl+iyor → bekle
+  if (last === 'i' || last === 'ı') for (const v of (L === 'az' ? 'aə' : 'ae')) c.push(s.slice(0, -1) + v);                       // yi+yor → ye, di+yor → de
+  return c;
+}
+function thWordOK(w, L, extra){
+  const D = THD[L]; if (!D) return true;                                  // sözlük yüklenemediyse kontrol yapma
+  w = w.toLocaleLowerCase(L === 'az' ? 'az' : 'tr').replace(/[^a-zçğıöşüəqx]/g, ''); if (!w) return false;
+  if (D.has(w) || (extra && extra(w))) return true;
+  for (let cut = w.length - 1; cut >= 2; cut--){
+    const s = w.slice(0, cut), rest = w.slice(cut); thSufOK.last = s[s.length - 1];
+    if (!thSufOK(rest, L)) continue;
+    for (const st of thStemCands(s, L)) if (D.has(st) || (extra && extra(st))) return true;
+  }
+  return false;
+}
+function thLoadDict(L){
+  if (THD[L] || THD.loading[L]) return; THD.loading[L] = 1;
+  fetch('sozluk-' + L + '.txt').then(r => r.ok ? r.text() : Promise.reject()).then(t => { THD[L] = new Set(t.split('\n')); }).catch(() => {}).finally(() => { THD.loading[L] = 0; });
+}
+const thNameOK = L => w => !!(NAMESET[L] && NAMESET[L].has(w));
 function thBuild(){
   if ($('thMode')) return;
   document.body.insertAdjacentHTML('beforeend', `
@@ -7142,7 +7191,7 @@ function thTexts(){
   $('thEndT').textContent = thx('endT'); $('thEndAgain').textContent = thx('again'); $('thEndSet').textContent = thx('settings'); $('thEndX').textContent = thx('close');
 }
 function thOpenMode(){ thBuild(); thTexts(); openPage('thMode'); }
-function thOpenSet(){ thBuild(); thTexts(); segSet('thLang', TH.lang); segSet('thTime', String(TH.time)); segSet('thCnt', String(TH.count)); openPage('thSet'); }
+function thOpenSet(){ thLoadDict('tr'); thLoadDict('az'); thBuild(); thTexts(); segSet('thLang', TH.lang); segSet('thTime', String(TH.time)); segSet('thCnt', String(TH.count)); openPage('thSet'); }
 /* ---- Çark ---- */
 function thLetters(){ const l = TH.lang, ex = new Set(exclOf(l)); return LANGS[l].letters.filter(ch => ch !== 'Ğ' && !ex.has(ch)); }
 function thDraw(){
@@ -7160,7 +7209,7 @@ function thShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ co
 function thInfo(){ $('thQn').textContent = TH.letter ? thx('q', Math.min(TH.i + 1, TH.qs.length), TH.qs.length) : ''; $('thPts').textContent = thx('pts') + ': ' + TH.score; }
 function thMsg(t, k){ const m = $('thMsg'); m.textContent = t || ''; m.className = 'th-msg' + (k ? ' ' + k : ''); clearTimeout(thMsg.t); if (t && k !== 'warn') thMsg.t = setTimeout(() => { if (m.textContent === t) m.textContent = ''; }, 2600); }
 function thStart(){
-  thBuild(); thTexts(); thStopTimer();
+  thLoadDict(TH.lang); thBuild(); thTexts(); thStopTimer();
   const all = TH_Q[TH.lang] || TH_Q.tr;
   Object.assign(TH, { on:true, letter:'', qs:thShuffle(all).slice(0, TH.count || all.length), i:0, score:0, wrong:0, ok:0, late:0, ans:false, spinning:false });
   thDraw(); $('thGame').classList.add('nolet'); $('thHub').textContent = '?'; $('thSpin').hidden = false; $('thSpin').disabled = false; $('thForm').hidden = true; $('thIn').value = '';
@@ -7199,6 +7248,8 @@ function thAnswer(){
     if (TH.wrong === 1) thMsg(thx('warn', TH.letter), 'warn'); else { TH.score = Math.max(0, TH.score - 1); thMsg(thx('minus', TH.letter), 'bad'); thInfo(); }
     return;
   }
+  const badW = words.find(w => !thWordOK(w, loc, thNameOK(loc)));
+  if (badW){ thMsg(thx('bad', badW), 'warn'); sfx('bad'); kbShake(); return; }                          // sözlükte olmayan kelime: kabul yok, ceza yok
   TH.ans = false; thStopTimer(); TH.score++; TH.ok++; TH.i++; sfx('ok'); thMsg(thx('ok'), 'ok'); thInfo(); kbSync(); setTimeout(thNext, 450);
 }
 function thEnd(){
