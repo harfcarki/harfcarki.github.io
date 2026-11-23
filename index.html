@@ -2102,10 +2102,11 @@
 .th-how.sm{font-size:12.5px;padding:9px 12px;margin:6px 0 0}.th-how[hidden]{display:none}
 .th-body{display:flex;flex-direction:column}.th-wrap{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding-bottom:6px}
 .th-info{display:flex;justify-content:space-between;font-weight:700;font-size:14px;opacity:.85}
-.th-wheel{position:relative;display:flex;justify-content:center}
-.th-wheel .wheel-wrap{width:min(56vw,230px);height:min(56vw,230px);position:relative}
+.th-wheel{position:relative;display:flex;flex-direction:column;align-items:center;margin-bottom:26px}
+.th-wheel .wheel-wrap{width:min(52vw,214px);height:min(52vw,214px);position:relative;margin-top:4px}
 .th-wheel #thWheel{position:relative;width:100%;height:100%;transition:transform 4.6s cubic-bezier(.12,.7,.08,1)}
-.th-wheel .t-sec{position:absolute;right:0;top:0;font-weight:800;font-size:20px}.th-wheel .t-sec small{position:static;margin-left:3px}
+.th-wheel .t-sec{position:relative;right:auto;top:auto;height:26px;display:flex;align-items:baseline;justify-content:center;margin:0;font-weight:800;font-size:20px}.th-wheel .t-sec small{position:static;margin-left:3px}
+.th-info{margin-bottom:-2px}
 .th-q{text-align:center;font-weight:700;font-size:18px;line-height:1.3;min-height:24px}
 .th-msg{text-align:center;font-size:13.5px;font-weight:600;min-height:18px}.th-msg.ok{color:var(--accent)}.th-msg.bad,.th-msg.warn{color:#c0392b}
 .th-spin{align-self:center;min-width:180px}.th-form[hidden],.th-spin[hidden]{display:none!important}
@@ -7081,7 +7082,7 @@ const THX = {
 const thx = (k, ...a) => { const v = (THX[settings.ui] || THX.tr)[k]; return typeof v === 'function' ? v(...a) : v; };
 const thHow = () => `<b>📖 ${escH(thx('howT'))}</b>${thx('how').map((x, i) => `<div class="th-li"><span>${i + 1}.</span><span>${escH(x)}</span></div>`).join('')}`;
 var TH = { on:false, lang:'tr', time:30, count:15, letter:'', qs:[], i:0, score:0, wrong:0, ok:0, late:0, t0:0, raf:null, ans:false, rot:0, spinning:false };
-try { const s0 = JSON.parse(localStorage.getItem('iz-th') || '{}'); if (s0.lang) TH.lang = s0.lang; if ([20,30,40].includes(s0.time)) TH.time = s0.time; if ([15,30,40,0].includes(s0.count)) TH.count = s0.count; } catch(_){}
+try { const s0 = JSON.parse(localStorage.getItem('iz-th') || '{}'); if (s0.lang) TH.lang = s0.lang; if ([20,30,40,60].includes(s0.time)) TH.time = s0.time; if ([15,30,40,0].includes(s0.count)) TH.count = s0.count; } catch(_){}
 const thSave = () => { try { localStorage.setItem('iz-th', JSON.stringify({ lang:TH.lang, time:TH.time, count:TH.count })); } catch(_){} };
 const BACK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
 /* v196: Kelime kontrolü — sözlükte kök + bilinen ekler (uydurma kelimeyi reddeder, ekli kelimeyi kabul eder) */
@@ -7138,6 +7139,14 @@ function thLoadDict(L){
 const thDictMsg = loading => settings.ui === 'az' ? (loading ? 'Lüğət yüklənir…' : 'Lüğət yüklənmədi. İnternet bağlantını yoxla.') : (loading ? 'Sözlük yükleniyor…' : 'Sözlük yüklenemedi. İnternet bağlantını kontrol et.');
 /* v197: kategori kontrolü için isim / şehir / ülke listelerini bir kez yükle */
 function thCatInit(){ if (TH.catOK || !window.HarfKategori) return; TH.catOK = 1; try { HarfKategori.ekle('isim', [...(NAMESET.tr || [])]); HarfKategori.ekle('sehir', [...(NAMESET.trs || [])]); HarfKategori.ekle('ulke', [...(NAMESET.tru || [])]); } catch(_){} }
+
+/* v198: seçilen harfle verilebilecek cevabı olmayan soruları ele (örn. J harfiyle "mevsim" ya da "spor") */
+function thFilterQs(){
+  if (TH.lang !== 'tr' || !window.HarfKategori || !HarfKategori.cevapSayisi) return;
+  thCatInit();
+  const all = TH_Q.tr, ok = all.filter(q => HarfKategori.cevapSayisi(q, TH.letter) >= 3), pool = ok.length >= 8 ? ok : all;
+  TH.qs = thShuffle(pool).slice(0, TH.count || pool.length);
+}
 const thNameOK = L => w => !!(NAMESET[L] && NAMESET[L].has(w));
 function thBuild(){
   if ($('thMode')) return;
@@ -7153,7 +7162,7 @@ function thBuild(){
   <div class="s-body"><div class="s-wrap narrow"><section class="s-sec">
     <div class="th-how" id="thHowS"></div>
     <div class="s-label" id="thLangL"></div><div class="seg" id="thLang"><button data-v="tr">Türkçe</button><button data-v="az">Azərbaycan</button></div>
-    <div class="s-label" id="thTimeL"></div><div class="seg" id="thTime"><button data-v="20">20</button><button data-v="30">30</button><button data-v="40">40</button></div>
+    <div class="s-label" id="thTimeL"></div><div class="seg" id="thTime"><button data-v="20">20</button><button data-v="30">30</button><button data-v="40">40</button><button data-v="60" id="thMin">1 dk</button></div>
     <div class="s-label" id="thCntL"></div><div class="seg" id="thCnt"><button data-v="15">15</button><button data-v="30">30</button><button data-v="40">40</button><button data-v="0" id="thAll"></button></div>
     <button class="btn mic" id="thGo" style="width:100%;margin-top:18px"></button>
   </section></div></div></aside></div>
@@ -7190,7 +7199,7 @@ function thBuild(){
   $('thEndSet').onclick = () => { $('thEnd').hidden = true; closePage('thGame'); thOpenSet(); };
   $('thEndX').onclick = () => { $('thEnd').hidden = true; closePage('thGame'); };
 }
-function thTexts(){
+function thTexts(){ const mn = $('thMin'); if (mn) mn.textContent = TH.lang === 'az' ? '1 dəq' : '1 dk';
   $('thModeT').textContent = thx('modeT'); $('thM1').textContent = thx('m1'); $('thM1s').textContent = thx('m1s'); $('thM2').textContent = thx('m2'); $('thM2s').textContent = thx('m2s');
   $('thSetT').textContent = thx('setT'); $('thLangL').textContent = thx('lang'); $('thTimeL').textContent = thx('time'); $('thCntL').textContent = thx('cnt'); $('thAll').textContent = thx('all'); $('thGo').textContent = thx('start');
   $('thTitle').textContent = thx('title'); $('thSpin').textContent = thx('spin'); $('thIn').placeholder = thx('ph');
@@ -7228,7 +7237,7 @@ function thSpin(){
   const L = thLetters(), seg = 360 / L.length, i = Math.floor(Math.random() * L.length), pick = L[i];
   const center = i * seg + seg / 2 + (Math.random() - .5) * seg * .5; let target = TH.rot - (TH.rot % 360) + 360 * 6 + (360 - center); if (target - TH.rot < 360 * 5) target += 360; TH.rot = target;
   $('thWheel').style.transform = `rotate(${target}deg)`; $('thHub').textContent = '…'; spinTicks($('thWheel'), L.length, 4600);
-  setTimeout(() => { if (!TH.on) return; sfx('land'); TH.spinning = false; TH.letter = pick; $('thGame').classList.remove('nolet'); $('thHub').textContent = pick; thDraw(); $('thSpin').hidden = true;
+  setTimeout(() => { if (!TH.on) return; sfx('land'); TH.spinning = false; TH.letter = pick; thFilterQs(); $('thGame').classList.remove('nolet'); $('thHub').textContent = pick; thDraw(); $('thSpin').hidden = true;
     thMsg(thx('letterIs', pick), 'ok'); setTimeout(thNext, 900); }, 4700);
 }
 function thNext(){
@@ -7265,7 +7274,7 @@ function thAnswer(){
   if (loc === 'tr' && window.HarfKategori){                                                           // v197: soruya uygunluk (mutfakta araba → kabul yok, ceza yok)
     thCatInit();
     const kr = HarfKategori.kontrol(TH.qs[TH.i], txt);
-    if (kr.durum === 'uyumsuz'){ thMsg('🤔 "' + kr.kelime + '" bir ' + kr.etiket + ', bu soruya uymuyor (puan düşmedi).', 'warn'); sfx('bad'); kbShake(); return; }
+    if (kr.durum === 'uyumsuz'){ thMsg(kr.tanimsiz ? '🤔 "' + kr.kelime + '" bu soruya uygun bir cevap olarak tanınmadı (puan düşmedi).' : '🤔 "' + kr.kelime + '" bir ' + kr.etiket + ', bu soruya uymuyor (puan düşmedi).', 'warn'); sfx('bad'); kbShake(); return; }
   }
   TH.ans = false; thStopTimer(); TH.score++; TH.ok++; TH.i++; sfx('ok'); thMsg(thx('ok'), 'ok'); thInfo(); kbSync(); setTimeout(thNext, 450);
 }
