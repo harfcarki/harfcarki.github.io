@@ -2105,7 +2105,7 @@
 .th-wheel{position:relative;display:flex;justify-content:center}
 .th-wheel .wheel-wrap{width:min(56vw,230px);height:min(56vw,230px);position:relative}
 .th-wheel #thWheel{position:relative;width:100%;height:100%;transition:transform 4.6s cubic-bezier(.12,.7,.08,1)}
-.th-wheel .t-sec{position:absolute;right:0;top:0;font-weight:800;font-size:20px}
+.th-wheel .t-sec{position:absolute;right:0;top:0;font-weight:800;font-size:20px}.th-wheel .t-sec small{position:static;margin-left:3px}
 .th-q{text-align:center;font-weight:700;font-size:18px;line-height:1.3;min-height:24px}
 .th-msg{text-align:center;font-size:13.5px;font-weight:600;min-height:18px}.th-msg.ok{color:var(--accent)}.th-msg.bad,.th-msg.warn{color:#c0392b}
 .th-spin{align-self:center;min-width:180px}.th-form[hidden],.th-spin[hidden]{display:none!important}
@@ -7042,6 +7042,7 @@ kbInit(); setInterval(kbSync, 500);
   document.addEventListener('dragstart', e => { if (!editable(e.target)) e.preventDefault(); }, { capture:true });
 })();
 </script>
+<script src="kategori.js"></script>
 <script>
 /* ===================== TEK HARFLE DEVAM ET (v195) — tek telefonda, internetsiz =====================
    Çark bir harf seçer; bütün sorulara o harfle başlayan 1–3 kelimelik cevap yazılır. */
@@ -7128,9 +7129,15 @@ function thWordOK(w, L, extra){
   return false;
 }
 function thLoadDict(L){
-  if (THD[L] || THD.loading[L]) return; THD.loading[L] = 1;
-  fetch('sozluk-' + L + '.txt').then(r => r.ok ? r.text() : Promise.reject()).then(t => { THD[L] = new Set(t.split('\n')); }).catch(() => {}).finally(() => { THD.loading[L] = 0; });
+  if (THD[L]) return Promise.resolve(true);
+  if (THD.loading[L]) return THD.loading[L];
+  const get = () => fetch('sozluk-' + L + '.txt').then(r => r.ok ? r.text() : Promise.reject()).then(t => { const S = new Set(t.split(/\r?\n/).map(x => x.trim()).filter(Boolean)); if (S.size < 1000) return Promise.reject(); THD[L] = S; return true; });
+  THD.loading[L] = get().catch(() => new Promise(r => setTimeout(r, 700)).then(get)).catch(() => false).finally(() => { THD.loading[L] = 0; });
+  return THD.loading[L];
 }
+const thDictMsg = loading => settings.ui === 'az' ? (loading ? 'Lüğət yüklənir…' : 'Lüğət yüklənmədi. İnternet bağlantını yoxla.') : (loading ? 'Sözlük yükleniyor…' : 'Sözlük yüklenemedi. İnternet bağlantını kontrol et.');
+/* v197: kategori kontrolü için isim / şehir / ülke listelerini bir kez yükle */
+function thCatInit(){ if (TH.catOK || !window.HarfKategori) return; TH.catOK = 1; try { HarfKategori.ekle('isim', [...(NAMESET.tr || [])]); HarfKategori.ekle('sehir', [...(NAMESET.trs || [])]); HarfKategori.ekle('ulke', [...(NAMESET.tru || [])]); } catch(_){} }
 const thNameOK = L => w => !!(NAMESET[L] && NAMESET[L].has(w));
 function thBuild(){
   if ($('thMode')) return;
@@ -7248,8 +7255,18 @@ function thAnswer(){
     if (TH.wrong === 1) thMsg(thx('warn', TH.letter), 'warn'); else { TH.score = Math.max(0, TH.score - 1); thMsg(thx('minus', TH.letter), 'bad'); thInfo(); }
     return;
   }
+  if (!THD[loc]){                                                                                     // sözlük yüklenmediyse sessizce kabul etme
+    thMsg(thDictMsg(1), 'warn');
+    thLoadDict(loc).then(ok => { if (ok) thAnswer(); else thMsg(thDictMsg(0), 'warn'); });
+    return;
+  }
   const badW = words.find(w => !thWordOK(w, loc, thNameOK(loc)));
   if (badW){ thMsg(thx('bad', badW), 'warn'); sfx('bad'); kbShake(); return; }                          // sözlükte olmayan kelime: kabul yok, ceza yok
+  if (loc === 'tr' && window.HarfKategori){                                                           // v197: soruya uygunluk (mutfakta araba → kabul yok, ceza yok)
+    thCatInit();
+    const kr = HarfKategori.kontrol(TH.qs[TH.i], txt);
+    if (kr.durum === 'uyumsuz'){ thMsg('🤔 "' + kr.kelime + '" bir ' + kr.etiket + ', bu soruya uymuyor (puan düşmedi).', 'warn'); sfx('bad'); kbShake(); return; }
+  }
   TH.ans = false; thStopTimer(); TH.score++; TH.ok++; TH.i++; sfx('ok'); thMsg(thx('ok'), 'ok'); thInfo(); kbSync(); setTimeout(thNext, 450);
 }
 function thEnd(){

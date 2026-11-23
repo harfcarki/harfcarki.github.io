@@ -51,6 +51,7 @@
     mutfakta: ["mutfak", "yemek", "sebze", "meyve", "tatli", "icecek"],
     alis: ["ev_esya", "teknoloji", "kisisel", "giyim", "mutfak", "yemek", "sebze", "meyve", "tatli", "icecek", "tasit"],
     zaman: ["sayi", "zaman"],
+    bahce: ["sebze", "meyve", "cicek", "bitki"],
     akraba: ["akraba", "isim"]
   };
   // AI kısa adları
@@ -59,7 +60,7 @@
   var ETIKET = { yemek: "yemek", sebze: "sebze", meyve: "meyve", tatli: "tatlı", icecek: "içecek", hayvan: "hayvan",
     meslek: "meslek", sehir: "şehir", ulke: "ülke", doga: "doğa", mekan: "mekan", renk: "renk", mevsim: "mevsim",
     tasit: "taşıt", giyim: "giyim eşyası", mutfak: "mutfak eşyası", ev_esya: "ev eşyası", teknoloji: "teknoloji ürünü",
-    kisisel: "kişisel eşya", uygulama: "uygulama", akraba: "akraba", sayi: "sayı", zaman: "zaman", isim: "isim" };
+    kisisel: "kişisel eşya", cicek: "çiçek", bitki: "bitki", spor: "spor dalı", enstruman: "müzik aleti", uygulama: "uygulama", akraba: "akraba", sayi: "sayı", zaman: "zaman", isim: "isim" };
 
   var SORU = {
     "Adın ne?": "isim", "Annenin adı ne?": "isim", "Babanın adı ne?": "isim", "En iyi arkadaşının adı ne?": "isim",
@@ -77,6 +78,9 @@
     "En son ne satın aldın?": "alis", "İşe ya da okula nasıl gidersin?": "tasit",
     "Sabah kaçta kalkarsın?": "zaman", "Gece kaçta uyursun?": "zaman",
     "Telefonunda en çok hangi uygulamayı kullanırsın?": "uygulama",
+    "En sevdiğin içecek ne?": "icecek", "Bir çiçek adı söyle.": "cicek", "Hangi sporu seversin?": "spor",
+    "En sevdiğin tatlı ne?": "tatli", "Bahçende ne yetiştirmek istersin?": "bahce", "Hangi aracı kullanmak istersin?": "tasit",
+    "En sevdiğin şarkıcı kim?": "isim", "Hangi müzik aletini çalmak istersin?": "enstruman",
     "Sabah ilk ne yaparsın?": "serbest", "Hafta sonu ne yaparsın?": "serbest", "Boş zamanında ne yaparsın?": "serbest"
   };
 
@@ -166,6 +170,13 @@
   "isim": "bahar ceylan nar şeker kaya taş pınar mercan karaca doğan şahin kartal aslan kaplan arslan yıldırım poyraz bulut kiraz gül nergis elma çağla ela su ay güneş yıldız deniz derya irmak nehir ada defne zeytin badem toprak rüzgar doğa tuna aras fırat dicle ceren kuzey can ekin ebru eylül ekim alp doruk zirve su nil nilüfer papatya menekşe lale sümbül zambak yasemin leylak karanfil begonya orkide lavanta mimoza gelincik ayçiçeği çiğdem kardelen ceylan karaca ahu bilge bülbül kumru güvercin serçe sevgi umut mutlu şirin neşe huzur barış özgür yağız kurt yiğit bora fırtına simge deniz derin engin dalga damla"
 };
   Object.keys(EK).forEach(function (k) { ekleKelimeler(k, L(EK[k])); });
+  var EK2 = {
+  "cicek": "gül lale karanfil papatya sümbül nergis zambak menekşe orkide yasemin leylak ortanca begonya kasımpatı kardelen çiğdem gelincik nilüfer ayçiçeği mimoza şebboy aslanağzı petunya sardunya fulya manolya kamelya lavanta çuha kadife hanımeli gardenya akasya çiçek şakayık frezya glayör gerbera anemon zerrin sedef yıldızçiçeği güllü karanfilli lotus",
+  "bitki": "ağaç çam meşe kavak çınar ardıç selvi ceviz kayın dişbudak akçaağaç sedir köknar servi zeytin incir dut kestane fındık badem söğüt huş okaliptüs palmiye bambu kaktüs sukulent eğrelti ot çimen yosun mantar kekik nane biberiye adaçayı fesleğen maydanoz ıhlamur defne sarmaşık orman fide fidan tohum yonca buğday arpa çavdar yulaf pirinç mısır pamuk tütün çay kahve şeker",
+  "spor": "futbol basketbol voleybol hentbol tenis masatenisi badminton yüzme atletizm koşu jimnastik güreş boks judo karate taekwondo eskrim okçuluk atıcılık binicilik bisiklet kayak snowboard hokey paten yelken kürek sörf dalış tırmanış yoga pilates fitness halter golf beyzbol ragbi kriket bilardo dart satranç briç tavla dama paraşüt kano rafting yürüyüş trekking kampçılık cimnastik sutopu plaj voleybolu masa tenisi",
+  "enstruman": "gitar piyano keman viyola çello kontrbas flüt klarnet obua fagot saksafon trompet trombon korno tuba arp org akordeon davul darbuka def bendir zil bağlama saz cura divan ud kanun ney kaval zurna mey tambur kemençe rebap santur cümbüş mızıka ukulele banjo bas elektrogitar synthesizer keyboard harmonika mandolin tef kudüm"
+};
+  Object.keys(EK2).forEach(function (k) { ekleKelimeler(k, L(EK2[k])); });
   // ---- /GENİŞ LİSTELER ----
 
   // ---- Genişletilmiş listeler (genel sözlük taraması + ek kelimeler) ----
